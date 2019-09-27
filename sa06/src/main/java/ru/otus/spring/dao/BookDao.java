@@ -17,7 +17,7 @@ public interface BookDao {
 
     void deleteById(Long id);
     
-    Genre getGenreById(Long id);
+    Genre getGenreByBookId(Long id);
     
-    Author getAuthorById(Long id);
+    Author getAuthorByBookId(Long id);
 }

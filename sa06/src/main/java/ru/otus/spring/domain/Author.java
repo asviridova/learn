@@ -23,5 +23,8 @@ public class Author {
 	public String getNationality() {
 		return nationality;
 	}
-
+	@Override
+	public String toString(){
+		return "[Author name="+name+", Author id="+id+", nationality="+nationality+"]";
+	}
 }
