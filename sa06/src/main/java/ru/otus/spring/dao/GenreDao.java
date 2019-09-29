@@ -16,8 +16,8 @@ public interface GenreDao {
 
     void deleteById(Long id);
     
-    List<Book> getBooks(Long genreid);
-    
-    List<Book> getBooksByGenre(String genreName);
+//    List<Book> getBooks(Long genreid);
+//    
+//    List<Book> getBooksByGenre(String genreName);
 
 }

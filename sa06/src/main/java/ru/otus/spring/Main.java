@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import ru.otus.spring.dao.AuthorDao;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.domain.Author;
@@ -38,15 +39,16 @@ public class Main {
         
         genreDao.deleteById(10L);
         System.out.println("All count genre3: " + genreDao.count());
-        
-        List<Book> books = genreDao.getBooks(1L);
-        System.out.println("books: " + books);
-        
-        List<Book> books1 = genreDao.getBooksByGenre("tragedy");
-        System.out.println("books tragedy: " + books1);
-        
+
         //Book
         BookDao bookDao = context.getBean(BookDao.class);
+
+        List<Book> books = bookDao.getBooksByGenreId(1L);
+        System.out.println("books: " + books);
+        
+        List<Book> books1 = bookDao.getBooksByGenre("tragedy");
+        System.out.println("books tragedy: " + books1);
+        
         System.out.println("All count books: " + bookDao.count());
         
         Book book = new Book(null, "Gamlet", 1L, 1L);
@@ -68,6 +70,12 @@ public class Main {
         
         System.out.println("genre_book="+genre_book);
 
+        //Author
+        AuthorDao authorDao = context.getBean(AuthorDao.class);
+        
+        System.out.println(authorDao.getAll());
+        
+        
        // Console.main(args);
     }
 }

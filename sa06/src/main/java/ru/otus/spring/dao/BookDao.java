@@ -1,6 +1,8 @@
 package ru.otus.spring.dao;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
@@ -20,4 +22,12 @@ public interface BookDao {
     Genre getGenreByBookId(Long id);
     
     Author getAuthorByBookId(Long id);
+    
+	List<Book> getBooksByAuthorId(Long authorid);
+
+	List<Book> getBooksByGenreId(Long genreid) ;
+
+	List<Book> getBooksByGenre(String genreName);
+	
+	
 }

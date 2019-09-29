@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ru.otus.spring.dao.AuthorDao;
+import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.domain.Book;
 
@@ -13,15 +15,20 @@ import ru.otus.spring.domain.Book;
 public class LibraryCommands {
 
 	private final GenreDao genreDao;
+	private final BookDao bookDao;
+	private final AuthorDao authorDao;
+	
 	
 	@Autowired
-	public LibraryCommands(GenreDao genreDao) {
+	public LibraryCommands(GenreDao genreDao, BookDao bookDao, AuthorDao authorDao) {
 		this.genreDao = genreDao;
+		this.authorDao = authorDao;
+		this.bookDao = bookDao;
 	}
 	
 	//@ShellMethod("books")
 	public List<Book> getBooksByGenre(String genreName){
-		return genreDao.getBooksByGenre(genreName);
+		return bookDao.getBooksByGenre(genreName);
 		
 	}
 	

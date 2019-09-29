@@ -96,6 +96,16 @@ public class BookDaoJdbc implements BookDao {
 		return null;
 	}
 
+	@Override
+	public List<Book> getBooksByAuthorId(Long authorid) {
+		Map<String, Object> params = Collections.singletonMap("authorid", authorid);
+		List<Book> bookList = namedParameterJdbcOperations.query(
+                "select * from book where authorid  = :authorid)", params, new BookMapper()
+        );	
+		return bookList;
+	}
+	
+	
 	private static class BookMapper implements RowMapper<Book> {
 
         @Override
@@ -131,5 +141,51 @@ public class BookDaoJdbc implements BookDao {
             return b;
         }
     }
+	
+	//-------------------------
+	@Override
+	public List<Book> getBooksByGenreId(Long genreid) {
+		Map<String, Object> params = Collections.singletonMap("id", genreid);
+		List<Book> books = namedParameterJdbcOperations.query(
+                "select * from book where genreid = :id", params, new GenreMapperBooks()
+        );		
+		return books;
+	}
+	
+	@Override
+	public List<Book> getBooksByGenre(String genreName) {
+		Map<String, Object> params = Collections.singletonMap("genrename", genreName);
+		List<Book> books = namedParameterJdbcOperations.query(
+                "select * from book where genreid in (select id from genre where name = :genrename)", params, new GenreMapperBooks()
+        );		
+		return books;
+	}
+	
+
+    private static class GenreMapper implements RowMapper<Genre> {
+
+        @Override
+        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
+            Long id = resultSet.getLong("id");
+            String name = resultSet.getString("name");
+            return new Genre(id, name);
+        }
+    }
+	
+    private static class GenreMapperBooks implements RowMapper<Book> {
+
+        @Override
+        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+            Long id = resultSet.getLong("id");
+            String name = resultSet.getString("name");
+            Long authorid = resultSet.getLong("authorid");
+            Long genreid = resultSet.getLong("genreid");
+            Book b = new Book(id, name, authorid, genreid);
+            
+            return b;
+        }
+    }
+
+	
 	
 }

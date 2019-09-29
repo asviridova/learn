@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import ru.otus.spring.dao.AuthorDaoJdbc;
+import ru.otus.spring.dao.BookDaoJdbc;
 import ru.otus.spring.dao.GenreDaoJdbc;
 
 @DisplayName("DAO для работы с жанрами")
@@ -26,6 +28,13 @@ public class GenreDaoJdbcTest2 {
 	
 	@Autowired
 	private GenreDaoJdbc genreDaoJdbc;
+	
+	@Autowired
+	private BookDaoJdbc bookDaoJdbc;
+	
+	@Autowired
+	private AuthorDaoJdbc authorDaoJdbc;
+	
 	public static int FOUR = 4;
 	public static int TWO = 2;
 	public static String JENRE_TRAGEDY = "tragedy";
@@ -46,7 +55,7 @@ public class GenreDaoJdbcTest2 {
 	@DisplayName("поиск количества книг по  жанру") 
 	@Test
 	public void returnBookCountByGenreID() {
-		assertThat(genreDaoJdbc.getBooksByGenre("tragedy").size()).isEqualTo(TWO);
+		assertThat(bookDaoJdbc.getBooksByGenre("tragedy").size()).isEqualTo(TWO);
 	}
 	
 }

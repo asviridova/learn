@@ -16,5 +16,4 @@ public interface AuthorDao {
 
     void deleteById(Long id);
     
-    List<Book> getBooksById(Long id);
 }
