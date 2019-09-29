@@ -75,6 +75,18 @@ public class Main {
         
         System.out.println(authorDao.getAll());
         
+        List<Book> books_by_author = bookDao.getBooksByAuthorId(1L);
+        if(books_by_author!=null) {
+        	System.out.println(books_by_author);
+        	if(!books_by_author.isEmpty()) {
+        		Book b = books_by_author.get(0);
+        		System.out.println("******");
+        		System.out.println(b);
+        		System.out.println(b.getAuthor());
+        		System.out.println(b.getGenre());
+        	}
+        }
+        
         
        // Console.main(args);
     }

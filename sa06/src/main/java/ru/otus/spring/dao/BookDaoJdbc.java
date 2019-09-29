@@ -99,8 +99,15 @@ public class BookDaoJdbc implements BookDao {
 	@Override
 	public List<Book> getBooksByAuthorId(Long authorid) {
 		Map<String, Object> params = Collections.singletonMap("authorid", authorid);
+//		List<Book> bookList = namedParameterJdbcOperations.query(
+//                "select * from book where authorid  = :authorid)", params, new BookMapper()
+//        );	
 		List<Book> bookList = namedParameterJdbcOperations.query(
-                "select * from book where authorid  = :authorid)", params, new BookMapper()
+                "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
+		+" from book b "
+		+"  inner join author a on b.authorid = a.id "
+		+" inner join genre g on b.genreid = g.id "
+		+" where b.authorid  = :authorid", params, new BookMapper()
         );	
 		return bookList;
 	}
@@ -114,8 +121,15 @@ public class BookDaoJdbc implements BookDao {
             String name = resultSet.getString("name");
             Long authorid = resultSet.getLong("authorid");
             Long genreid = resultSet.getLong("genreid");
+
+            String authorname = resultSet.getString("authorname");
+            String authornationality = resultSet.getString("authornationality");
+            String genrename = resultSet.getString("genrename");
             
-            return new Book(id, name, authorid, genreid);
+            Genre g = new Genre (genreid, genrename); 
+            Author a = new Author (authorid, authorname, authornationality);
+            
+            return new Book(id, name, a, g);
         }
     }
 	
