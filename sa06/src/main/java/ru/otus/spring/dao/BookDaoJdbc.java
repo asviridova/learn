@@ -107,13 +107,26 @@ public class BookDaoJdbc implements BookDao {
 		+" from book b "
 		+"  inner join author a on b.authorid = a.id "
 		+" inner join genre g on b.genreid = g.id "
-		+" where b.authorid  = :authorid", params, new BookMapper()
+		+" where b.authorid  = :authorid", params, new BookMapperByAuthorId()
         );	
 		return bookList;
 	}
 	
 	
 	private static class BookMapper implements RowMapper<Book> {
+
+        @Override
+        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+            Long id = resultSet.getLong("id");
+            String name = resultSet.getString("name");
+            Long authorid = resultSet.getLong("authorid");
+            Long genreid = resultSet.getLong("genreid");
+            
+            return new Book(id, name, authorid, genreid);
+        }
+    }
+
+	private static class BookMapperByAuthorId implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
