@@ -3,6 +3,7 @@ package ru.otus.spring.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,6 @@ public class BookDaoJdbc implements BookDao {
 
 	@Override
 	public void insert(Book book) {
-		//String sql = "insert into book (`name`, '') values (:name)";
 		String sql = "insert into book (`name`, `authorid`, `genreid`) values (:name, :authorid, :genreid)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("name", book.getName());
@@ -53,14 +53,29 @@ public class BookDaoJdbc implements BookDao {
 	@Override
 	public Book getById(Long id) {
 		Map<String, Object> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select * from book where id = :id", params, new BookMapper()
+		Book book = namedParameterJdbcOperations.queryForObject(
+                "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
+		+" from book b "
+		+"  inner join author a on b.authorid = a.id "
+		+" inner join genre g on b.genreid = g.id "
+		+" where b.id  = :id", params, new BookMapperComplex()
         );	
+
+		return book;
 	}
 
 	@Override
 	public List<Book> getAll() {
-		return jdbc.query("select * from book", new BookMapper());
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		List<Book> bookList = namedParameterJdbcOperations.query(
+                "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
+		+" from book b "
+		+"  inner join author a on b.authorid = a.id "
+		+" inner join genre g on b.genreid = g.id ", params, new BookMapperComplex()
+        );	
+		return bookList;
+		
 	}
 
 	@Override
@@ -99,34 +114,19 @@ public class BookDaoJdbc implements BookDao {
 	@Override
 	public List<Book> getBooksByAuthorId(Long authorid) {
 		Map<String, Object> params = Collections.singletonMap("authorid", authorid);
-//		List<Book> bookList = namedParameterJdbcOperations.query(
-//                "select * from book where authorid  = :authorid)", params, new BookMapper()
-//        );	
 		List<Book> bookList = namedParameterJdbcOperations.query(
                 "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
 		+" from book b "
 		+"  inner join author a on b.authorid = a.id "
 		+" inner join genre g on b.genreid = g.id "
-		+" where b.authorid  = :authorid", params, new BookMapperByAuthorId()
+		+" where b.authorid  = :authorid", params, new BookMapperComplex()
         );	
 		return bookList;
 	}
 	
 	
-	private static class BookMapper implements RowMapper<Book> {
 
-        @Override
-        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            Long authorid = resultSet.getLong("authorid");
-            Long genreid = resultSet.getLong("genreid");
-            
-            return new Book(id, name, authorid, genreid);
-        }
-    }
-
-	private static class BookMapperByAuthorId implements RowMapper<Book> {
+	private static class BookMapperComplex implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -172,46 +172,33 @@ public class BookDaoJdbc implements BookDao {
 	//-------------------------
 	@Override
 	public List<Book> getBooksByGenreId(Long genreid) {
-		Map<String, Object> params = Collections.singletonMap("id", genreid);
-		List<Book> books = namedParameterJdbcOperations.query(
-                "select * from book where genreid = :id", params, new GenreMapperBooks()
-        );		
-		return books;
+		Map<String, Object> params = Collections.singletonMap("genreid", genreid);
+		
+		List<Book> bookList = namedParameterJdbcOperations.query(
+                "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
+		+" from book b "
+		+"  inner join author a on b.authorid = a.id "
+		+" inner join genre g on b.genreid = g.id "
+		+" where b.genreid  = :genreid", params, new BookMapperComplex()
+        );	
+		
+		return bookList;
 	}
 	
 	@Override
 	public List<Book> getBooksByGenre(String genreName) {
 		Map<String, Object> params = Collections.singletonMap("genrename", genreName);
-		List<Book> books = namedParameterJdbcOperations.query(
-                "select * from book where genreid in (select id from genre where name = :genrename)", params, new GenreMapperBooks()
-        );		
-		return books;
+		List<Book> bookList = namedParameterJdbcOperations.query(
+                "select b.id, b.name, b.authorid, b.genreid, a.name as authorname, a.nationality as authornationality, g.name as genrename "
+		+" from book b "
+		+"  inner join author a on b.authorid = a.id "
+		+" inner join genre g on b.genreid = g.id "
+		+" where g.name  = :genrename", params, new BookMapperComplex()
+        );	
+		
+		return bookList;
 	}
 	
-
-    private static class GenreMapper implements RowMapper<Genre> {
-
-        @Override
-        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            return new Genre(id, name);
-        }
-    }
-	
-    private static class GenreMapperBooks implements RowMapper<Book> {
-
-        @Override
-        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            Long authorid = resultSet.getLong("authorid");
-            Long genreid = resultSet.getLong("genreid");
-            Book b = new Book(id, name, authorid, genreid);
-            
-            return b;
-        }
-    }
 
 	
 	

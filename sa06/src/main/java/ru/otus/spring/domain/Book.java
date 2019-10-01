@@ -5,25 +5,12 @@ public class Book {
     private final String name;
     private final Author  author;
     private final Genre genre;
-    private final Long authorid;
-    private final Long genreid;
 
     public Book(Long id, String name, Author author, Genre genre) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.genre = genre;
-        authorid = author!=null?author.getId():null;
-        genreid = genre!=null?genre.getId():null;
-        
-    }
-    public Book(Long id, String name, Long authorid, Long genreid) {
-        this.id = id;
-        this.name = name;
-        this.author = null;
-        this.genre = null;
-        this.authorid = authorid;
-        this.genreid = genreid;
         
     }
 
@@ -45,10 +32,16 @@ public class Book {
 	}
 
 	public Long getAuthorid() {
-		return authorid;
+		if(author!=null) {
+			return author.getId();
+		}
+		return null;
 	}
 	public Long getGenreid() {
-		return genreid;
+		if(genre!=null) {
+			return genre.getId();
+		}
+		return null;
 	}
 	@Override
 	public String toString(){

@@ -42,6 +42,7 @@ public class Main {
 
         //Book
         BookDao bookDao = context.getBean(BookDao.class);
+        AuthorDao authorDao = context.getBean(AuthorDao.class);
 
         List<Book> books = bookDao.getBooksByGenreId(1L);
         System.out.println("books: " + books);
@@ -51,7 +52,9 @@ public class Main {
         
         System.out.println("All count books: " + bookDao.count());
         
-        Book book = new Book(null, "Gamlet", 1L, 1L);
+        Author author_1 = authorDao.getById(1L);
+        Genre genre_1 = genreDao.getById(1L);
+        Book book = new Book(null, "Gamlet", author_1, genre_1);
         bookDao.insert(book);
         
         System.out.println("All count books2: " + bookDao.count());
@@ -71,7 +74,6 @@ public class Main {
         System.out.println("genre_book="+genre_book);
 
         //Author
-        AuthorDao authorDao = context.getBean(AuthorDao.class);
         
         System.out.println(authorDao.getAll());
         
