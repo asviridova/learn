@@ -66,10 +66,10 @@ public class Main {
         Book book_by_id = bookDao.getById(2L);
         System.out.println("book_by_id="+book_by_id);
         
-        Author author = bookDao.getAuthorByBookId(2L);
+        Author author = authorDao.getAuthorByBookId(2L);
         System.out.println("author="+author);
         
-        Genre genre_book = bookDao.getGenreByBookId(2L);
+        Genre genre_book = genreDao.getGenreByBookId(2L);
         
         System.out.println("genre_book="+genre_book);
 

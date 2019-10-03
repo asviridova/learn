@@ -11,7 +11,7 @@ import ru.otus.spring.domain.Genre;
 public interface BookDao {
 	int count();
 
-    void insert(Book book);
+    Long insert(Book book);
 
     Book getById(Long id);
 
@@ -19,9 +19,6 @@ public interface BookDao {
 
     void deleteById(Long id);
     
-    Genre getGenreByBookId(Long id);
-    
-    Author getAuthorByBookId(Long id);
     
 	List<Book> getBooksByAuthorId(Long authorid);
 

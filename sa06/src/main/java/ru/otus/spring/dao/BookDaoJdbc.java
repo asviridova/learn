@@ -36,7 +36,7 @@ public class BookDaoJdbc implements BookDao {
 	}
 
 	@Override
-	public void insert(Book book) {
+	public Long insert(Book book) {
 		String sql = "insert into book (`name`, `authorid`, `genreid`) values (:name, :authorid, :genreid)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("name", book.getName());
@@ -47,7 +47,7 @@ public class BookDaoJdbc implements BookDao {
 		namedParameterJdbcOperations.update(sql, paramSource, keyHolder, keyColumnNames );
 		
 		Number key = keyHolder.getKey();
-	    System.out.println("New book generated id from keyholder: " + key.longValue());
+		return key.longValue();
 	}
 
 	@Override
@@ -87,29 +87,7 @@ public class BookDaoJdbc implements BookDao {
 		
 	}
 
-	@Override
-	public Genre getGenreByBookId(Long id) {
-		Map<String, Object> params = Collections.singletonMap("id", id);
-		List<Genre> genreList = namedParameterJdbcOperations.query(
-                "select * from genre where id in (select genreid from book where id = :id )", params, new MapperBooksByGenre()
-        );	
-		if(genreList!=null) {
-			return genreList.get(0);
-		}
-		return null;
-	}
 
-	@Override
-	public Author getAuthorByBookId(Long id) {
-		Map<String, Object> params = Collections.singletonMap("id", id);
-		List<Author> authorList = namedParameterJdbcOperations.query(
-                "select * from author where id in (select authorid from book where id = :id )", params, new MapperBooksByAuthor()
-        );	
-		if(authorList!=null) {
-			return authorList.get(0);
-		}
-		return null;
-	}
 
 	@Override
 	public List<Book> getBooksByAuthorId(Long authorid) {
@@ -146,28 +124,7 @@ public class BookDaoJdbc implements BookDao {
         }
     }
 	
-	private static class MapperBooksByGenre implements RowMapper<Genre> {
 
-        @Override
-        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            Genre b = new Genre(id, name);
-            return b;
-        }
-    }
-
-	private static class MapperBooksByAuthor implements RowMapper<Author> {
-
-        @Override
-        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            String nationality = resultSet.getString("nationality");
-            Author b = new Author(id, name, nationality);
-            return b;
-        }
-    }
 	
 	//-------------------------
 	@Override

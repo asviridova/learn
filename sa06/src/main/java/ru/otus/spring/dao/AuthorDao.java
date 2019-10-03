@@ -8,7 +8,7 @@ import ru.otus.spring.domain.Book;
 public interface AuthorDao {
 	int count();
 
-    void insert(Author author);
+    Long insert(Author author);
 
     Author getById(Long id);
 
@@ -16,4 +16,6 @@ public interface AuthorDao {
 
     void deleteById(Long id);
     
+    Author getAuthorByBookId(Long id);
+
 }

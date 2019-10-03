@@ -34,7 +34,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 	}	
 
 	@Override
-	public void insert(Author author) {
+	public Long insert(Author author) {
 		String sql = "insert into author (`name`, `nationality`) values (:name, :nationality)";
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("name", author.getName());
@@ -44,7 +44,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 		namedParameterJdbcOperations.update(sql, paramSource, keyHolder, keyColumnNames );
 		
 		Number key = keyHolder.getKey();
-	    System.out.println("New author generated id from keyholder: " + key.longValue());
+		return key.longValue();
 		
 	}
 
@@ -83,5 +83,28 @@ public class AuthorDaoJdbc implements AuthorDao {
 		
 	}
 
+	@Override
+	public Author getAuthorByBookId(Long id) {
+		Map<String, Object> params = Collections.singletonMap("id", id);
+		List<Author> authorList = namedParameterJdbcOperations.query(
+                "select * from author where id in (select authorid from book where id = :id )", params, new MapperBooksByAuthor()
+        );	
+		if(authorList!=null) {
+			return authorList.get(0);
+		}
+		return null;
+	}
+	
+	private static class MapperBooksByAuthor implements RowMapper<Author> {
+
+        @Override
+        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
+            Long id = resultSet.getLong("id");
+            String name = resultSet.getString("name");
+            String nationality = resultSet.getString("nationality");
+            Author b = new Author(id, name, nationality);
+            return b;
+        }
+    }
 
 }
