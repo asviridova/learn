@@ -37,7 +37,7 @@ public class OrmDemoApplication {
 
         System.out.println("author2: " + author2);
         //System.out.println("author.getname: " + author2.get().getName());
-        Console.main(args);
+        //Console.main(args);
 
 	}
 

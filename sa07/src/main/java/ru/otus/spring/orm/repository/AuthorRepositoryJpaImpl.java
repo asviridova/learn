@@ -31,7 +31,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
 
 	@Override
-	@Transactional  //???
+	@Transactional  
 	public AuthorModel save(AuthorModel author) {
 		if (author.getId() <= 0) {
             em.persist(author);
