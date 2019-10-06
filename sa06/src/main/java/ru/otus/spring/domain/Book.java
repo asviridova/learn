@@ -14,6 +14,13 @@ public class Book {
         
     }
 
+    public Book(String name, Author author, Genre genre) {
+        this.id = null;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        
+    }    
     public Long getId() {
         return id;
     }
