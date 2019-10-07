@@ -90,7 +90,7 @@ public class GenreDaoJdbc implements GenreDao {
 	public Genre getGenreByBookId(Long id) {
 		Map<String, Object> params = Collections.singletonMap("id", id);
 		List<Genre> genreList = namedParameterJdbcOperations.query(
-                "select * from genre where id in (select genreid from book where id = :id )", params, new MapperBooksByGenre()
+                "select * from genre where id in (select genreid from book where id = :id )", params, new GenreMapper()
         );	
 		if(genreList!=null) {
 			return genreList.get(0);
@@ -98,15 +98,5 @@ public class GenreDaoJdbc implements GenreDao {
 		return null;
 	}
 
-	private static class MapperBooksByGenre implements RowMapper<Genre> {
-
-        @Override
-        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            Long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            Genre b = new Genre(id, name);
-            return b;
-        }
-    }
 	
 }
