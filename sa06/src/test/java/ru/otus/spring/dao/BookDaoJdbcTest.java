@@ -1,56 +1,62 @@
 package ru.otus.spring.dao;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.service.BookPrinterServiceImpl;
 
-import ru.otus.spring.dao.BookDaoJdbc;
+import java.util.List;
 
-@RunWith(SpringRunner.class) //Junit4
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @JdbcTest
-@Import(BookDaoJdbc.class) 
-//@SpringBootTest(classes=BookDaoJdbcTest.class)
+@Import({BookDaoJdbc.class, BookPrinterServiceImpl.class})
 
 public class BookDaoJdbcTest {
 	@Autowired
 	private BookDaoJdbc bookDaoJdbc;
 
-	public static int TWO = 2;
-	
+	@Autowired
+	private BookPrinterServiceImpl bookPrinterService;
+
+    public static int EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE = 2;
+    public static int EXPECTED_BOOKS_BEFORE_DELETE = 4;
+    public static int EXPECTED_BOOKS_AFTER_DELETE = 3;
+
 	@DisplayName("поиск количества книг по  жанру") 
 	@Test
 	public void returnBookCountByGenreID() {
-		assertEquals(bookDaoJdbc.getBooksByGenre("tragedy").size(), TWO, "");
+		assertEquals(bookDaoJdbc.getBooksByGenre("tragedy").size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
 	}
 	
 	@DisplayName("поиск количества книг") 
 	@Test
 	public void returnBookCountAll() {
-		assertEquals(bookDaoJdbc.count(), 4, "");
+		assertEquals(bookDaoJdbc.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
 	@Test
 	public void bookDeleteByID() {
-		assertEquals(bookDaoJdbc.count(), 4, "");
+		assertEquals(bookDaoJdbc.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 		bookDaoJdbc.deleteById(1L);
-		assertEquals(bookDaoJdbc.count(), 3, "");
+		assertEquals(bookDaoJdbc.count(), EXPECTED_BOOKS_AFTER_DELETE, "");
 	}
 	
 	@Test
 	public void bookAll() {
-		assertEquals(bookDaoJdbc.getAll().size(), 4, "");
+		assertEquals(bookDaoJdbc.getAll().size(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
 	@Test
 	public void bookByGenre() {
-		assertEquals(bookDaoJdbc.getBooksByGenre("tragedy").size(), 2, "");
+	    List<Book> books = bookDaoJdbc.getBooksByGenre("tragedy");
+	    for(Book book: books) {
+            System.out.println(bookPrinterService.printBookToString(book));
+        }
+		assertEquals(books.size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
 	}
 
 	@Test

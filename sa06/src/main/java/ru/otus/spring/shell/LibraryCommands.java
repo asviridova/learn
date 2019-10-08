@@ -9,69 +9,70 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import ru.otus.spring.dao.AuthorDao;
-import ru.otus.spring.dao.BookDao;
-import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
+import ru.otus.spring.service.AuthorService;
+import ru.otus.spring.service.BookService;
+import ru.otus.spring.service.GenreService;
 
 //https://projects.spring.io/spring-shell/
 
 @ShellComponent
 public class LibraryCommands {
 
-	private final GenreDao genreDao;
-	private final BookDao bookDao;
-	private final AuthorDao authorDao;
-	
+	private final GenreService genreService;
+	private final BookService bookService;
+	private final AuthorService authorService;
+
 	private static final Logger LOGGER = LogManager.getLogger();
 	
 	@Autowired
-	public LibraryCommands(GenreDao genreDao, BookDao bookDao, AuthorDao authorDao) {
-		this.genreDao = genreDao;
-		this.authorDao = authorDao;
-		this.bookDao = bookDao;
+	public LibraryCommands(GenreService genreService, BookService bookService, AuthorService authorService) {
+		this.genreService = genreService;
+		this.authorService = authorService;
+		this.bookService = bookService;
 	}
-	
+
+
 	@ShellMethod(value = "getBooksByGenre",  key ={ "books-genre", "bg" })
 	public List<Book> getBooksByGenre(String genreName){
-		return bookDao.getBooksByGenre(genreName);
+		return bookService.getBooksByGenre(genreName);
 		
 	}
 
 	
 	@ShellMethod(value = "getBooksById",  key ={ "book-id", "bid" })
 	public Book getBooksById(Long bookid){
-		return bookDao.getById(bookid);
+		return bookService.getById(bookid);
 		
 	}
 
 	@ShellMethod(value = "getGenreByBookId",  key ={ "genre-bookid", "gbid" })
 	public Genre getGenreByBookId(Long bookid){
-		return genreDao.getGenreByBookId(bookid);
+		return genreService.getGenreByBookId(bookid);
 		
 	}
 	
 	@ShellMethod(value = "getAllAuthors",  key ={ "authors", "a" })
 	public List<Author> getAllAuthors(){
-		return authorDao.getAll();
+		return authorService.getAll();
 		
 	}
 	
 	@ShellMethod(value = "getAllGenres",  key ={ "genres", "g" })
 	public List<Genre> getAllGenres(){
-		return genreDao.getAll();
+		return genreService.getAll();
 		
 	}	
 
 	@ShellMethod(value = "addBook",  key ={ "addbook", "ab" })
 	public Long addBook(String name, Long authorId, Long genreId){
-		Author author = authorDao.getById(authorId);
-		Genre genre = genreDao.getById(genreId);
+		Author author = authorService.getById(authorId);
+		Genre genre = genreService.getById(genreId);
 		if(author!=null && genre != null) {
 		    Book book = new Book(name, author, genre);
-		    Long id = bookDao.insert(book );
+		    Long id = bookService.insert(book );
 		    LOGGER.info("Book inserted with id = "+id+", name = "+name+", authorname = "+author.getName()+" genrename="+genre.getName());
 		    return id;
 		}
