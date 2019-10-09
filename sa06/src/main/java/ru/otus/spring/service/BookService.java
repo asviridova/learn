@@ -7,7 +7,7 @@ import java.util.List;
 public interface BookService {
     int count();
 
-    Long insert(Book book);
+    Long insert(String name, Long authorId, Long genreId);
 
     Book getById(Long id);
 

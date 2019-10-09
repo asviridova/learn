@@ -2,6 +2,7 @@ package ru.otus.spring.shell;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,9 +13,7 @@ import org.springframework.shell.standard.ShellMethod;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.service.AuthorService;
-import ru.otus.spring.service.BookService;
-import ru.otus.spring.service.GenreService;
+import ru.otus.spring.service.*;
 
 //https://projects.spring.io/spring-shell/
 
@@ -25,58 +24,56 @@ public class LibraryCommands {
 	private final BookService bookService;
 	private final AuthorService authorService;
 
+	private final AuthorPrinterService authorPrinterService;
+    private final BookPrinterService bookPrinterService;
+    private final GenrePrinterService genrePrinterService;
+
+
 	private static final Logger LOGGER = LogManager.getLogger();
 	
 	@Autowired
-	public LibraryCommands(GenreService genreService, BookService bookService, AuthorService authorService) {
+	public LibraryCommands(GenreService genreService, BookService bookService, AuthorService authorService, AuthorPrinterService authorPrinterService,
+                           BookPrinterService bookPrinterService, GenrePrinterService genrePrinterService) {
 		this.genreService = genreService;
 		this.authorService = authorService;
 		this.bookService = bookService;
+		this.authorPrinterService = authorPrinterService;
+        this.bookPrinterService = bookPrinterService;
+        this.genrePrinterService = genrePrinterService;
 	}
 
 
 	@ShellMethod(value = "getBooksByGenre",  key ={ "books-genre", "bg" })
-	public List<Book> getBooksByGenre(String genreName){
-		return bookService.getBooksByGenre(genreName);
-		
+	public String getBooksByGenre(String genreName){
+        return bookService.getBooksByGenre(genreName).stream().map(bookPrinterService::printBookToString).collect(Collectors.joining("\n"));
 	}
 
 	
 	@ShellMethod(value = "getBooksById",  key ={ "book-id", "bid" })
-	public Book getBooksById(Long bookid){
-		return bookService.getById(bookid);
+	public String getBooksById(Long bookid){
+		return bookPrinterService.printBookToString(bookService.getById(bookid));
 		
 	}
 
 	@ShellMethod(value = "getGenreByBookId",  key ={ "genre-bookid", "gbid" })
-	public Genre getGenreByBookId(Long bookid){
-		return genreService.getGenreByBookId(bookid);
+	public String getGenreByBookId(Long bookid){
+		return genrePrinterService.printGenreToString(genreService.getGenreByBookId(bookid));
 		
 	}
 	
 	@ShellMethod(value = "getAllAuthors",  key ={ "authors", "a" })
-	public List<Author> getAllAuthors(){
-		return authorService.getAll();
-		
+	public String getAllAuthors(){
+        return authorService.getAll().stream().map(authorPrinterService::printAuthorToString).collect(Collectors.joining("\n"));
+
 	}
-	
 	@ShellMethod(value = "getAllGenres",  key ={ "genres", "g" })
-	public List<Genre> getAllGenres(){
-		return genreService.getAll();
-		
-	}	
+	public String getAllGenres(){
+		return genreService.getAll().stream().map(genrePrinterService::printGenreToString).collect(Collectors.joining("\n"));
+	}
 
 	@ShellMethod(value = "addBook",  key ={ "addbook", "ab" })
 	public Long addBook(String name, Long authorId, Long genreId){
-		Author author = authorService.getById(authorId);
-		Genre genre = genreService.getById(genreId);
-		if(author!=null && genre != null) {
-		    Book book = new Book(name, author, genre);
-		    Long id = bookService.insert(book );
-		    LOGGER.info("Book inserted with id = "+id+", name = "+name+", authorname = "+author.getName()+" genrename="+genre.getName());
-		    return id;
-		}
-		return null;
-	}	
+		return bookService.insert(name, authorId, genreId);
+	}
 	
 }
