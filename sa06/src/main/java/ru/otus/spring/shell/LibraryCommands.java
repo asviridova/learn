@@ -63,12 +63,12 @@ public class LibraryCommands {
 	
 	@ShellMethod(value = "getAllAuthors",  key ={ "authors", "a" })
 	public String getAllAuthors(){
-        return authorService.getAll().stream().map(authorPrinterService::printAuthorToString).collect(Collectors.joining("\n"));
+        return authorPrinterService.printAuthorListToString(authorService.getAll());
 
 	}
 	@ShellMethod(value = "getAllGenres",  key ={ "genres", "g" })
 	public String getAllGenres(){
-		return genreService.getAll().stream().map(genrePrinterService::printGenreToString).collect(Collectors.joining("\n"));
+        return genrePrinterService.printGenreListToString(genreService.getAll());
 	}
 
 	@ShellMethod(value = "addBook",  key ={ "addbook", "ab" })
