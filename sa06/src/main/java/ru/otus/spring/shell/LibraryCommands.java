@@ -45,7 +45,7 @@ public class LibraryCommands {
 
 	@ShellMethod(value = "getBooksByGenre",  key ={ "books-genre", "bg" })
 	public String getBooksByGenre(String genreName){
-	    return bookPrinterService.printAuthorListToString(bookService.getBooksByGenre(genreName));
+	    return bookPrinterService.printBookListToString(bookService.getBooksByGenre(genreName));
 	}
 
 	

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface BookPrinterService {
     String printBookToString(Book b);
-    String printAuthorListToString(List<Book> bookList);
+    String printBookListToString(List<Book> bookList);
 }

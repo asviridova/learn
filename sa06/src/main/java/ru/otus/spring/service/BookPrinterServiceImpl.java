@@ -19,7 +19,7 @@ public class BookPrinterServiceImpl implements BookPrinterService {
     }
 
     @Override
-    public String printAuthorListToString(List<Book> bookList){
+    public String printBookListToString(List<Book> bookList){
         if(bookList==null){
             return "";
         }
