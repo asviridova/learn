@@ -11,10 +11,9 @@ spring:
     
     platform: h2
     initialization-mode: always
+
   jpa:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-      
-      
 
