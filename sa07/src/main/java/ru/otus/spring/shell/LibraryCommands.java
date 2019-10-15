@@ -12,6 +12,7 @@ import org.springframework.shell.standard.ShellMethod;
 
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.CommentBook;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.service.*;
 
@@ -23,23 +24,27 @@ public class LibraryCommands {
 	private final GenreService genreService;
 	private final BookService bookService;
 	private final AuthorService authorService;
+    private final CommentService commentService;
 
 	private final AuthorPrinterService authorPrinterService;
     private final BookPrinterService bookPrinterService;
     private final GenrePrinterService genrePrinterService;
+    private final CommentPrinterService commentPrinterService;
 
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	
 	@Autowired
-	public LibraryCommands(GenreService genreService, BookService bookService, AuthorService authorService, AuthorPrinterService authorPrinterService,
-                           BookPrinterService bookPrinterService, GenrePrinterService genrePrinterService) {
+	public LibraryCommands(GenreService genreService, BookService bookService, AuthorService authorService, CommentService commentService, AuthorPrinterService authorPrinterService,
+                           BookPrinterService bookPrinterService, GenrePrinterService genrePrinterService, CommentPrinterService commentPrinterService) {
 		this.genreService = genreService;
 		this.authorService = authorService;
 		this.bookService = bookService;
 		this.authorPrinterService = authorPrinterService;
         this.bookPrinterService = bookPrinterService;
         this.genrePrinterService = genrePrinterService;
+        this.commentPrinterService = commentPrinterService;
+        this.commentService = commentService;
 	}
 
     //Получение по идентификатору
@@ -129,5 +134,25 @@ public class LibraryCommands {
         LOGGER.info(authorService.count());
     }
 
+    //комментарии
+    @ShellMethod(value = "addComment",  key ={ "addcomment", "ac" })
+    public Long addComment(Long bookId, String comment){
+        return commentService.insert(bookId, comment);
+    }
+
+
+    @ShellMethod(value = "getAllComment",  key ={ "getallcomment", "c" })
+    public String getAllComment(Long bookId){
+        return commentPrinterService.printCommentListToString(commentService.getAll(bookId));
+    }
+
+    @ShellMethod(value = "createAndDeleteComment",  key ={ "createdeletecomment", "cdc" })
+    public void createAndDeleteComment(Long bookId){
+        LOGGER.info(commentService.getAll(bookId));
+        Long id = commentService.insert(bookId, "Nice");
+        LOGGER.info(commentService.getAll(bookId));
+        commentService.delete(id);
+        LOGGER.info(commentService.getAll(bookId));
+    }
 
 }
