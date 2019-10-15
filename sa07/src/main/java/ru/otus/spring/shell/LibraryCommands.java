@@ -106,28 +106,26 @@ public class LibraryCommands {
         return bookPrinterService.printBookListToString(bookService.getBooksByGenre(genreName));
     }
 
-    //дополнительные методы
-
+    //добаления
 	@ShellMethod(value = "addBook",  key ={ "addbook", "ab" })
 	public Long addBook(String name, Long authorId, Long genreId){
 		return bookService.insert(name, authorId, genreId);
 	}
 
+    @ShellMethod(value = "addAuthor",  key ={ "addauthor", "aa" })
+    public Long addAuthor(String name, String nationality){
+        return authorService.insert(name, nationality);
+    }
 
     @ShellMethod(value = "createAndDeleteAuthor",  key ={ "createdeleteauthor", "cda" })
     public void createAndDeleteAuthor(){
         LOGGER.info(authorService.count());
-
-        Author author = new Author();
-        author.setId(10L);
-        author.setName("M.Rid");
-        author.setNationality("American");
+        Author author = new Author("M.Rid", "American");
         Long id = authorService.insert(author);
         authorPrinterService.printAuthorToString(author);
         LOGGER.info("AuthorToString"+author.getName());
         LOGGER.info(authorService.count());
-
-        authorService.deleteById(author.getId());
+        authorService.deleteById(id);
         LOGGER.info(authorService.count());
     }
 

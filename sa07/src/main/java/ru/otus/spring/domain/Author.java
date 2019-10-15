@@ -24,5 +24,10 @@ public class Author {
 
     //@OneToMany(mappedBy = "author")
     //private List<Book> books;
-    
+    public Author(String name, String nationality) {
+        this.id = null;
+        this.name = name;
+        this.nationality = nationality;
+
+    }
 }

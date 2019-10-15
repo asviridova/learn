@@ -1,5 +1,6 @@
 package ru.otus.spring.dao;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Author;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.logging.Logger;
 
 //https://www.baeldung.com/jpa-join-types
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Repository
 public class AuthorDaoJPA implements AuthorDao{
+    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
     @PersistenceContext
     private EntityManager em;
@@ -32,7 +35,7 @@ public class AuthorDaoJPA implements AuthorDao{
     @Override
     @Transactional
     public Long insert(Author author) {
-        if (author.getId() <= 0) {
+        if (author.getId()==null || author.getId() <= 0) {
             em.persist(author);
             em.flush();
             return author.getId();
@@ -55,6 +58,7 @@ public class AuthorDaoJPA implements AuthorDao{
     @Transactional
     public void deleteById(Long id) {
         Author author = em.find(Author.class, id);
+        LOGGER.info("deleteById(), author="+author+", id="+id);
         if (author != null) {
             em.remove(author);
         }

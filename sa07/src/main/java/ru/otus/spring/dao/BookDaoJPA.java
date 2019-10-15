@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class BookDaoJPA implements BookDao {
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     @Override
@@ -24,8 +24,9 @@ public class BookDaoJPA implements BookDao {
     }
 
     @Override
+    @Transactional
     public Long insert(Book book) {
-        if (book.getId() <= 0) {
+        if (book.getId()==null || book.getId() <= 0) {
             em.persist(book);
             return book.getId();
         } else {

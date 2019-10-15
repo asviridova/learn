@@ -9,6 +9,8 @@ public interface AuthorService {
 
     Long insert(Author author);
 
+    Long insert(String name, String nationality);
+
     Author getById(Long id);
 
     List<Author> getAll();

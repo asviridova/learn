@@ -19,11 +19,11 @@ public class Book {
     @Column(name = "name", nullable = false, unique = false)
     private String name;
 
-    @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL , fetch = FetchType.EAGER /*, fetch = FetchType.LAZY*/ )
+    @ManyToOne(targetEntity = Author.class, cascade = CascadeType.MERGE , fetch = FetchType.EAGER /*, fetch = FetchType.LAZY*/ )
     @JoinColumn(name = "authorid")
     private Author  author;
 
-    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "genreid")
     private Genre genre;
 

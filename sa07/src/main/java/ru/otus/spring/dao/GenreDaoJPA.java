@@ -2,6 +2,7 @@ package ru.otus.spring.dao;
 
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -23,9 +24,10 @@ public class GenreDaoJPA implements  GenreDao {
     }
 
     @Override
+    @Transactional
     public Long insert(Genre genre)
     {
-        if (genre.getId() <= 0) {
+        if (genre.getId()==null || genre.getId() <= 0) {
             em.persist(genre);
             return genre.getId();
         } else {
