@@ -29,7 +29,8 @@ public class AuthorDaoJPA implements AuthorDao{
 
     @Override
     public int count() {
-        return em.createQuery("select s from Author s", Author.class).getResultList().size();
+        Long res = em.createQuery("select count(*) from Author s", Long.class).getSingleResult();
+        return res == null ? 0 : res.intValue();
     }
 
     @Override
@@ -57,11 +58,7 @@ public class AuthorDaoJPA implements AuthorDao{
     @Override
     @Transactional
     public void deleteById(Long id) {
-        Author author = em.find(Author.class, id);
-        LOGGER.info("deleteById(), author="+author+", id="+id);
-        if (author != null) {
-            em.remove(author);
-        }
+        em.createQuery("delete from Author b where b.id = :id").setParameter("id", id).executeUpdate();
     }
 
 

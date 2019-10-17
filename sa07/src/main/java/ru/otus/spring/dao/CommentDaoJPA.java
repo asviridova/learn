@@ -30,10 +30,7 @@ public class CommentDaoJPA implements CommentDao {
     @Override
     @Transactional
     public void delete(Long id) {
-        CommentBook commentBook = em.find(CommentBook.class, id);
-        if (commentBook != null) {
-            em.remove(commentBook);
-        }
+        em.createQuery("delete from CommentBook b where b.id = :id").setParameter("id", id).executeUpdate();
     }
 
     @Override

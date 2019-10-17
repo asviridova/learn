@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private GenreDao genreDao;
+    private final GenreDao genreDao;
 
     @Autowired
     public GenreServiceImpl(GenreDao genreDao){

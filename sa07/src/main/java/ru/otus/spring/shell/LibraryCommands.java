@@ -155,4 +155,14 @@ public class LibraryCommands {
         LOGGER.info(commentService.getAll(bookId));
     }
 
+    //----Book
+    @ShellMethod(value = "createAndDeleteBook",  key ={ "createdeletebook", "cdb" })
+    public void createAndDeleteBook(){
+        LOGGER.info(bookService.count());
+        Long id = bookService.insert("Rider", 1L, 1L);
+        LOGGER.info(bookService.count());
+        bookService.deleteById(id);
+        LOGGER.info(bookService.count());
+    }
+
 }

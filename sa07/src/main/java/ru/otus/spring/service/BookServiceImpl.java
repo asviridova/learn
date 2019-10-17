@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
-    private BookDao bookDao;
+    private final BookDao bookDao;
     private final GenreService genreService;
     private final AuthorService authorService;
 

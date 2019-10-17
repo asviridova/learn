@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class CommentServiceImpl implements  CommentService {
-    private CommentDao commentDao;
+    private final CommentDao commentDao;
     private static final Logger LOGGER = LogManager.getLogger();
     private final BookService bookService;
 

@@ -20,7 +20,8 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public int count() {
-        return em.createQuery("select s from Book s", Book.class).getResultList().size();
+        Long res = em.createQuery("select count(*) from Book s", Long.class).getSingleResult();
+        return res == null ? 0 : res.intValue();
     }
 
     @Override
@@ -41,15 +42,13 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        return em.createQuery("select s from Book s", Book.class).getResultList();
+        return em.createQuery("select distinct s from Book s join fetch s.author join fetch s.genre", Book.class).getResultList();
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-        Book book = em.find(Book.class, id);
-        if (book != null) {
-            em.remove(book);
-        }
+        em.createQuery("delete from Book b where b.id = :id").setParameter("id", id).executeUpdate();
     }
 
     @Override

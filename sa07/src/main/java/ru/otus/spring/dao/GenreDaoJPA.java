@@ -20,7 +20,8 @@ public class GenreDaoJPA implements  GenreDao {
 
     @Override
     public int count() {
-        return em.createQuery("select s from Genre s", Genre.class).getResultList().size();
+        Long res = em.createQuery("select count(*) from Genre s", Long.class).getSingleResult();
+        return res == null ? 0 : res.intValue();
     }
 
     @Override
@@ -47,10 +48,7 @@ public class GenreDaoJPA implements  GenreDao {
 
     @Override
     public void deleteById(Long id) {
-        Genre genre = em.find(Genre.class, id);
-        if (genre != null) {
-            em.remove(genre);
-        }
+        em.createQuery("delete from Genre b where b.id = :id").setParameter("id", id).executeUpdate();
     }
 
     @Override
