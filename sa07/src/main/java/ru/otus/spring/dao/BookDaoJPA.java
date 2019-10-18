@@ -37,7 +37,8 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public Book getById(Long id) {
-        return em.find(Book.class, id);
+        //return em.find(Book.class, id);
+        return em.createQuery("select distinct s from Book s join fetch s.author join fetch s.genre where s.id = :id", Book.class).setParameter("id", id).getSingleResult();
     }
 
     @Override
@@ -53,19 +54,21 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public List<Book> getBooksByAuthorId(Long authorid) {
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b where b.author.id in (select a.id from Author a where a.id = :authorid)", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.author join fetch b.genre where b.author.id in (select a.id from Author a where a.id = :authorid)", Book.class);
         return query.setParameter("authorid", authorid).getResultList();
     }
 
     @Override
     public List<Book> getBooksByGenreId(Long genreid) {
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b where b.genre.id in (select g.id from Genre g where g.id = :genreid)", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.author join fetch b.genre where b.genre.id in (select g.id from Genre g where g.id = :genreid)", Book.class);
         return query.setParameter("genreid", genreid).getResultList();
     }
 
     @Override
     public List<Book> getBooksByGenre(String genrename) {
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b where b.genre.id in (select g.id from Genre g where g.name = :genrename)", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.author join fetch b.genre where b.genre.id in (select g.id from Genre g where g.name = :genrename)", Book.class);
         return query.setParameter("genrename", genrename).getResultList();
     }
+
+
 }

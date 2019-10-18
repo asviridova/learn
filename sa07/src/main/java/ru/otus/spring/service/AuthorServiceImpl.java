@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private AuthorDao authorDao;
+    private final AuthorDao authorDao;
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
