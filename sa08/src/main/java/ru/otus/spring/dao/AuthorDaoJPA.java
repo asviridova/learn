@@ -1,0 +1,71 @@
+package ru.otus.spring.dao;
+
+import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.domain.Author;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.logging.Logger;
+
+//https://www.baeldung.com/jpa-join-types
+
+//https://www.objectdb.com/java/jpa/query/jpql/where
+
+//https://www.baeldung.com/spring-data-jpa-query
+
+//https://www.baeldung.com/jpa-query-parameters
+
+@Repository
+public class AuthorDaoJPA implements AuthorDao{
+    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
+
+    @PersistenceContext
+    private EntityManager em;
+
+
+    @Override
+    public int count() {
+        Long res = em.createQuery("select count(*) from Author s", Long.class).getSingleResult();
+        return res == null ? 0 : res.intValue();
+    }
+
+    @Override
+    @Transactional
+    public Long insert(Author author) {
+        if (author.getId()==null || author.getId() <= 0) {
+            em.persist(author);
+            em.flush();
+            return author.getId();
+        } else {
+            return em.merge(author).getId();
+        }
+    }
+
+    @Override
+    public Author getById(Long id) {
+        return em.find(Author.class, id);
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return em.createQuery("select s from Author s", Author.class).getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        em.createQuery("delete from Author b where b.id = :id").setParameter("id", id).executeUpdate();
+    }
+
+
+    @Override
+    public Author getAuthorByBookId(Long id) {
+        TypedQuery<Author> query = em.createQuery("select distinct a from Author a where a.id in (select b.author.id from Book b where b.id = :id)", Author.class);
+        return query.setParameter("id", id).getSingleResult();
+    }
+
+}
