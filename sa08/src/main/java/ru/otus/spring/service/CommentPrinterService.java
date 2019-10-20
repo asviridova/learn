@@ -9,4 +9,5 @@ public interface CommentPrinterService {
     String printCommentToString(CommentBook commentBook);
 
     String printCommentListToString(List<CommentBook> commentList);
+    String printCommentListToString(Iterable<CommentBook> commentList);
 }

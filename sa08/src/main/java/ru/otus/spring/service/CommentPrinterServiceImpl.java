@@ -33,5 +33,21 @@ public class CommentPrinterServiceImpl implements CommentPrinterService {
         }
         return sb.toString();
     }
+    @Override
+    public String printCommentListToString(Iterable<CommentBook> commentList) {
+        if(commentList==null){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for(CommentBook commentBook: commentList){
+            sb.append("Comment{" +
+                    "id=" + commentBook.getId() +
+                    ", name='" + commentBook.getCommenttext() +
+                    ", book=" + commentBook.getBook() +
+                    '}');
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
 

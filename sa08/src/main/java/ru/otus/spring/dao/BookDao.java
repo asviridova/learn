@@ -4,27 +4,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 
-public interface BookDao {
-	int count();
+public interface BookDao extends CrudRepository<Book, Long>, BookDaoCustom {
 
-    Long insert(Book book);
-
-    Book getById(Long id);
-
-    List<Book> getAll();
-
-    void deleteById(Long id);
-    
-    
-	List<Book> getBooksByAuthorId(Long authorid);
-
-	List<Book> getBooksByGenreId(Long genreid) ;
-
-	List<Book> getBooksByGenre(String genreName);
-	
 	
 }

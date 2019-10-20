@@ -51,13 +51,13 @@ public class LibraryCommands {
 
 	@ShellMethod(value = "getBooksById",  key ={ "book-id", "bid" })
 	public String getBooksById(Long bookid){
-		return bookPrinterService.printBookToString(bookService.getById(bookid));
+		return bookPrinterService.printBookToString(bookService.getById(bookid).get());
 		
 	}
 
     @ShellMethod(value = "getAuthorById",  key ={ "author-id", "aid" })
     public String getAuthorById(Long authorid){
-        return authorPrinterService.printAuthorToString(authorService.getById(authorid));
+        return authorPrinterService.printAuthorToString(authorService.getById(authorid).get());
 
     }
 

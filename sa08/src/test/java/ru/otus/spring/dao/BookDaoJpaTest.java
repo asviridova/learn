@@ -3,22 +3,22 @@ package ru.otus.spring.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.service.BookPrinterServiceImpl;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-@Import({BookDaoJPA.class, BookPrinterServiceImpl.class})
+@Import({BookDao.class, BookPrinterServiceImpl.class})
 
 public class BookDaoJpaTest {
 	@Autowired
-	private BookDaoJPA bookDaoJpa;
+	private BookDao bookDao;
 
 	@Autowired
 	private BookPrinterServiceImpl bookPrinterService;
@@ -27,33 +27,36 @@ public class BookDaoJpaTest {
     public static int EXPECTED_BOOKS_BEFORE_DELETE = 4;
     public static int EXPECTED_BOOKS_AFTER_DELETE = 3;
 
+	public static long Shakespeare_ID = 2L;
+
 	@DisplayName("поиск количества книг по  жанру") 
 	@Test
 	public void returnBookCountByGenreID() {
-		assertEquals(bookDaoJpa.getBooksByGenre("tragedy").size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
+		assertEquals(bookDao.getBooksByGenre("tragedy").size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
 	}
 	
 	@DisplayName("поиск количества книг") 
 	@Test
 	public void returnBookCountAll() {
-		assertEquals(bookDaoJpa.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
+		assertEquals(bookDao.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
 	@Test
 	public void bookDeleteByID() {
-		assertEquals(bookDaoJpa.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
-		bookDaoJpa.deleteById(1L);
-		assertEquals(bookDaoJpa.count(), EXPECTED_BOOKS_AFTER_DELETE, "");
+		assertEquals(bookDao.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
+		bookDao.deleteById(1L);
+		assertEquals(bookDao.count(), EXPECTED_BOOKS_AFTER_DELETE, "");
 	}
 	
 	@Test
 	public void bookAll() {
-		assertEquals(bookDaoJpa.getAll().size(), EXPECTED_BOOKS_BEFORE_DELETE, "");
+		Iterable<Book> books = bookDao.findAll();
+		assertEquals(((Collection<Book>) books).size(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
 	@Test
 	public void bookByGenre() {
-	    List<Book> books = bookDaoJpa.getBooksByGenre("tragedy");
+	    List<Book> books = bookDao.getBooksByGenre("tragedy");
 	    for(Book book: books) {
             System.out.println(bookPrinterService.printBookToString(book));
         }
@@ -62,7 +65,7 @@ public class BookDaoJpaTest {
 
 	@Test
 	public void bookByID() {
-		assertEquals(bookDaoJpa.getById(2L).getAuthor().getName(), "W.Shakespeare");
+		assertEquals(bookDao.findById(Shakespeare_ID).get().getAuthor().getName(), "W.Shakespeare");
 	}
 	
 }

@@ -2,20 +2,10 @@ package ru.otus.spring.dao;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
 
-public interface AuthorDao {
-	int count();
+public interface AuthorDao extends CrudRepository<Author, Long>, AuthorDaoCustom {
 
-    Long insert(Author author);
-
-    Author getById(Long id);
-
-    List<Author> getAll();
-
-    void deleteById(Long id);
-    
-    Author getAuthorByBookId(Long id);
 
 }

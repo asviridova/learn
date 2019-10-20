@@ -32,4 +32,22 @@ public class AuthorPrinterServiceImpl implements  AuthorPrinterService {
         }
         return sb.toString();
     }
+
+    @Override
+    public String printAuthorListToString(Iterable<Author> authorList){
+        if(authorList==null){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for(Author author: authorList){
+            sb.append("Author{" +
+                    "id=" + author.getId() +
+                    ", name='" + author.getName() +
+                    ", nationality=" + author.getNationality() +
+                    '}');
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 }

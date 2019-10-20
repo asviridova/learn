@@ -27,19 +27,19 @@ public class CommentServiceImpl implements  CommentService {
 
     @Override
     public Long insert(Long bookId, String comment) {
-        Book book = bookService.getById(bookId);
+        Book book = bookService.getById(bookId).get();
         if(book!=null) {
             CommentBook commentBook = new CommentBook(comment, book);
-            Long id = commentDao.insert(commentBook);
-            LOGGER.info("Comment inserted with id = "+id+", commentBook = "+comment);
-            return id;
+            CommentBook commentBookNew = commentDao.save(commentBook);
+            LOGGER.info("Comment inserted with id = "+commentBookNew.getId()+", commentBook = "+comment);
+            return commentBookNew.getId();
         }
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        commentDao.delete(id);
+        commentDao.deleteById(id);
     }
 
     @Override

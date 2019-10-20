@@ -8,4 +8,6 @@ public interface AuthorPrinterService {
     String printAuthorToString(Author author);
 
     String printAuthorListToString(List<Author> authorList);
+
+    String printAuthorListToString(Iterable<Author> authorList);
 }

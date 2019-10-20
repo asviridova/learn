@@ -36,4 +36,21 @@ public class BookPrinterServiceImpl implements BookPrinterService {
         return sb.toString();
     }
 
+    @Override
+    public String printBookListToString(Iterable<Book> bookList){
+        if(bookList==null){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for(Book b: bookList){
+            sb.append("Book{" +
+                    "id=" + b.getId() +
+                    ", name='" + b.getName() + '\'' +
+                    ", author=" + b.getAuthor() +
+                    ", genre=" + b.getGenre() +
+                    '}');
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

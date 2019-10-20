@@ -3,17 +3,18 @@ package ru.otus.spring.service;
 import ru.otus.spring.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorService {
-    int count();
+    long count();
 
     Long insert(Author author);
 
     Long insert(String name, String nationality);
 
-    Author getById(Long id);
+    Optional<Author> getById(Long id);
 
-    List<Author> getAll();
+    Iterable<Author> getAll();
 
     void deleteById(Long id);
 

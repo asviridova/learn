@@ -28,31 +28,31 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return bookDao.count();
     }
 
     @Override
     public Long insert(String name, Long authorId, Long genreId) {
-        Author author = authorService.getById(authorId);
+        Optional<Author> author = authorService.getById(authorId);
         Optional<Genre> genre = genreService.getById(genreId);
         if(author!=null && genre.get() != null) {
-            Book book = new Book(name, author, genre.get());
-            Long id = bookDao.insert(book );
-            LOGGER.info("Book inserted with id = "+id+", name = "+name+", authorname = "+author.getName()+" genrename="+genre.get().getName());
-            return id;
+            Book book = new Book(name, author.get(), genre.get());
+            Book bookNew = bookDao.save(book );
+            LOGGER.info("Book inserted with id = "+bookNew.getId()+", name = "+name+", authorname = "+author.get().getName()+" genrename="+genre.get().getName());
+            return bookNew.getId();
         }
         return null;
     }
 
     @Override
-    public Book getById(Long id) {
-        return bookDao.getById(id);
+    public Optional<Book> getById(Long id) {
+        return bookDao.findById(id);
     }
 
     @Override
-    public List<Book> getAll() {
-        return bookDao.getAll();
+    public Iterable<Book> getAll() {
+        return bookDao.findAll();
     }
 
     @Override

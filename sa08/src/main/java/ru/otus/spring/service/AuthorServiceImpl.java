@@ -10,6 +10,7 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -23,23 +24,24 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return authorDao.count();
     }
 
     @Override
     public Long insert(Author author) {
-        return authorDao.insert(author);
+        Author authorNew = authorDao.save(author);
+        return authorNew.getId();
     }
 
     @Override
-    public Author getById(Long id) {
-        return authorDao.getById(id);
+    public Optional<Author> getById(Long id) {
+        return authorDao.findById(id);
     }
 
     @Override
-    public List<Author> getAll() {
-        return authorDao.getAll();
+    public Iterable<Author> getAll() {
+        return authorDao.findAll();
     }
 
     @Override
@@ -54,7 +56,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     public Long insert(String name, String nationality) {
         Author author = new Author(name, nationality);
-        Long id = authorDao.insert(author);
+        Author authorNew = authorDao.save(author);
+        Long id = authorNew.getId();
         LOGGER.info("Author inserted with id = " + id + ", name = " + name + ", nationality = " + nationality);
         return id;
     }
