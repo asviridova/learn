@@ -52,7 +52,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Iterable<Book> getAll() {
-        return bookDao.findAll();
+        //return bookDao.findAll();
+        return bookDao.findAllWithEntityGraph();
     }
 
     @Override
@@ -62,16 +63,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksByAuthorId(Long authorid) {
-        return bookDao.getBooksByAuthorId(authorid);
+        return bookDao.findBooksByAuthorId(authorid);
     }
 
     @Override
     public List<Book> getBooksByGenreId(Long genreid) {
-        return bookDao.getBooksByGenreId(genreid);
+        return bookDao.findBooksByGenreId(genreid);
     }
 
     @Override
     public List<Book> getBooksByGenre(String genreName) {
-        return bookDao.getBooksByGenre(genreName);
+        return bookDao.findBooksByGenreName(genreName);
+        //return bookDao.findBooksByGenreName(genreName).getBooksByGenre(genreName);
     }
 }
