@@ -52,8 +52,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Iterable<Book> getAll() {
-        //return bookDao.findAll();
-        return bookDao.findAllWithEntityGraph();
+        return bookDao.findAll();
+        //return bookDao.findAllWithEntityGraph();
     }
 
     @Override
