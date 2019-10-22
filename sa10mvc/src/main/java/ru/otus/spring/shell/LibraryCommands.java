@@ -17,6 +17,7 @@ import ru.otus.spring.domain.Genre;
 import ru.otus.spring.service.*;
 
 //https://projects.spring.io/spring-shell/
+//http://localhost:8080/
 
 @ShellComponent
 public class LibraryCommands {
@@ -50,20 +51,20 @@ public class LibraryCommands {
     //Получение по идентификатору
 
 	@ShellMethod(value = "getBooksById",  key ={ "book-id", "bid" })
-	public String getBooksById(Long bookid){
-		return bookPrinterService.printBookToString(bookService.getById(bookid).get());
+	public String getBooksById(Long bookId){
+		return bookPrinterService.printBookToString(bookService.getById(bookId).get());
 		
 	}
 
     @ShellMethod(value = "getAuthorById",  key ={ "author-id", "aid" })
-    public String getAuthorById(Long authorid){
-        return authorPrinterService.printAuthorToString(authorService.getById(authorid).get());
+    public String getAuthorById(Long authorId){
+        return authorPrinterService.printAuthorToString(authorService.getById(authorId).get());
 
     }
 
     @ShellMethod(value = "getGenreById",  key ={ "genre-id", "gid" })
-    public String getGenreById(Long genreid){
-        return genrePrinterService.printGenreToString(genreService.getById(genreid).get());
+    public String getGenreById(Long genreId){
+        return genrePrinterService.printGenreToString(genreService.getById(genreId).get());
 
     }
     //Получение всех сущностей
@@ -97,8 +98,8 @@ public class LibraryCommands {
     }
 
     @ShellMethod(value = "getBooksByAuthorId",  key ={ "books-author", "baid" })
-    public String getBooksByAuthorId(Long authorid){
-        return bookPrinterService.printBookListToString(bookService.getBooksByAuthorId(authorid));
+    public String getBooksByAuthorId(Long authorId){
+        return bookPrinterService.printBookListToString(bookService.getBooksByAuthorId(authorId));
     }
 
     @ShellMethod(value = "getBooksByGenreId",  key ={ "books-genre-id", "bgid" })

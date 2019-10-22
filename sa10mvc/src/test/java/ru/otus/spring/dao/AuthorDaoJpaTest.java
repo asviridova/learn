@@ -11,7 +11,6 @@ import ru.otus.spring.service.AuthorPrinterServiceImpl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-@Import({AuthorDao.class, AuthorPrinterServiceImpl.class})
 public class AuthorDaoJpaTest {
 	@Autowired
 	private AuthorDao authorDao;
@@ -19,8 +18,6 @@ public class AuthorDaoJpaTest {
     public static int EXPECTED_AUTHOR_ALL = 3;
     public static int EXPECTED_AUTHOR_AFTER_INSERT = 4;
 
-    @Autowired
-    private AuthorPrinterServiceImpl authorPrinterService;
 
 	@DisplayName("поиск количества авторов") 
 	@Test
@@ -32,7 +29,6 @@ public class AuthorDaoJpaTest {
 	@Test
 	public void returnAuthorByBookId() {
 	    Author author = authorDao.getAuthorByBookId(1L);
-        System.out.println(authorPrinterService.printAuthorToString(author));
 		assertEquals(author.getName(), "I.Goethe");
 	}
 

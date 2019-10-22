@@ -12,6 +12,9 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "book")
+@NamedEntityGraph(name = "BookGraph",
+        attributeNodes = {@NamedAttributeNode(value = "author"),
+                @NamedAttributeNode(value = "genre")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

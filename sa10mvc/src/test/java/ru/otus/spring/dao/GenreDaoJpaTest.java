@@ -14,15 +14,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import({GenreDao.class, GenrePrinterServiceImpl.class})
 @ComponentScan("ru.otus.spring")
 public class GenreDaoJpaTest {
 
 	@Autowired
 	private GenreDao genreDaoJpa;
-
-	@Autowired
-	private GenrePrinterServiceImpl genrePrinterService;
 
 	public static int EXPECTED_GENRE_ALL = 4;
 
@@ -39,15 +35,9 @@ public class GenreDaoJpaTest {
 	@Test
 	public void returnGenreByID() {
 		Optional<Genre> genre = genreDaoJpa.findById(1L);
-		System.out.println(genrePrinterService.printGenreToString(genre.get()));
 
 		assertThat(genre.get()).hasFieldOrPropertyWithValue("name", JENRE_TRAGEDY);
 	}
 
-	@DisplayName("поиск жанра по ид книги") 
-	@Test
-	public void returnGenreByBookID() {
-		//assertThat(genreDaoJpa.getGenreByBookId(1L)).hasFieldOrPropertyWithValue("name", JENRE_TRAGEDY);
-	}
-	
+
 }

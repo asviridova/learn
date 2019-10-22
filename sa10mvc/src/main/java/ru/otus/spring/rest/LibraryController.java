@@ -18,6 +18,9 @@ import java.util.Collection;
 import java.util.List;
 
 //https://html.com/tags/
+//https://www.thymeleaf.org/doc/articles/petclinic.html
+
+//http://localhost:8080/
 
 @Controller
 public class LibraryController {

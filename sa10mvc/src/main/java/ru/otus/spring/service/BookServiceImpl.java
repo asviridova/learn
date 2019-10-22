@@ -58,14 +58,6 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
-
-    @Override
-    public Long save(Book book) {
-        Book bookNew = bookDao.save(book);
-        return bookNew.getId();
-    }
-
-
     @Override
     public Optional<Book> getById(Long id) {
         return bookDao.findById(id);
@@ -74,6 +66,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Iterable<Book> getAll() {
         return bookDao.findAll();
+        //return bookDao.findAllWithEntityGraph();
     }
 
     @Override
@@ -83,16 +76,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksByAuthorId(Long authorid) {
-        return bookDao.getBooksByAuthorId(authorid);
+        return bookDao.findBooksByAuthorId(authorid);
     }
 
     @Override
     public List<Book> getBooksByGenreId(Long genreid) {
-        return bookDao.getBooksByGenreId(genreid);
+        return bookDao.findBooksByGenreId(genreid);
     }
 
     @Override
     public List<Book> getBooksByGenre(String genreName) {
-        return bookDao.getBooksByGenre(genreName);
+        return bookDao.findBooksByGenreName(genreName);
+        //return bookDao.findBooksByGenreName(genreName).getBooksByGenre(genreName);
     }
 }

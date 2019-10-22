@@ -12,13 +12,13 @@ public interface BookService {
 
     Long update(Long id, String name, Long authorId, Long genreId);
 
+
     Optional<Book> getById(Long id);
 
     Iterable<Book> getAll();
 
     void deleteById(Long id);
 
-    Long save(Book book);
 
     List<Book> getBooksByAuthorId(Long authorid);
 

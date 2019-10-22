@@ -14,14 +14,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-@Import({BookDao.class, BookPrinterServiceImpl.class})
 
 public class BookDaoJpaTest {
 	@Autowired
 	private BookDao bookDao;
-
-	@Autowired
-	private BookPrinterServiceImpl bookPrinterService;
 
     public static int EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE = 2;
     public static int EXPECTED_BOOKS_BEFORE_DELETE = 4;
@@ -32,7 +28,7 @@ public class BookDaoJpaTest {
 	@DisplayName("поиск количества книг по  жанру") 
 	@Test
 	public void returnBookCountByGenreID() {
-		assertEquals(bookDao.getBooksByGenre("tragedy").size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
+		assertEquals(((Collection<Book>)bookDao.findBooksByGenreName("tragedy")).size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
 	}
 	
 	@DisplayName("поиск количества книг") 
@@ -56,10 +52,7 @@ public class BookDaoJpaTest {
 
 	@Test
 	public void bookByGenre() {
-	    List<Book> books = bookDao.getBooksByGenre("tragedy");
-	    for(Book book: books) {
-            System.out.println(bookPrinterService.printBookToString(book));
-        }
+	    List<Book> books = bookDao.findBooksByGenreName("tragedy");
 		assertEquals(books.size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
 	}
 
