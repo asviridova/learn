@@ -22,6 +22,8 @@ import java.util.List;
 
 //http://localhost:8080/
 
+//https://habr.com/ru/post/435062/
+
 @Controller
 public class LibraryController {
 
@@ -40,13 +42,7 @@ public class LibraryController {
 
     @GetMapping("/")
     public String listPage(Model model) {
-        Iterable<Book> books = bookService.getAll();
-        model.addAttribute("books",  ((Collection<Book>) books));
-        Iterable<Author> authors = authorService.getAll();
-        model.addAttribute("authors",  ((Collection<Author>) authors));
-        Iterable<Genre> genres = genreService.getAll();
-        model.addAttribute("genres",  ((Collection<Genre>) genres));
-
+        fillStartPageModel (model);
         return "list";
     }
 
@@ -57,25 +53,24 @@ public class LibraryController {
         return "edit";
     }
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     public String savePage(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
                            @RequestParam("genreId") Long genreId, Model model) {
-        Long idNew = bookService.update(id, name, authorId, 2L); //TODO comedy
-        //-----
-        Iterable<Book> books = bookService.getAll();
-        model.addAttribute("books",  ((Collection<Book>) books));
+        System.out.println("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
+        Long idNew = bookService.update(id, name, authorId, genreId);
+        fillStartPageModel (model);
         return "list";
     }
 
-    @PostMapping("/edit")
-    public String savePageWithPost(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
-                           @RequestParam("genreId") Long genreId, Model model) {
-        Long idNew = bookService.update(id, name, authorId, 2L); //TODO comedy
-        //-----
+    private void fillStartPageModel (Model model){
         Iterable<Book> books = bookService.getAll();
         model.addAttribute("books",  ((Collection<Book>) books));
-        return "list";
+        Iterable<Author> authors = authorService.getAll();
+        model.addAttribute("authors",  ((Collection<Author>) authors));
+        Iterable<Genre> genres = genreService.getAll();
+        model.addAttribute("genres",  ((Collection<Genre>) genres));
     }
+
 
 }
 
