@@ -33,6 +33,7 @@
         <th>Author</th>
         <th>Genre</th>
         <th>Action</th>
+        <th>Remove</th>
     </tr>
     </thead>
     <tbody>
@@ -44,9 +45,18 @@
         <td>
             <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
         </td>
+        <td>
+            <a th:href="@{/remove(id=${book.id})}" href="list.html">Remove</a>
+        </td>
+
     </tr>
     </tbody>
 </table>
+
+<br/>
+<div class="row">
+    <a th:href="@{/add}" href="create.html">Add a new book</a>
+</div>
 
 <h1>Authors:</h1>
 

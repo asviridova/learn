@@ -51,11 +51,21 @@ public class LibraryController {
     public String editPage(@RequestParam("id") long id, Model model) {
         Book book = bookService.getById(new Long(id)).orElseThrow(NotFoundException::new);
         model.addAttribute("book", book);
-        model.addAttribute("genreId");
-        //model.addAttribute("genreId", new Long());
-
         fillAuthorAndGenreModel(model);
         return "edit";
+    }
+
+    @GetMapping("/remove")
+    public String removeBook(@RequestParam("id") long id, Model model) {
+        bookService.deleteById(id);
+        fillStartPageModel(model);
+        return "list";
+    }
+
+    @GetMapping("/add")
+    public String addBook(Model model) {
+        fillAuthorAndGenreModel(model);
+        return "create";
     }
 
     @PostMapping("/save")
@@ -63,6 +73,15 @@ public class LibraryController {
                            @RequestParam("genreId") Long genreId, Model model) {
         System.out.println("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
         Long idNew = bookService.update(id, name, authorId, genreId);
+        fillStartPageModel (model);
+        return "list";
+    }
+
+    @PostMapping("/insert")
+    public String insertPage(@RequestParam("name") String name, @RequestParam("authorId") Long authorId,
+                           @RequestParam("genreId") Long genreId, Model model) {
+        System.out.println("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
+        Long idNew = bookService.insert(name, authorId, genreId);
         fillStartPageModel (model);
         return "list";
     }

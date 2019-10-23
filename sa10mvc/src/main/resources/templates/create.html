@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Edit book</title>
+    <title>Insert book</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -25,31 +25,13 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" th:action="@{/save}" th:method="post" action="list.html">
+<form id="insert-form" th:action="@{/insert}" th:method="post" action="list.html">
     <h1>Book Info:</h1>
 
     <div class="row">
-        <label for="id-input">ID:</label>
-        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${book.id}" value="1"/>
-    </div>
-
-    <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="${book.name}" value=""/>
+        <input id="name-input" name="name" type="text" value=""/>
     </div>
-
-    <!--div class="row">
-        <input id="authorId-input" name="authorId" type="hidden" readonly="readonly" th:value="${book.author.id}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <label for="author-input">Author Name:</label>
-        <input id="author-input" name="authorName" type="text" readonly="readonly" th:value="${book.author.name}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <input id="genreId-input" name="genreId" type="hidden" readonly="readonly" th:value="${book.genre.id}" value=""/>
-    </div-->
 
     <div class="row">
         <label for="author-input">Author Name:</label>
@@ -57,7 +39,6 @@
             <option th:each="author : ${authors}"
                     th:value="${author.id}"
                     th:utext="${author.name}"
-                    th:selected="${book.author.id}==${author.id} ? true : false"
             />
         </select>
     </div>
@@ -69,18 +50,13 @@
             <option th:each="genre : ${genres}"
                     th:value="${genre.id}"
                     th:utext="${genre.name}"
-                    th:selected="${book.genre.id}==${genre.id} ? true : false"
             />
         </select>
     </div>
 
 
-    <!--div class="row">
-        <a th:href="@{/save(id=${book.id}, name=${book.name}, authorId=${book.author.id}, genreId=${book.genre.id})}" href="">Edit</a>
-    </div-->
-
     <div class="row">
-        <button type="submit" onClick="" name="submit" value="value" class="link-button">Save</button>
+        <button type="submit" onClick="" name="submit" value="value" class="link-button">Insert</button>
     </div>
 
 
