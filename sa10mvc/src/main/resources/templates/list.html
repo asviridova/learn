@@ -30,6 +30,8 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -37,6 +39,8 @@
     <tr th:each="book : ${books}">
         <td th:text="${book.id}">1</td>
         <td th:text="${book.name}">My book</td>
+        <td th:text="${book.author.name}">Author</td>
+        <td th:text="${book.genre.name}">Genre</td>
         <td>
             <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
         </td>
