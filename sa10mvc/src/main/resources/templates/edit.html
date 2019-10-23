@@ -47,14 +47,22 @@
         <input id="author-input" name="authorName" type="text" readonly="readonly" th:value="${book.author.name}" value=""/>
     </div>
 
-    <div class="row">
+    <!--div class="row">
         <input id="genreId-input" name="genreId" type="hidden" readonly="readonly" th:value="${book.genre.id}" value=""/>
-    </div>
+    </div-->
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/>
+        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
+        <select name="genreId" type="text" >
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:utext="${genre.name}"
+                    th:selected="${book.genre.id}==${genre.id} ? true : false"
+            />
+        </select>
     </div>
+
 
     <!--div class="row">
         <a th:href="@{/save(id=${book.id}, name=${book.name}, authorId=${book.author.id}, genreId=${book.genre.id})}" href="">Edit</a>

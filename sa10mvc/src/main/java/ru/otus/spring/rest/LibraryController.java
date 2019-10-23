@@ -23,6 +23,7 @@ import java.util.List;
 //http://localhost:8080/
 
 //https://habr.com/ru/post/435062/
+//https://o7planning.org/ru/11659/thymeleaf-form-select-option-example
 
 @Controller
 public class LibraryController {
@@ -50,6 +51,10 @@ public class LibraryController {
     public String editPage(@RequestParam("id") long id, Model model) {
         Book book = bookService.getById(new Long(id)).orElseThrow(NotFoundException::new);
         model.addAttribute("book", book);
+        model.addAttribute("genreId");
+        //model.addAttribute("genreId", new Long());
+
+        fillAuthorAndGenreModel(model);
         return "edit";
     }
 
@@ -62,15 +67,18 @@ public class LibraryController {
         return "list";
     }
 
-    private void fillStartPageModel (Model model){
+    private void fillStartPageModel(Model model){
         Iterable<Book> books = bookService.getAll();
         model.addAttribute("books",  ((Collection<Book>) books));
+        fillAuthorAndGenreModel(model);
+    }
+
+    private void fillAuthorAndGenreModel(Model model){
         Iterable<Author> authors = authorService.getAll();
         model.addAttribute("authors",  ((Collection<Author>) authors));
         Iterable<Genre> genres = genreService.getAll();
         model.addAttribute("genres",  ((Collection<Genre>) genres));
     }
-
 
 }
 
