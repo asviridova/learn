@@ -61,7 +61,7 @@ public class LibraryController {
 
     @GetMapping("/test")
     public String listPageTest(Model model) {
-        fillStartPageModel (model);
+        //fillStartPageModel (model);
         return "test";
     }
 
