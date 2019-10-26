@@ -46,7 +46,12 @@
             <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
         </td>
         <td>
-            <a th:href="@{/remove(id=${book.id})}" href="list.html">Remove</a>
+            <!--a th:href="@{/remove(id=${book.id})}" href="list.html">Remove</a-->
+            <form id="remove-form" th:action="@{/remove}" th:method="post" action="list.html">
+                <input type="hidden" name="id" th:value="${book.id}" />
+                <a href="#" onclick="this.parentNode.submit()">Remove</a>
+            </form>
+
         </td>
 
     </tr>
@@ -57,6 +62,13 @@
 <div class="row">
     <a th:href="@{/add}" href="create.html">Add a new book</a>
 </div>
+
+
+
+<form id="add-form" th:action="@{/add}" th:method="post" action="create.html">
+    <a href="#" onclick="this.parentNode.submit()">Add a new book!</a>
+</form>
+
 
 <h1>Authors:</h1>
 
