@@ -1,15 +1,20 @@
 package ru.otus.spring;
 
+import org.omg.CORBA.LongLongSeqHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Person;
+import ru.otus.spring.domain.Genre;
+import ru.otus.spring.repostory.AuthorRepository;
 import ru.otus.spring.repostory.BookRepository;
-import ru.otus.spring.repostory.PersonRepository;
+import ru.otus.spring.repostory.GenreRepository;
+import ru.otus.spring.service.BookService;
 
+import java.util.List;
 import java.util.Optional;
 
 @EnableMongoRepositories
@@ -17,27 +22,63 @@ import java.util.Optional;
 public class Main {
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
-    @Autowired
-    private PersonRepository repository;
 
     public static void main(String[] args) throws InterruptedException {
         ApplicationContext context = SpringApplication.run(Main.class);
 
-        //PersonRepository repository = context.getBean(PersonRepository.class);
+        BookService bookService = context.getBean(BookService.class);
 
-        //repository.save(new Person("Pushkin"));
+        bookService.getAll().forEach(book -> System.out.println(book.getName()+", id="+book.getId()));
+        //-----
 
-        //Thread.sleep(3000);
+        Long id = bookService.insert("AAA", 1L, 1L);
 
-        //repository.findAll().forEach(p -> System.out.println(p.getName()));
+        System.out.println("NEW ID="+id);
+
+        Optional<Book> book1 = bookService.getById(id);
+        System.out.println("Added book:"+book1.get().getName()+", id="+book1.get().getId());
+
+        bookService.getAll().forEach(book -> System.out.println(book.getName()+", id="+book.getId()));
 
         //--------
-        BookRepository bookRepository = context.getBean(BookRepository.class);
+       /* BookRepository bookRepository = context.getBean(BookRepository.class);
+        AuthorRepository authorRepository = context.getBean(AuthorRepository.class);
+        GenreRepository genreRepository = context.getBean(GenreRepository.class);
+
+
         bookRepository.findAll().forEach(book -> System.out.println(book.getName()));
 
-        bookRepository.save(new Book("10", "Horse Rider", "M.Rid", "prose"));
+        authorRepository.findAll().forEach(a -> System.out.println(a.getName()));
+
+        genreRepository.findAll().forEach(g -> System.out.println(g.getName()));
+
+        //----
+        Optional<Author> authorFound = authorRepository.findById("1");
+
+        Optional<Genre> genreFound = genreRepository.findById("1");
+        if(authorFound.isPresent() && genreFound.isPresent()){
+            bookRepository.save(new Book("10", "Horse Rider", authorFound.get(), genreFound.get()));
+        }
+
         Thread.sleep(3000);
+
         Optional<Book> book1 = bookRepository.findById("10");
-        System.out.println("New book:"+book1.get().getName());
+        System.out.println("Added book:"+book1.get().getName());
+
+
+        bookRepository.deleteById("10");
+        Optional<Book> book2 = bookRepository.findById("10");
+        System.out.println("Removed book:"+book2.isPresent());
+
+        List<Book> booksTragedy = bookRepository.findAllByGenreId("1");
+        System.out.println("booksTragedy :"+booksTragedy.size());
+
+        List<Book> booksComedy = bookRepository.findAllByGenreName("comedy");
+        System.out.println("booksComedy :"+booksComedy.size());
+
+        List<Book> booksSheakspere = bookRepository.findAllByAuthorId("1");
+        System.out.println("booksSheakspere :"+booksSheakspere.size());
+*/
+
     }
 }
