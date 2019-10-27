@@ -1,4 +1,4 @@
-package ru.otus.spring.dao;
+package ru.otus.spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,6 +32,15 @@ public class LibraryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private BookService bookService;
+    @MockBean
+    private AuthorService authorService;
+    @MockBean
+    private GenreService genreService;
+    @MockBean
+    private CommentService commentService;
 
     @Autowired
     private ObjectMapper objectMapper;
