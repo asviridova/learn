@@ -31,9 +31,15 @@ public class Main {
         bookService.getAll().forEach(book -> System.out.println(book.getName()+", id="+book.getId()));
         //-----
 
-        Long id = bookService.insert("AAA", 1L, 1L);
+//        Long id = bookService.insert("AAA", 1L, 1L);
+        String id = bookService.insert("AAA", "1", "1");
 
         System.out.println("NEW ID="+id);
+
+        String id2 = bookService.insert("BBB", "1", "1");
+
+        System.out.println("NEW ID2="+id2);
+
 
         Optional<Book> book1 = bookService.getById(id);
         System.out.println("Added book:"+book1.get().getName()+", id="+book1.get().getId());

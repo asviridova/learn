@@ -3,12 +3,10 @@ package ru.otus.spring.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.service.SequenceGeneratorService;
 
 @ChangeLog(order = "001")
 public class InitMongoDBDataChangeLog {
@@ -29,24 +27,30 @@ public class InitMongoDBDataChangeLog {
 
     @ChangeSet(order = "001", id = "initAuthors", author = "asviridova", runAlways = true)
     public void initAuthors(MongoTemplate template){
-        authorShakespeare = template.save(new Author(1L, "W.Shakespeare", "English"));
-        authorHugo = template.save(new Author(2L, "V.Hugo", "French"));
-        authorGoethe = template.save(new Author(3L, "I.Goethe", "Germany"));
+        authorShakespeare = template.save(new Author("1", "W.Shakespeare", "English"));
+        authorHugo = template.save(new Author("2", "V.Hugo", "French"));
+        authorGoethe = template.save(new Author("3", "I.Goethe", "Germany"));
     }
 
     @ChangeSet(order = "002", id = "initGenres", author = "asviridova", runAlways = true)
     public void initGenres(MongoTemplate template){
-        genreTragedy = template.save(new Genre(1L, "tragedy"));
-        genreComedy = template.save(new Genre(2L, "comedy"));
-        genreProse = template.save(new Genre(3L, "prose"));
+        genreTragedy = template.save(new Genre("1", "tragedy"));
+        genreComedy = template.save(new Genre("2", "comedy"));
+        genreProse = template.save(new Genre("3", "prose"));
     }
 
     @ChangeSet(order = "003", id = "initBooks", author = "asviridova", runAlways = true)
     public void initBooks(MongoTemplate template){
-        book = template.save(new Book(1L, "Faust", authorGoethe, genreTragedy));
-        book = template.save(new Book(2L, "Midsummer nights dream", authorShakespeare, genreComedy));
-        book = template.save(new Book(3L, "Otello", authorShakespeare, genreTragedy));
-        book = template.save(new Book(4L, "Notre Dame", authorHugo, genreProse));
+        book = template.save(new Book("1", "Faust", authorGoethe, genreTragedy));
+        book = template.save(new Book("2", "Midsummer nights dream", authorShakespeare, genreComedy));
+        book = template.save(new Book("3", "Otello", authorShakespeare, genreTragedy));
+        book = template.save(new Book("4", "Notre Dame", authorHugo, genreProse));
+
+//        book = template.save(new Book(1L, "Faust", authorGoethe, genreTragedy));
+//        book = template.save(new Book(2L, "Midsummer nights dream", authorShakespeare, genreComedy));
+//        book = template.save(new Book(3L, "Otello", authorShakespeare, genreTragedy));
+//        book = template.save(new Book(4L, "Notre Dame", authorHugo, genreProse));
+
 //        book = template.save(new Book( "Faust", authorGoethe, genreTragedy));
 //        book = template.save(new Book( "Midsummer nights dream", authorShakespeare, genreComedy));
 //        book = template.save(new Book( "Otello", authorShakespeare, genreTragedy));

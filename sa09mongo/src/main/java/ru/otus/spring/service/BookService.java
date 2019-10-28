@@ -7,19 +7,19 @@ import java.util.Optional;
 
 public interface BookService {
 
-    Long insert(String name, Long authorId, Long genreId);
+    String insert(String name, String authorId, String genreId);
 
-    Long update(Long id, String name, Long authorId, Long genreId);
+    String update(String id, String name, String authorId, String genreId);
 
-    Optional<Book> getById(Long id);
+    Optional<Book> getById(String id);
 
     List<Book> getAll();
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
-    List<Book> getBooksByAuthorId(Long authorid);
+    List<Book> getBooksByAuthorId(String authorid);
 
-    List<Book> getBooksByGenreId(Long genreid) ;
+    List<Book> getBooksByGenreId(String genreid) ;
 
     List<Book> getBooksByGenre(String genreName);
 }

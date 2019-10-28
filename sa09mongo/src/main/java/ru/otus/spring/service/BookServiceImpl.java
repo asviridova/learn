@@ -20,23 +20,20 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     private final AuthorRepository authorRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository, SequenceGeneratorService sequenceGeneratorService){
+    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository ){
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.genreRepository = genreRepository;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
+
     @Override
-    public Long insert(String name, Long authorId, Long genreId) {
+    public String insert(String name, String authorId, String genreId) {
         Optional<Author> author = authorRepository.findById(authorId);
         Optional<Genre> genre = genreRepository.findById(genreId);
         if(author.isPresent() && genre.isPresent()) {
-//            Long id = sequenceGeneratorService.generateSequence(Book.SEQUENCE_NAME);
-//            Book book = new Book(id, name, author.get(), genre.get());
             Book book = new Book(name, author.get(), genre.get());
 
             Book bookNew = bookRepository.save(book );
@@ -47,7 +44,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Long update(Long id, String name, Long authorId, Long genreId) {
+    public String update(String id, String name, String authorId, String genreId) {
         Optional<Author> author = authorRepository.findById(authorId);
         Optional<Genre> genre = genreRepository.findById(genreId);
         if(author.isPresent() && genre.isPresent()) {
@@ -59,8 +56,9 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
+
     @Override
-    public Optional<Book> getById(Long id) {
+    public Optional<Book> getById(String id) {
         return bookRepository.findById(id);
     }
 
@@ -70,17 +68,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         bookRepository.deleteById(id);
     }
 
     @Override
-    public List<Book> getBooksByAuthorId(Long authorid) {
+    public List<Book> getBooksByAuthorId(String authorid) {
         return bookRepository.findAllByAuthorId(authorid);
     }
 
     @Override
-    public List<Book> getBooksByGenreId(Long genreid) {
+    public List<Book> getBooksByGenreId(String genreid) {
         return bookRepository.findAllByGenreId(genreid);
     }
 
