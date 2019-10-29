@@ -41,12 +41,10 @@ public class InitMongoDBDataChangeLog {
 
     @ChangeSet(order = "003", id = "initBooks", author = "asviridova", runAlways = true)
     public void initBooks(MongoTemplate template){
-
         book = template.save(new Book("1", "Faust", authorGoethe, genreTragedy));
         book = template.save(new Book("2", "Midsummer nights dream", authorShakespeare, genreComedy));
         book = template.save(new Book("3", "Otello", authorShakespeare, genreTragedy));
         book = template.save(new Book("4", "Notre Dame", authorHugo, genreProse));
-
 
     }
 
