@@ -84,6 +84,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksByGenre(String genreName) {
-        return bookRepository.findAllByGenreName(genreName);
+        Genre genre = genreRepository.findByName(genreName);
+        if(genre!=null) {
+            return bookRepository.findAllByGenreId(genre.getId());
+        }
+        return null;
     }
 }

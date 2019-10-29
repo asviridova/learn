@@ -6,5 +6,5 @@ import ru.otus.spring.domain.Genre;
 import java.util.List;
 
 public interface GenreRepository extends MongoRepository<Genre, String> {
-
+    Genre findByName(String name);
 }
