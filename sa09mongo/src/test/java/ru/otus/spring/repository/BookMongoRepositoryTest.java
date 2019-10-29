@@ -3,6 +3,7 @@ package ru.otus.spring.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,8 +21,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
-//@ComponentScan("ru.otus.spring")
 @EnableMongoRepositories(basePackages = "ru.otus.spring.repository")
+@EnableConfigurationProperties
+@ComponentScan({"ru.otus.spring.config", "ru.otus.spring.repository"})
 public class BookMongoRepositoryTest {
 	@Autowired
 	private BookRepository bookRepository;
@@ -34,23 +36,25 @@ public class BookMongoRepositoryTest {
     public static int EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE = 2;
     public static int EXPECTED_BOOKS_BEFORE_DELETE = 4;
     public static int EXPECTED_BOOKS_AFTER_DELETE = 3;
+	public static int EXPECTED_BOOKS_AFTER_ADD = 5;
 
 	public static String Shakespeare_ID = "2";
 
 	@Test
 	public void createBook() {
-		bookRepository.save(new Book("BookMy", new Author("A1", "N1"), new Genre("G1")));
-		assertEquals(bookRepository.count(), 1, "");
+		Author a = new Author("A1", "N1");
+		Author aNew = authorRepository.save(a);
+		Genre g = new Genre("G1");
+		Genre gNew = genreRepository.save(g);
+
+		Book bookNew = bookRepository.save(new Book("BookMy", aNew, gNew));
+		assertEquals(bookRepository.count(), EXPECTED_BOOKS_AFTER_ADD, "");
+
+		bookRepository.deleteById(bookNew.getId());
 	}
 
 
-	@DisplayName("поиск количества книг по  жанру") 
-	@Test
-	public void returnBookCountByGenreID() {
-		assertEquals(((Collection<Book>) bookRepository.findAllByGenreName("tragedy")).size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
-	}
-	
-	@DisplayName("поиск количества книг") 
+	@DisplayName("поиск количества книг")
 	@Test
 	public void returnBookCountAll() {
 		assertEquals(bookRepository.count(), EXPECTED_BOOKS_BEFORE_DELETE, "");
@@ -76,6 +80,7 @@ public class BookMongoRepositoryTest {
 	}
 
 	@Test
+	@DisplayName("поиск количества книг по  жанру")
 	public void bookByID() {
 		assertEquals(bookRepository.findById(Shakespeare_ID).get().getAuthor().getName(), "W.Shakespeare");
 	}
