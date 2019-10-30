@@ -7,7 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -21,16 +23,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
-@EnableMongoRepositories(basePackages = "ru.otus.spring.repository")
-@EnableConfigurationProperties
+//@EnableMongoRepositories(basePackages = "ru.otus.spring.repository")
+//@EnableConfigurationProperties
 @ComponentScan({"ru.otus.spring.config", "ru.otus.spring.repository"})
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+
 public class BookMongoRepositoryTest {
 	@Autowired
 	private BookRepository bookRepository;
 	@Autowired
-	private AuthorRepository authorRepository;
+	private MongoOperations authorRepository;
 	@Autowired
-	private GenreRepository genreRepository;
+	private MongoOperations genreRepository;
 
 
     public static int EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE = 2;
@@ -73,11 +77,6 @@ public class BookMongoRepositoryTest {
 		assertEquals(((Collection<Book>) books).size(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
-	@Test
-	public void bookByGenre() {
-	    List<Book> books = bookRepository.findAllByGenreName("tragedy");
-		assertEquals(books.size(), EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE, "");
-	}
 
 	@Test
 	@DisplayName("поиск количества книг по  жанру")
