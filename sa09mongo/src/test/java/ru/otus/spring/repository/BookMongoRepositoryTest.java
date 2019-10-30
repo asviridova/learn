@@ -23,10 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
-//@EnableMongoRepositories(basePackages = "ru.otus.spring.repository")
-//@EnableConfigurationProperties
 @ComponentScan({"ru.otus.spring.config", "ru.otus.spring.repository"})
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 
 public class BookMongoRepositoryTest {
 	@Autowired
@@ -37,7 +34,6 @@ public class BookMongoRepositoryTest {
 	private MongoOperations genreRepository;
 
 
-    public static int EXPECTED_BOOKS_COUNT_WITH_TRAGEDY_GENRE = 2;
     public static int EXPECTED_BOOKS_BEFORE_DELETE = 4;
     public static int EXPECTED_BOOKS_AFTER_DELETE = 3;
 	public static int EXPECTED_BOOKS_AFTER_ADD = 5;
@@ -73,7 +69,7 @@ public class BookMongoRepositoryTest {
 	
 	@Test
 	public void bookAll() {
-		Iterable<Book> books = bookRepository.findAll();
+		List<Book> books = bookRepository.findAll();
 		assertEquals(((Collection<Book>) books).size(), EXPECTED_BOOKS_BEFORE_DELETE, "");
 	}
 
