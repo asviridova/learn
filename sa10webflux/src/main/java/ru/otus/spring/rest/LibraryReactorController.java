@@ -66,6 +66,14 @@ public class LibraryReactorController {
         return "Saved!";
     }
 
+    @PostMapping("/bookinsertwithparams")
+    public String insertBook(@RequestParam("name") String name, @RequestParam("authorId") String authorId,
+                           @RequestParam("genreId") String genreId) {
+        System.out.println("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
+        bookService.insert(name, authorId, genreId);
+        return "Inserted!";
+    }
+
     @GetMapping("/deleteauthor/{authorid}")
     public String deleteAuthor(@PathVariable("authorid") String authorId) {
         System.out.println("FROM FORM: authorId="+authorId);
