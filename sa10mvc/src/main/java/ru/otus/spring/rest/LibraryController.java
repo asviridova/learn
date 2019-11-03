@@ -59,64 +59,40 @@ public class LibraryController {
         return "list";
     }
 
-    @GetMapping("/test")
-    public String listPageTest(Model model) {
-        //fillStartPageModel (model);
-        return "test";
-    }
-
-
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") long id, Model model) {
+    public String editBookPage(@RequestParam("id") long id, Model model) {
         Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("book", book);
         fillAuthorAndGenreModel(model);
         return "edit";
     }
 
-    @PostMapping("/removeWithModel")
-    public ModelAndView removeBook(@RequestParam("id") long id, ModelMap model) {
-        //model.addAttribute("attribute", "remove");
-        bookService.deleteById(id);
-        fillStartPageModel(model);
-        return new ModelAndView("redirect:/", model);
-    }
-
     @PostMapping("/remove")
     public String removeBook(@RequestParam("id") long id, Model model) {
         bookService.deleteById(id);
-        fillStartPageModel(model);
         return "redirect:/";
     }
 
 
-    @GetMapping("/add")
-    public String addBookWithGet(Model model) {
-        fillAuthorAndGenreModel(model);
-        return "create";
-    }
-
     @PostMapping("/add")
-    public String addBook(Model model) {
+    public String addBookPage(Model model) {
         fillAuthorAndGenreModel(model);
         return "create";
     }
 
     @PostMapping("/save")
-    public String savePage(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
+    public String saveBook(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
                            @RequestParam("genreId") Long genreId, Model model) {
         System.out.println("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
         bookService.update(id, name, authorId, genreId);
-        fillStartPageModel (model);
         return "redirect:/";
     }
 
     @PostMapping("/insert")
-    public String insertPage(@RequestParam("name") String name, @RequestParam("authorId") Long authorId,
+    public String insertBook(@RequestParam("name") String name, @RequestParam("authorId") Long authorId,
                            @RequestParam("genreId") Long genreId, Model model) {
         System.out.println("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
         bookService.insert(name, authorId, genreId);
-        fillStartPageModel (model);
         return "redirect:/";
     }
 
