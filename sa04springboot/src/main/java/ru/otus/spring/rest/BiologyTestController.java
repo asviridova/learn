@@ -19,14 +19,4 @@ public class BiologyTestController {
     }
 
 
-//    @GetMapping("/")
-//    public String greetingPage(Model model) {
-//        boolean isFirstGreetingSuccess = prototypeGreetingService1.isFirstGreetingSuccess();
-//        model.addAttribute("singletonGreeting", singletonGreetingService.greeting());
-//        model.addAttribute("sessionGreeting", sessionGreetingService.greeting());
-//        model.addAttribute("requestGreeting", requestGreetingService.greeting());
-//        model.addAttribute("prototype1Greeting", prototypeGreetingService1.greeting());
-//        model.addAttribute("prototype2Greeting", isFirstGreetingSuccess? prototypeGreetingService2.greeting(): "Пока жду");
-//        return "index";
-//    }
 }
