@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biology!</title>
+    <style>
+        body {
+            font-size: 16pt;
+        }
+
+        h3 {
+            color: CornflowerBlue;
+        }
+
+        li {
+            color: DarkGray;
+        }
+
+        p {
+            color: Blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <h3>Тест по биологии</h3>
+    </p>
+
+    <hr/>
+
+    <p th:text = "${biologyQuestion}"></p>
+
+    <table class="questions">
+        <tbody>
+        <tr>
+            <td>
+                <form id="a-form" th:action="@{/select}" th:method="post" action="index.html">
+                    <input type="hidden" name="point" th:value="a" />
+                    <a href="#" onclick="this.parentNode.submit()">a</a>
+                </form>
+            </td>
+            <td>
+                <form id="b-form" th:action="@{/select}" th:method="post" action="index.html">
+                    <input type="hidden" name="point" th:value="b" />
+                    <a href="#" onclick="this.parentNode.submit()">b</a>
+                </form>
+            </td>
+            <td>
+                <form id="c-form" th:action="@{/select}" th:method="post" action="index.html">
+                    <input type="hidden" name="point" th:value="c" />
+                    <a href="#" onclick="this.parentNode.submit()">c</a>
+                </form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <table class="nextstep">
+        <tbody>
+        <tr>
+            <td>
+                <form id="next-form" th:action="@{/select}" th:method="post" action="index.html">
+                    <input type="hidden" name="point" th:value="next" />
+                    <a href="#" onclick="this.parentNode.submit()">next</a>
+                </form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>
