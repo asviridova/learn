@@ -16,6 +16,9 @@ import ru.otus.spring.repostory.GenreRepository;
 import java.util.List;
 import java.util.Optional;
 
+//https://vertex-academy.com/tutorials/ru/java-8-stream-flatmap/
+//https://habr.com/ru/company/luxoft/blog/270383/
+
 @Service
 @Slf4j
 public class BookServiceImpl implements BookService {
@@ -33,29 +36,43 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public void insert(String name, String authorId, String genreId) {
-        authorRepository.findById(authorId).subscribe(author -> {
-            System.out.println(author.toString());
-            genreRepository.findById(genreId).subscribe(genre -> {
-                System.out.println(genre.toString());
-                Book book = new Book(name, author, genre);
-                Mono<Book> bookNewMono = bookRepository.save(book);
-                System.out.println(bookNewMono.subscribe(b -> System.out.println(b.toString())));
-            });
-        });
+    public Mono<Book> insert(String name, String authorId, String genreId) {
+        return authorRepository.findById(authorId).flatMap(a ->
+                genreRepository.findById(genreId).map(g -> new Book(name, a, g))
+        ).flatMap(bookRepository::save);
     }
 
+//    @Override
+//    public void insert(String name, String authorId, String genreId) {
+//        authorRepository.findById(authorId).subscribe(author -> {
+//            System.out.println(author.toString());
+//            genreRepository.findById(genreId).subscribe(genre -> {
+//                System.out.println(genre.toString());
+//                Book book = new Book(name, author, genre);
+//                Mono<Book> bookNewMono = bookRepository.save(book);
+//                System.out.println(bookNewMono.subscribe(b -> System.out.println(b.toString())));
+//            });
+//        });
+//    }
+
+//    @Override
+//    public void update(String id, String name, String authorId, String genreId) {
+//        authorRepository.findById(authorId).subscribe(author -> {
+//            System.out.println(author.toString());
+//            genreRepository.findById(genreId).subscribe(genre -> {
+//                System.out.println(genre.toString());
+//                Book book = new Book(id, name, author, genre);
+//                Mono<Book> bookNewMono = bookRepository.save(book);
+//                System.out.println(bookNewMono.subscribe(b -> System.out.println(b.toString())));
+//            });
+//        });
+//    }
+
     @Override
-    public void update(String id, String name, String authorId, String genreId) {
-        authorRepository.findById(authorId).subscribe(author -> {
-            System.out.println(author.toString());
-            genreRepository.findById(genreId).subscribe(genre -> {
-                System.out.println(genre.toString());
-                Book book = new Book(id, name, author, genre);
-                Mono<Book> bookNewMono = bookRepository.save(book);
-                System.out.println(bookNewMono.subscribe(b -> System.out.println(b.toString())));
-            });
-        });
+    public Mono<Book> update(String id, String name, String authorId, String genreId) {
+        return authorRepository.findById(authorId).flatMap(a ->
+                genreRepository.findById(genreId).map(g -> new Book(id, name, a, g))
+        ).flatMap(bookRepository::save);
     }
 
 

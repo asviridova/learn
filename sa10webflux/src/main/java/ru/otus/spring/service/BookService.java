@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface BookService {
 
-    void insert(String name, String authorId, String genreId);
+    Mono<Book> insert(String name, String authorId, String genreId);
 
-    void update(String id, String name, String authorId, String genreId);
+    Mono<Book> update(String id, String name, String authorId, String genreId);
 
     Mono<Book> getById(String id);
 
