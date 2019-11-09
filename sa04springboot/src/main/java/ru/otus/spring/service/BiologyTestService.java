@@ -1,5 +1,6 @@
 package ru.otus.spring.service;
 
+import java.util.Locale;
 import java.util.Map;
 
 public interface BiologyTestService {
@@ -10,4 +11,8 @@ public interface BiologyTestService {
     String getCurrentAnswer();
 
     void checkCurrentAnswer(String answer);
+
+    public void setLanguage(String language);
+
+
 }

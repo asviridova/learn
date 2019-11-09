@@ -20,7 +20,15 @@ public class BiologyTestCommands {
 
     }
 
-    @ShellMethod(value = "getNext",  key ={ "start", "next" })
+    @ShellMethod(value = "getStart",  key ={ "start" })
+    public String getStart(String language){
+        biologyTestService.setLanguage(language);
+        return biologyTestService.getCurrentQuestion();
+
+    }
+
+
+    @ShellMethod(value = "getNext",  key ={ "next" })
     public String getNextQuestion(){
         return biologyTestService.getCurrentQuestion();
 
