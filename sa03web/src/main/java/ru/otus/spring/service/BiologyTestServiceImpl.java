@@ -1,83 +1,70 @@
 package ru.otus.spring.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
+import ru.otus.spring.config.MessageByLocaleService;
+import ru.otus.spring.dao.QuestionDao;
+import ru.otus.spring.dao.QuestionDaoImpl;
+import ru.otus.spring.domain.Question;
 
-import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+//@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Service("SessionQuestionService")
 @Slf4j
 public class BiologyTestServiceImpl implements BiologyTestService {
 
-    //@Value("classpath:data/questions.csv")
-    //Resource resourceFile;
 
-    Map<String, String> mapQuestionToAnswer = new HashMap<String, String>();
-    Map<Integer, Map<String, String>> mapNumberToMap = new HashMap<Integer, Map<String, String>>();
+    private Integer currentQuestion = 0;
+    private String currentAnswer = null;
 
-    Integer currentQuestion = 0;
-    String currentAnswer = null;
+    private Integer success = 0;
+    private Integer error = 0;
 
-    Integer success = 0;
-    Integer error = 0;
+    private QuestionDao questionDao;
+    private MessageByLocaleService messageByLocaleService;
+    private String language;
+    private boolean flagTestFinished = false;
 
-
-    private String fileContent;
-    public BiologyTestServiceImpl(){
-        Resource resourceFile = loadQuestions();
-        fileContent = ResourceReader.asString(resourceFile);
-        parse(fileContent);
+    @Autowired
+    public BiologyTestServiceImpl(QuestionDao questionDao, MessageByLocaleService messageByLocaleService){
+        this.questionDao = questionDao;
+        this.messageByLocaleService = messageByLocaleService;
     }
 
-    public Resource loadQuestions() {
-        return new ClassPathResource("data/questions.csv");
-    }
 
-    private void parse(String fileContent){
-        //log.info("fileContent="+fileContent);
-        if(fileContent!=null){
-            String[] lines = fileContent.split(System.lineSeparator());
-            int i = 0;
-            for (String line: lines){
-                String[] elements = line.split(";");
-                if(elements.length>1){
-                    mapQuestionToAnswer.put(elements[0], StringUtils.trimWhitespace(elements[1]));
-                    Map<String, String> mapInnerQuestionToAnswer = new HashMap<String, String>();
-                    mapInnerQuestionToAnswer.put(elements[0], StringUtils.trimWhitespace(elements[1]));
-                    mapNumberToMap.put(++i, mapInnerQuestionToAnswer);
-                }
-            }
-
-        }
+    @Override
+    public void setLanguage(String language){
+        this.language = language;
     }
 
     public Map<String, String> getMap(){
-        return mapQuestionToAnswer;
+        return questionDao.getMap(language==null? QuestionDaoImpl.DEFAULT_LANGUAGE: language);
     }
 
     public String getCurrentQuestion(){
-        Map<String, String> mapQ =  mapNumberToMap.get(++currentQuestion);
-        if(mapQ==null){
-            currentAnswer = "Тестирование закончено: Правильных ответов="+success+", ошибок="+error;
+        Question question = questionDao.getQuestionByNumber(++currentQuestion, language==null? QuestionDaoImpl.DEFAULT_LANGUAGE: language);
+        if(question==null){
+            String currentTestResult = getFinalMessage();
+            currentAnswer = null;
             currentQuestion = 0;
             success = 0;
             error = 0;
-            return currentAnswer;
+            flagTestFinished = true;
+            return currentTestResult;
         }
         else{
-            String key = mapQ.keySet().iterator().next();
-            currentAnswer = mapQ.get(key);
-            return key; //здесь мапа с одним значением
+            currentAnswer = question.getAnswer();
+            flagTestFinished = false;
+            return question.getQuestion();
         }
     }
 
@@ -87,6 +74,9 @@ public class BiologyTestServiceImpl implements BiologyTestService {
 
     public void checkCurrentAnswer(String answer){
         if(!StringUtils.isEmpty(answer)){
+            if(currentAnswer==null){
+                return;
+            }
             if(answer.equalsIgnoreCase(currentAnswer)){
                 success++;
             }
@@ -96,4 +86,14 @@ public class BiologyTestServiceImpl implements BiologyTestService {
         }
     }
 
+    private String getFinalMessage(){
+        String resMsg = messageByLocaleService.getMessage("result.message", language==null? QuestionDaoImpl.DEFAULT_LANGUAGE: language );
+        String currentTestResult = String.format(resMsg, ""+success, ""+error);
+        return currentTestResult;
     }
+
+    @Override
+    public boolean isFlagTestFinished(){
+        return flagTestFinished;
+    }
+}
