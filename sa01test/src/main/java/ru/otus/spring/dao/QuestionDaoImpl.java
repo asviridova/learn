@@ -16,15 +16,19 @@ public class QuestionDaoImpl implements QuestionDao {
     //@Value("classpath:data/questions.csv")
     //Resource resourceFile;
 
+    private final String resourceFileName;
+
     private String fileContent;
-    public QuestionDaoImpl(){
+    public QuestionDaoImpl(String resourceFileName){
+        this.resourceFileName = resourceFileName;
         Resource resourceFile = loadQuestions();
         fileContent = ResourceReader.asString(resourceFile);
         parse(fileContent);
     }
 
     public Resource loadQuestions() {
-        return new ClassPathResource("data/questions.csv");
+        //return new ClassPathResource("data/questions.csv");
+        return new ClassPathResource(resourceFileName);
     }
 
     private void parse(String fileContent){
@@ -46,10 +50,6 @@ public class QuestionDaoImpl implements QuestionDao {
         }
     }
 
-    @Override
-    public Map<String, String> getMap(){
-        return mapQuestionToAnswer;
-    }
 
 
     @Override
