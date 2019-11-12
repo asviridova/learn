@@ -50,17 +50,8 @@ public class LibraryPageController {
     }
 
 
-    /*@GetMapping("/")
-    public String listPage(Model model) {
-        fillStartPageModel (model);
-        return "list";
-    }*/
-
     @GetMapping("/edit")
-    public String editBookPage(@RequestParam("id") long id, Model model) {
-        Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("book", book);
-        fillAuthorAndGenreModel(model);
+    public String editBookPage(Model model) {
         return "edit";
     }
 
@@ -70,16 +61,9 @@ public class LibraryPageController {
         return "redirect:/";
     }
 
-    /*@GetMapping("/remove")
-    public String removeBook(@RequestParam("id") long id, Model model) {
-        bookService.deleteById(id);
-        return "redirect:/";
-    }*/
-
 
     @PostMapping("/add")
     public String addBookPage(Model model) {
-        fillAuthorAndGenreModel(model);
         return "create";
     }
 
@@ -97,32 +81,6 @@ public class LibraryPageController {
         System.out.println("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
         bookService.insert(name, authorId, genreId);
         return "redirect:/";
-    }
-
-    private void fillStartPageModel(Model model){
-        Iterable<Book> books = bookService.getAll();
-        model.addAttribute("books",  ((Collection<Book>) books));
-        fillAuthorAndGenreModel(model);
-    }
-
-    private void fillAuthorAndGenreModel(Model model){
-        Iterable<Author> authors = authorService.getAll();
-        model.addAttribute("authors",  ((Collection<Author>) authors));
-        Iterable<Genre> genres = genreService.getAll();
-        model.addAttribute("genres",  ((Collection<Genre>) genres));
-    }
-
-    private void fillStartPageModel(ModelMap model){
-        Iterable<Book> books = bookService.getAll();
-        model.addAttribute("books",  ((Collection<Book>) books));
-        fillAuthorAndGenreModel(model);
-    }
-
-    private void fillAuthorAndGenreModel(ModelMap model){
-        Iterable<Author> authors = authorService.getAll();
-        model.addAttribute("authors",  ((Collection<Author>) authors));
-        Iterable<Genre> genres = genreService.getAll();
-        model.addAttribute("genres",  ((Collection<Genre>) genres));
     }
 
 }

@@ -50,6 +50,7 @@
                         <td>${book.name}</td>
                         <td>${book.author.name}</td>
                         <td>${book.genre.name}</td>
+                        <!--td>b1<a href=# onclick='alert("b1")' />TTT</td-->
                         <td>
                             <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
                         </td>
@@ -69,7 +70,11 @@
 
 
 </script>
-
+<!--script>
+    $(function(){
+        $('#table_books').click(function(){ $(this).find('a').click()});
+    })
+</script-->
 
 
 <br/>

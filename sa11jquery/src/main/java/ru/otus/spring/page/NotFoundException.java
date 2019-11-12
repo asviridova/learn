@@ -1,7 +1,7 @@
 package ru.otus.spring.page;
 
-class NotFoundException extends RuntimeException{
+public class NotFoundException extends RuntimeException{
 
-    NotFoundException() {
+    public NotFoundException() {
     }
 }

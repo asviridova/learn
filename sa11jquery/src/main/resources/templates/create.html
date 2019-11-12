@@ -21,11 +21,13 @@
             margin-top: 10px;
         }
     </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 
 <!-- Book edition -->
-<form id="insert-form" th:action="@{/insert}" th:method="post" action="list.html">
+<form id="insert-form" th:action="@{/insert}" th:method="post" action="listbooks.html">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -36,21 +38,14 @@
     <div class="row">
         <label for="author-input">Author Name:</label>
         <select id="author-input" name="authorId" type="text" >
-            <option th:each="author : ${authors}"
-                    th:value="${author.id}"
-                    th:utext="${author.name}"
-            />
         </select>
     </div>
+
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
         <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
-            <option th:each="genre : ${genres}"
-                    th:value="${genre.id}"
-                    th:utext="${genre.name}"
-            />
         </select>
     </div>
 
@@ -59,6 +54,32 @@
         <button type="submit" onClick="" name="submit" value="value" class="link-button">Insert</button>
     </div>
 
+    <script>
+        <!-- Authors -->
+        $(function () {
+            $.get('/api/authors').done(function (authors) {
+                authors.forEach(function (author) {
+                    $('#author-input').append(`
+                        <option value=${author.id}>${author.name}</option>
+                `)
+                });
+            })
+        });
+    </script>
+    <script>
+
+        <!-- Genres -->
+        $(function () {
+            $.get('/api/genres').done(function (genres) {
+                genres.forEach(function (genre) {
+                    $('#genre-input').append(`
+                        <option value=${genre.id}>${genre.name}</option>
+                `)
+                });
+            })
+        });
+
+    </script>
 
 </form>
 
