@@ -27,40 +27,28 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" th:action="@{/save}" th:method="post" action="listbooks.html">
+<form id="edit-form" th:action="@{/save}" th:method="post" action="list.html">
     <h1>Book Info:</h1>
 
     <div class="row">
         <label for="id-input">ID:</label>
-        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${book.id}" value="1"/>
+        <input id="id-input" name="id" type="text" readonly="readonly"/>
     </div>
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="${book.name}" value=""/>
+        <input id="name-input" name="name" type="text"/>
     </div>
-
 
     <div class="row">
         <label for="author-input">Author Name:</label>
         <select id="author-input" name="authorId" type="text" >
-            <!--option th:each="author : ${authors}"
-                    th:value="${author.id}"
-                    th:utext="${author.name}"
-                    th:selected="${book.author.id}==${author.id} ? true : false"
-            /-->
         </select>
     </div>
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
-            <!--option th:each="genre : ${genres}"
-                    th:value="${genre.id}"
-                    th:utext="${genre.name}"
-                    th:selected="${book.genre.id}==${genre.id} ? true : false"
-            /-->
         </select>
     </div>
 
@@ -70,44 +58,44 @@
     </div>
 
 
-
-
-    <script>
-        $(function () {
-            $.get('/api/book').done(function (book) {
-                $('#id-input').val(${book.id});
-                $('#name-input').val(${book.name});
-            })
-        });
-
-
-        <!-- Authors -->
-        $(function () {
-            $.get('/api/authors').done(function (authors) {
-                authors.forEach(function (author) {
-                    $('#author-input').append(`
-                        <option value=${author.id}>${author.name}</option>
-                `)
-                });
-            })
-        });
-    </script>
-    <script>
-
-        <!-- Genres -->
-        $(function () {
-            $.get('/api/genres').done(function (genres) {
-                genres.forEach(function (genre) {
-                    $('#genre-input').append(`
-                        <option value=${genre.id}>${genre.name}</option>
-                `)
-                });
-            })
-        });
-
-    </script>
-
 </form>
+<script>
+
+    $(function () {
+        $.get('/api/authors').done(function (authors) {
+            authors.forEach(function (author) {
+                $('#author-input').append(`
+                          <option value=${author.id}>${author.name}</option>
+                 `) //.val(book.author.id)
+            });
+        })
+    });
+
+    $(function () {
+        $.get('/api/genres').done(function (genres) {
+            genres.forEach(function (genre) {
+                $('#genre-input').append(`
+                        <option value=${genre.id}>${genre.name}</option>
+                `)  //.val(2) //.val(${book.genre.id})
+            });
+        })
+    });
+
+    $(function () {
+        setTimeout (function() {
+            $.get('/api/book', {id: 2}).done(function (book) {
+                console.log(book.name);
+                console.log(book.author.id);
+                console.log(book.genre.id);
+                $('#id-input').val(book.id);
+                $('#name-input').val(book.name);
+                $('#author-input').val(book.author.id);
+                $('#genre-input').val(book.genre.id);
+            })
+        }, 1000)
+    });
+
+</script>
 
 </body>
 </html>

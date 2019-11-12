@@ -23,6 +23,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//https://webref.ru/dev/jqfundamentals/javascript-basics
+//https://webref.ru/dev/jqfundamentals/ajax
+
 @RestController
 public class LibraryController {
 
@@ -59,6 +62,7 @@ public class LibraryController {
     @GetMapping("/api/book")
     public BookDto findBook(@RequestParam("id") long id) {
         Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
+        System.out.println("book:"+book);
         return BookDto.toDto(book);
     }
 
