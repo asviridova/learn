@@ -1,32 +1,33 @@
 package ru.otus.spring.service;
 
-import java.util.Scanner;
 
 public class StudentsTestRunnerServiceImpl implements StudentsTestRunnerService{
 
     private final StudentsTestService studentsTestService;
+    private final StudentAccountService studentAccountService;
+    private final QuestionStreamService questionStreamService;
 
-    public StudentsTestRunnerServiceImpl(StudentsTestService studentsTestService){
+    public StudentsTestRunnerServiceImpl(StudentsTestService studentsTestService, StudentAccountService studentAccountService, QuestionStreamService questionStreamService){
         this.studentsTestService = studentsTestService;
+        this.studentAccountService = studentAccountService;
+        this.questionStreamService = questionStreamService;
     }
 
     public void run(String[] args){
-        System.out.println("Добрый день, введите пожалуйста ФИО:");
-
-        Scanner scanner = new Scanner(System.in);
-        String fio = scanner.next();
+        studentAccountService.writeAgreement();
+        String fio = studentAccountService.readFIO();
 
         String question =  studentsTestService.getCurrentQuestion();
-        System.out.println(question);
+        questionStreamService.writeQuestion(question);
         while (question!=null && !studentsTestService.isFlagTestFinished()){
-            String answer = scanner.next();
+            String answer = questionStreamService.readAnswer();
             studentsTestService.checkCurrentAnswer(answer);
             question =  studentsTestService.getCurrentQuestion();
             if(studentsTestService.isFlagTestFinished()) {
-                System.out.println(fio+question);
+                questionStreamService.writeResult(fio+question);
             }
             else{
-                System.out.println(question);
+                questionStreamService.writeQuestion(question);
             }
         }
 

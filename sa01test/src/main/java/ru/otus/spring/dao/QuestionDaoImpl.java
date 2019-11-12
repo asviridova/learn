@@ -5,13 +5,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import ru.otus.spring.domain.Question;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QuestionDaoImpl implements QuestionDao {
 
-    private Map<String, String> mapQuestionToAnswer = new HashMap<String, String>();
-    private Map<Integer, Question> mapNumberToQuestion = new HashMap<Integer, Question>();
+    //private Map<Integer, Question> mapNumberToQuestion = new HashMap<Integer, Question>();
+
+    private List<Question> listOfQuestions = new ArrayList<Question>();
 
     //@Value("classpath:data/questions.csv")
     //Resource resourceFile;
@@ -26,7 +29,7 @@ public class QuestionDaoImpl implements QuestionDao {
         parse(fileContent);
     }
 
-    public Resource loadQuestions() {
+    private Resource loadQuestions() {
         //return new ClassPathResource("data/questions.csv");
         return new ClassPathResource(resourceFileName);
     }
@@ -42,8 +45,7 @@ public class QuestionDaoImpl implements QuestionDao {
                     String questionElement = elements[0];
                     String answerElement = StringUtils.trimWhitespace(elements[1]);
                     Question question = new Question(questionElement, answerElement);
-                    mapQuestionToAnswer.put(questionElement, answerElement);
-                    mapNumberToQuestion.put(++i, question);
+                    listOfQuestions.add(question);
                 }
             }
 
@@ -54,7 +56,10 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Override
     public Question getQuestionByNumber(int number){
-        return mapNumberToQuestion.get(number);
+        if(listOfQuestions.size() >= number) {
+            return listOfQuestions.get(number - 1);
+        }
+        return null;
     }
 
 }
