@@ -7,4 +7,7 @@ public interface QuestionStreamService {
 
     void writeResult(String result);
 
+    void writeAgreement();
+
+    String readFIO();
 }

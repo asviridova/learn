@@ -12,13 +12,10 @@
         <constructor-arg name="questionDao" ref="questionDao"/>
     </bean>
 
-    <bean id="studentAccountService" class="ru.otus.spring.service.StudentAccountServiceImpl"/>
-
     <bean id="questionStreamService" class="ru.otus.spring.service.QuestionStreamServiceImpl"/>
 
     <bean id="studentsTestRunnerService" class="ru.otus.spring.service.StudentsTestRunnerServiceImpl">
         <constructor-arg name="studentsTestService" ref="studentsTestService"/>
-        <constructor-arg name="studentAccountService" ref="studentAccountService"/>
         <constructor-arg name="questionStreamService" ref="questionStreamService"/>
     </bean>
 
