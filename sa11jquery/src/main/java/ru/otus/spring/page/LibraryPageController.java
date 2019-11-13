@@ -1,5 +1,6 @@
 package ru.otus.spring.page;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +18,8 @@ import ru.otus.spring.service.GenreService;
 
 import java.util.Collection;
 
-//https://html.com/tags/
-//https://www.thymeleaf.org/doc/articles/petclinic.html
-
-//http://localhost:8080/
-
-//https://habr.com/ru/post/435062/
-//https://o7planning.org/ru/11659/thymeleaf-form-select-option-example
-
-//https://stackoverflow.com/questions/17955777/redirect-to-an-external-url-from-controller-action-in-spring-mvc
-//https://www.baeldung.com/spring-redirect-and-forward
-
 @Controller
+@Slf4j
 public class LibraryPageController {
 
     private final BookService bookService;
@@ -55,33 +46,11 @@ public class LibraryPageController {
         return "edit";
     }
 
-    @PostMapping("/remove")
-    public String removeBook(@RequestParam("id") long id, Model model) {
-        bookService.deleteById(id);
-        return "redirect:/";
-    }
-
-
     @PostMapping("/add")
     public String addBookPage(Model model) {
         return "create";
     }
 
-    @PostMapping("/save")
-    public String saveBook(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
-                           @RequestParam("genreId") Long genreId, Model model) {
-        System.out.println("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
-        bookService.update(id, name, authorId, genreId);
-        return "redirect:/";
-    }
-
-    @PostMapping("/insert")
-    public String insertBook(@RequestParam("name") String name, @RequestParam("authorId") Long authorId,
-                           @RequestParam("genreId") Long genreId, Model model) {
-        System.out.println("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
-        bookService.insert(name, authorId, genreId);
-        return "redirect:/";
-    }
 
 }
 

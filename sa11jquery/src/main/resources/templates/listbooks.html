@@ -55,11 +55,15 @@
                             <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
                         </td>
                         <td>
+                        <!--a href=# class="Test" data-href="/remove(id=${book.id})">Remove</a-->
+                        <a href=# class="Test" data-href="/remove">Remove</a>
+
+                            <!--a th:href="@{/remove(id=${book.id})}" action="@{/remove}">Remove</a-->
                             <!--a th:href="@{/remove(id=${book.id})}" href="listbooks.html">Remove</a-->
-                            <form id="remove-form" th:action="@{/remove}" th:method="post" action="listbooks.html">
-                                <input type="hidden" name="id" th:value="${book.id}" />
+                            <!--form id="remove-form" th:action="@{/remove}" th:method="post" action="listbooks.html">
+                                <input type="hidden" name="id" th:value="${book.id}">${book.id}</input>
                                 <a href="#" onclick="this.parentNode.submit()">Remove</a>
-                            </form>
+                            </form-->
 
                         </td>
                     </tr>
@@ -68,6 +72,17 @@
         })
     });
 
+    //$tbl.append(' <tr><td> <a href=# class=Test data-href="' + href + '">' + '... the rest of your line');
+    $(document).on('click', '.Test', function () {
+        console.log("Clicked");
+//        $(this).attr('href',$(this).attr('data-href').sen);
+        $(this).attr('href',$(this).attr('data-href'));
+    });
+
+   /* $('td.link').each(function() {
+        $(this).html('<a href="/remove">' + $(this).html() + '</a>')
+    });
+*/
 
 </script>
 <!--script>

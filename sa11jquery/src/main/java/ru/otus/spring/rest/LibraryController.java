@@ -1,5 +1,6 @@
 package ru.otus.spring.rest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -23,10 +24,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//https://webref.ru/dev/jqfundamentals/javascript-basics
-//https://webref.ru/dev/jqfundamentals/ajax
-
 @RestController
+@Slf4j
 public class LibraryController {
 
     private final BookService bookService;
@@ -55,17 +54,35 @@ public class LibraryController {
     @GetMapping("/api/genres")
     public List<GenreDto> getAllGenres() {
         List<GenreDto> list = genreService.getAll().stream().map(GenreDto::toDto).collect(Collectors.toList());
-        System.out.println("Genres:"+list);
+        log.debug("Genres:"+list);
         return list;
     }
 
     @GetMapping("/api/book")
     public BookDto findBook(@RequestParam("id") long id) {
         Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
-        System.out.println("book:"+book);
+        log.debug("book:"+book);
         return BookDto.toDto(book);
     }
 
+    @GetMapping("/api/remove")
+    public void removeBook(@RequestParam("id") long id, Model model) {
+        bookService.deleteById(id);
+    }
+
+    @PostMapping("/api/save")
+    public void saveBook(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("authorId") Long authorId,
+                           @RequestParam("genreId") Long genreId) {
+        log.debug("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
+        bookService.update(id, name, authorId, genreId);
+    }
+
+    @PostMapping("/api/insert")
+    public void insertBook(@RequestParam("name") String name, @RequestParam("authorId") Long authorId,
+                             @RequestParam("genreId") Long genreId) {
+        log.debug("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
+        bookService.insert(name, authorId, genreId);
+    }
 
 
 }

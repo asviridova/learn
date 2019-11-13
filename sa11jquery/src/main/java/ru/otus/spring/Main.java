@@ -20,14 +20,6 @@ import ru.otus.spring.service.AuthorServiceImpl;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
         ApplicationContext context = SpringApplication.run(Main.class);
-
-
-
-        //AuthorServiceImpl authorService = context.getBean(AuthorServiceImpl.class);
-        //System.out.println(authorService.count());
-        //Optional<AuthorModel> author = authorRepository.findById(1);
-       // Console.main(args);
     }
 }

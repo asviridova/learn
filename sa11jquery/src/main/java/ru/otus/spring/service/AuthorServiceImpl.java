@@ -1,5 +1,6 @@
 package ru.otus.spring.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     public AuthorServiceImpl(AuthorDao authorDao){
@@ -58,7 +59,7 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = new Author(name, nationality);
         Author authorNew = authorDao.save(author);
         Long id = authorNew.getId();
-        LOGGER.info("Author inserted with id = " + id + ", name = " + name + ", nationality = " + nationality);
+        log.info("Author inserted with id = " + id + ", name = " + name + ", nationality = " + nationality);
         return id;
     }
 
