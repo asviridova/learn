@@ -5,11 +5,8 @@ import org.springframework.util.StringUtils;
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Question;
 
-import java.util.Map;
 
 
-//@Service("SessionQuestionService")
-//@Slf4j
 public class StudentsTestServiceImpl implements StudentsTestService {
 
 
@@ -41,7 +38,6 @@ public class StudentsTestServiceImpl implements StudentsTestService {
         else{
             currentAnswer = question.getAnswer();
             flagTestFinished = false;
-            //System.out.println("currentAnswer="+currentAnswer);
             return question.getQuestion();
         }
     }

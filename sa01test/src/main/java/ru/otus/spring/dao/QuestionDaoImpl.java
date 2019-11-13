@@ -12,12 +12,7 @@ import java.util.Map;
 
 public class QuestionDaoImpl implements QuestionDao {
 
-    //private Map<Integer, Question> mapNumberToQuestion = new HashMap<Integer, Question>();
-
     private List<Question> listOfQuestions = new ArrayList<Question>();
-
-    //@Value("classpath:data/questions.csv")
-    //Resource resourceFile;
 
     private final String resourceFileName;
 
@@ -30,12 +25,10 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     private Resource loadQuestions() {
-        //return new ClassPathResource("data/questions.csv");
         return new ClassPathResource(resourceFileName);
     }
 
     private void parse(String fileContent){
-        //log.info("fileContent="+fileContent);
         if(fileContent!=null){
             String[] lines = fileContent.split(System.lineSeparator());
             int i = 0;
@@ -51,7 +44,6 @@ public class QuestionDaoImpl implements QuestionDao {
 
         }
     }
-
 
 
     @Override
