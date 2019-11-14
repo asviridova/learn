@@ -5,30 +5,35 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import ru.otus.spring.domain.Question;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class QuestionDaoImpl implements QuestionDao {
 
-    private Map<String, String> mapQuestionToAnswer = new HashMap<String, String>();
-    private Map<Integer, Question> mapNumberToQuestion = new HashMap<Integer, Question>();
+    private List<Question> listOfQuestions = new ArrayList<Question>();
 
-    //@Value("classpath:data/questions.csv")
-    //Resource resourceFile;
+    private final String resourceFileName;
 
     private String fileContent;
-    public QuestionDaoImpl(){
+    public QuestionDaoImpl(String defaultResourceFileName, Locale locale){
+        ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
+
+        String fileName = messages.getString("file.data");
+        if (StringUtils.isEmpty(fileName)) {
+            resourceFileName = defaultResourceFileName;
+        }
+        else{
+            resourceFileName = fileName;
+        }
         Resource resourceFile = loadQuestions();
         fileContent = ResourceReader.asString(resourceFile);
         parse(fileContent);
     }
 
-    public Resource loadQuestions() {
-        return new ClassPathResource("data/questions.csv");
+    private Resource loadQuestions() {
+        return new ClassPathResource(resourceFileName);
     }
 
     private void parse(String fileContent){
-        //log.info("fileContent="+fileContent);
         if(fileContent!=null){
             String[] lines = fileContent.split(System.lineSeparator());
             int i = 0;
@@ -38,23 +43,20 @@ public class QuestionDaoImpl implements QuestionDao {
                     String questionElement = elements[0];
                     String answerElement = StringUtils.trimWhitespace(elements[1]);
                     Question question = new Question(questionElement, answerElement);
-                    mapQuestionToAnswer.put(questionElement, answerElement);
-                    mapNumberToQuestion.put(++i, question);
+                    listOfQuestions.add(question);
                 }
             }
 
         }
     }
 
-    @Override
-    public Map<String, String> getMap(){
-        return mapQuestionToAnswer;
-    }
-
 
     @Override
     public Question getQuestionByNumber(int number){
-        return mapNumberToQuestion.get(number);
+        if(listOfQuestions.size() >= number) {
+            return listOfQuestions.get(number - 1);
+        }
+        return null;
     }
 
 }
