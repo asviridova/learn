@@ -27,7 +27,8 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" th:action="@{/api/save}" th:method="post" action="list.html">
+<!--form id="edit-form" th:action="@{/api/save}" th:method="post" action="list.html"-->
+<form id="edit-form" th:method="post" action="/api/save">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -94,6 +95,24 @@
             })
         }, 1000)
     });
+
+    $( "#edit-form" ).submit(function( event ) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        // Get some values from elements on the page:
+        var $form = $( this ),
+            id = $form.find( "input[name='id']" ).val(),
+            name = $form.find( "input[name='name']" ).val(),
+            authorId = $form.find( "select[name='authorId']" ).val(),
+            genreId = $form.find( "select[name='genreId']" ).val(),
+            url = $form.attr( "action" );
+        // Send the data using post
+        var posting = $.post( url, {id: id, name: name, authorId: authorId, genreId: genreId } );
+        posting.done(function( data ) {
+            window.open("/", "_self");
+        });
+    });
+
 
 </script>
 

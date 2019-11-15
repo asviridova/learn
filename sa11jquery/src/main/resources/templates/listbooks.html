@@ -45,26 +45,16 @@
         $.get('/api/books').done(function (books) {
             books.forEach(function (book) {
                 $('#table_books').append(`
-                    <tr>
-                        <td>${book.id}</td>
+                    <tr class="bookrow">
+                        <td name="bookid">${book.id}</td>
                         <td>${book.name}</td>
                         <td>${book.author.name}</td>
                         <td>${book.genre.name}</td>
-                        <!--td>b1<a href=# onclick='alert("b1")' />TTT</td-->
                         <td>
-                            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+                            <a href="/edit" class="edit_href" data-href="/api/save">Edit</a>
                         </td>
                         <td>
-                        <!--a href=# class="Test" data-href="/remove(id=${book.id})">Remove</a-->
-                        <a href=# class="Test" data-href="/remove">Remove</a>
-
-                            <!--a th:href="@{/remove(id=${book.id})}" action="@{/remove}">Remove</a-->
-                            <!--a th:href="@{/remove(id=${book.id})}" href="listbooks.html">Remove</a-->
-                            <!--form id="remove-form" th:action="@{/remove}" th:method="post" action="listbooks.html">
-                                <input type="hidden" name="id" th:value="${book.id}">${book.id}</input>
-                                <a href="#" onclick="this.parentNode.submit()">Remove</a>
-                            </form-->
-
+                            <a href=# class="remove_href" data-href="/api/remove">Remove</a>
                         </td>
                     </tr>
                 `)
@@ -72,24 +62,60 @@
         })
     });
 
-    //$tbl.append(' <tr><td> <a href=# class=Test data-href="' + href + '">' + '... the rest of your line');
-    $(document).on('click', '.Test', function () {
-        console.log("Clicked");
-//        $(this).attr('href',$(this).attr('data-href').sen);
-        $(this).attr('href',$(this).attr('data-href'));
+
+    $("#table_books").on("click", "tr a", function (e) {
+        e.stopPropagation();
+
+        var bowl_setting_row_data = [];
+        var id;
+        $('td', $(this).closest('tr')).each(function () {
+            bowl_setting_row_data.push($(this).text());
+            var name = $(this).attr("name");
+            if (name == 'bookid') {
+                id = $(this).text();
+            }
+        });
+        console.log("selected id:" + id);
+        var url = $(this).attr("data-href");
+        var urlPage = $(this).attr("href");
+        var className = $(this).attr("class");
+        console.log("url:" + url);
+        console.log("urlPage:" + urlPage);
+        console.log("className:" + className);
+
+        if (className == 'remove_href') {
+            var posting = $.get(url, {id: id});
+            posting.done(function (data) {
+                window.open("/", "_self");
+            });
+        }
+        else{
+            if (className == 'edit_href') {
+
+                $.ajax({
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    url: urlPage,
+                    //dataType: "json",
+                    data: { id: id }, // or the string: 'id=1'
+                    complete:
+                        function () {
+                            window.location = urlPage;
+                        }
+
+                });
+
+                /*posting.done(function (data) {
+                    window.open(urlPage, "_self");
+                });*/
+            }
+        }
+
     });
 
-   /* $('td.link').each(function() {
-        $(this).html('<a href="/remove">' + $(this).html() + '</a>')
-    });
-*/
+
 
 </script>
-<!--script>
-    $(function(){
-        $('#table_books').click(function(){ $(this).find('a').click()});
-    })
-</script-->
 
 
 <br/>

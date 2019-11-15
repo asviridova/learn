@@ -27,8 +27,7 @@
 <body>
 
 <!-- Book edition -->
-<!--form id="insert-form" th:action="@{/insert}" th:method="post" action="listbooks.html"-->
-<form id="insert-form" th:action="@{/api/insert}" th:method="post" action="listbooks.html">
+<form id="insert-form" th:method="post" action="/api/insert">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -45,7 +44,6 @@
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
         </select>
     </div>
@@ -55,34 +53,48 @@
         <button type="submit" onClick="" name="submit" value="value" class="link-button">Insert</button>
     </div>
 
-    <script>
-        <!-- Authors -->
-        $(function () {
-            $.get('/api/authors').done(function (authors) {
-                authors.forEach(function (author) {
-                    $('#author-input').append(`
+</form>
+
+<script>
+    <!-- Authors -->
+    $(function () {
+        $.get('/api/authors').done(function (authors) {
+            authors.forEach(function (author) {
+                $('#author-input').append(`
                         <option value=${author.id}>${author.name}</option>
                 `)
-                });
-            })
-        });
-    </script>
-    <script>
+            });
+        })
+    });
 
-        <!-- Genres -->
-        $(function () {
-            $.get('/api/genres').done(function (genres) {
-                genres.forEach(function (genre) {
-                    $('#genre-input').append(`
+    <!-- Genres -->
+    $(function () {
+        $.get('/api/genres').done(function (genres) {
+            genres.forEach(function (genre) {
+                $('#genre-input').append(`
                         <option value=${genre.id}>${genre.name}</option>
                 `)
-                });
-            })
+            });
+        })
+    });
+
+
+    $( "#insert-form" ).submit(function( event ) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        // Get some values from elements on the page:
+        var $form = $( this ),
+            name = $form.find( "input[name='name']" ).val(),
+            authorId = $form.find( "select[name='authorId']" ).val(),
+            genreId = $form.find( "select[name='genreId']" ).val(),
+            url = $form.attr( "action" );
+        // Send the data using post
+        var posting = $.post( url, { name: name, authorId: authorId, genreId: genreId } );
+        posting.done(function( data ) {
+            window.open("/", "_self");
         });
-
-    </script>
-
-</form>
+    });
+</script>
 
 </body>
 </html>
