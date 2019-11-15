@@ -24,7 +24,6 @@ public class StudentsTestServiceImpl implements StudentsTestService {
     private boolean flagTestFinished = false;
 
     private final AppConfig appConfig;
-    //private final ResourceBundle messages;
     private final LocalizationService localizationService;
 
     @Autowired
@@ -32,7 +31,6 @@ public class StudentsTestServiceImpl implements StudentsTestService {
         this.questionDao = questionDao;
         this.appConfig = appConfig;
         this.localizationService = localizationService;
-        //messages = ResourceBundle.getBundle("messages", appConfig.getLocale());
 
     }
 
