@@ -3,28 +3,24 @@ package ru.otus.spring.dao;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.otus.spring.config.AppConfig;
 import ru.otus.spring.domain.Question;
 
 import java.util.*;
 
-@Component
+@Service
 public class QuestionDaoImpl implements QuestionDao {
 
     private List<Question> listOfQuestions = new ArrayList<>();
 
     private final String resourceFileName;
 
-    private String fileContent;
-
-    private AppConfig appConfig;
-
     public QuestionDaoImpl(AppConfig appConfig){
-        this.appConfig = appConfig;
         resourceFileName = appConfig.getResourceFileName();
         Resource resourceFile = loadQuestions();
-        fileContent = ResourceReader.asString(resourceFile);
+        String fileContent = ResourceReader.asString(resourceFile);
         parse(fileContent);
     }
 
