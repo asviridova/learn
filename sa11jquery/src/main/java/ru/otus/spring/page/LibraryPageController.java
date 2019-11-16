@@ -18,9 +18,6 @@ import ru.otus.spring.service.GenreService;
 
 import java.util.Collection;
 
-//https://api.jquery.com/jQuery.post/
-//https://stackoverflow.com/questions/404891/how-to-pass-values-from-one-page-to-another-in-jquery
-//https://stackoverflow.com/questions/4350674/passing-variables-with-post-to-another-page-with-jquery
 
 @Controller
 @Slf4j
@@ -53,6 +50,15 @@ public class LibraryPageController {
     @PostMapping("/add")
     public String addBookPage(Model model) {
         return "create";
+    }
+
+    @PostMapping("/edit")
+    public String editBookPage(@RequestParam("id") long id, Model model) {
+        log.debug("selected book id:"+id);
+        Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
+        model.addAttribute("book", book);
+        model.addAttribute("book_id", book.getId());
+        return "edit";
     }
 
 

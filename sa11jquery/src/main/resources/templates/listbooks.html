@@ -66,10 +66,8 @@
     $("#table_books").on("click", "tr a", function (e) {
         e.stopPropagation();
 
-        var bowl_setting_row_data = [];
         var id;
         $('td', $(this).closest('tr')).each(function () {
-            bowl_setting_row_data.push($(this).text());
             var name = $(this).attr("name");
             if (name == 'bookid') {
                 id = $(this).text();
@@ -91,12 +89,9 @@
         }
         else{
             if (className == 'edit_href') {
-
                 $.ajax({
                     type: "POST",
-                    //contentType: "application/json; charset=utf-8",
                     url: urlPage,
-                    //dataType: "json",
                     data: { id: id }, // or the string: 'id=1'
                     complete:
                         function () {
