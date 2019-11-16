@@ -1,3 +1,4 @@
-logging:
-  level:
-    root: INFO
+application:
+  success-count: 3
+  locale-language: ru
+  file-name-pattern: questions_%s.csv
