@@ -51,7 +51,7 @@
                         <td>${book.author.name}</td>
                         <td>${book.genre.name}</td>
                         <td>
-                            <a href="/edit" class="edit_href" data-href="/api/save">Edit</a>
+                            <a href="/edit" class="edit_href" data-href="/api/edit">Edit</a>
                         </td>
                         <td>
                             <a href=# class="remove_href" data-href="/api/remove">Remove</a>
@@ -89,8 +89,19 @@
         }
         else{
             if (className == 'edit_href') {
-                $.ajax({
-                    type: "POST",
+                //window.open("/edit?id="+id, "_self");
+
+                var posting = $.get(url, {id: id});
+                posting.done(function (data) {
+                    window.open("/edit?id="+id, "_self");
+                });
+                /*$.get(urlPage+"?id="+id, function(data, status) {
+                    console.log(data, status);
+                });*/
+
+
+               /* $.ajax({
+                    type: "GET",
                     url: urlPage,
                     data: { id: id }, // or the string: 'id=1'
                     complete:
@@ -98,7 +109,7 @@
                             window.location = urlPage;
                         }
 
-                });
+                });*/
 
                 /*posting.done(function (data) {
                     window.open(urlPage, "_self");

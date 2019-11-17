@@ -84,5 +84,9 @@ public class LibraryController {
         bookService.insert(name, authorId, genreId);
     }
 
+    @GetMapping("/api/edit")
+    public void editBook(@RequestParam("id") long id, Model model) {
+    }
+
 
 }

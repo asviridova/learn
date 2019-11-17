@@ -42,22 +42,15 @@ public class LibraryPageController {
     }
 
 
-    @GetMapping("/edit")
-    public String editBookPage(Model model) {
-        return "edit";
-    }
-
     @PostMapping("/add")
     public String addBookPage(Model model) {
         return "create";
     }
 
-    @PostMapping("/edit")
+
+    @GetMapping("/edit")
     public String editBookPage(@RequestParam("id") long id, Model model) {
         log.debug("selected book id:"+id);
-        Book book = bookService.getById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("book", book);
-        model.addAttribute("book_id", book.getId());
         return "edit";
     }
 
