@@ -1,4 +1,4 @@
 application:
   success-count: 3
   locale-language: ru
-  file-name-pattern: questions_%s.csv
+  file-name-pattern: data/questions_%s.csv

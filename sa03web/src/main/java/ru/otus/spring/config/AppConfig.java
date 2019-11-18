@@ -30,17 +30,31 @@ public class AppConfig {
     private String fileNamePattern;
 
     public AppConfig(){
-        if(StringUtils.isEmpty(localeLanguage)){
-            localeLanguage = DEFAULT_LOCALE_LANG;
-        }
-        locale = new Locale(localeLanguage);
-        if(StringUtils.isEmpty(fileNamePattern)){
-            fileNamePattern = DEFAULT_RESOURCE_FILE_PATTERN;
-        }
-        resourceFileName = String.format(fileNamePattern, localeLanguage);
-
     }
 
+    public String getResourceFileName() {
+        if(StringUtils.isEmpty(resourceFileName)) {
+            if(StringUtils.isEmpty(localeLanguage)){
+                localeLanguage = DEFAULT_LOCALE_LANG;
+            }
+            if(StringUtils.isEmpty(fileNamePattern)){
+                fileNamePattern = DEFAULT_RESOURCE_FILE_PATTERN;
+            }
+            resourceFileName = String.format(fileNamePattern, localeLanguage);
+        }
+        return resourceFileName;
+    }
 
+    public Locale getLocale() {
+        if(locale==null){
+            if(StringUtils.isEmpty(localeLanguage)){
+                locale = new Locale(DEFAULT_LOCALE_LANG);
+            }
+            else {
+                locale = new Locale(localeLanguage);
+            }
+        }
+        return locale;
+    }
 
 }
