@@ -1,18 +1,16 @@
 package ru.otus.spring.service;
 
-import java.util.Locale;
 import java.util.Map;
 
-public interface BiologyTestService {
-    Map<String, String> getMap();
-
+public interface StudentsTestService {
     String getCurrentQuestion();
 
     String getCurrentAnswer();
 
     void checkCurrentAnswer(String answer);
 
-    public void setLanguage(String language);
+    boolean isFlagTestFinished();
 
+    void setFio(String fio) ;
 
 }

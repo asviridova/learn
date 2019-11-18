@@ -3,60 +3,63 @@ package ru.otus.spring.shell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.spring.service.BiologyTestService;
+import ru.otus.spring.service.StudentAccountService;
+import ru.otus.spring.service.StudentsTestService;
 
 @ShellComponent
 public class BiologyTestCommands {
-    private final BiologyTestService biologyTestService;
+    private final StudentsTestService studentsTestService;
+    private final StudentAccountService studentAccountService;
 
     @Autowired
-    public BiologyTestCommands(BiologyTestService biologyTestService){
-        this.biologyTestService = biologyTestService;
+    public BiologyTestCommands(StudentsTestService studentsTestService, StudentAccountService studentAccountService){
+        this.studentsTestService = studentsTestService;
+        this.studentAccountService = studentAccountService;
     }
 
-    @ShellMethod(value = "getMap",  key ={ "get-map", "map" })
-    public String getMap(){
-        return biologyTestService.getMap().toString();
-
-    }
 
     @ShellMethod(value = "getStart",  key ={ "start" })
-    public String getStart(String language){
-        biologyTestService.setLanguage(language);
-        return biologyTestService.getCurrentQuestion();
+    public String getStart(){
+        return  studentAccountService.getAgreement();
+    }
 
+    @ShellMethod(value = "fio",  key ={ "fio" })
+    public String setFio( String fio){
+        studentsTestService.setFio(fio);
+        return getNextQuestion();
     }
 
 
     @ShellMethod(value = "getNext",  key ={ "next" })
     public String getNextQuestion(){
-        return biologyTestService.getCurrentQuestion();
+        String question = studentsTestService.getCurrentQuestion();
+        return question;
 
     }
 
     @ShellMethod(value = "getCurrentAnswer",  key ={ "info", "h" })
     public String getCurrentAnswer(){
-        return biologyTestService.getCurrentAnswer();
+        return studentsTestService.getCurrentAnswer();
 
     }
 
 
     @ShellMethod(value = "checkA",  key ={ "a", "A" })
     public String checkA(){
-        biologyTestService.checkCurrentAnswer("a");
-        return biologyTestService.getCurrentQuestion();
+        studentsTestService.checkCurrentAnswer("a");
+        return studentsTestService.getCurrentQuestion();
     }
 
     @ShellMethod(value = "checkB",  key ={ "b", "B" })
     public String checkB(){
-        biologyTestService.checkCurrentAnswer("b");
-        return biologyTestService.getCurrentQuestion();
+        studentsTestService.checkCurrentAnswer("b");
+        return studentsTestService.getCurrentQuestion();
     }
 
     @ShellMethod(value = "checkC",  key ={ "c", "C" })
     public String checkC(){
-        biologyTestService.checkCurrentAnswer("c");
-        return biologyTestService.getCurrentQuestion();
+        studentsTestService.checkCurrentAnswer("c");
+        return studentsTestService.getCurrentQuestion();
     }
 
 }
