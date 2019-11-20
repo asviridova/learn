@@ -2,3 +2,8 @@ application:
   success-count: 3
   locale-language: ru
   file-name-pattern: data/questions_%s.csv
+
+spring:
+  shell:
+    interactive:
+      enabled: false

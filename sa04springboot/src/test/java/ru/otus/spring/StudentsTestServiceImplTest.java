@@ -13,7 +13,7 @@ import ru.otus.spring.service.StudentsTestServiceImpl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class MockStudentTest {
+public class StudentsTestServiceImplTest {
 
     @MockBean
     private QuestionDaoImpl questionDao;

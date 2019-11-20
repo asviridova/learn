@@ -1,8 +1,10 @@
 package ru.otus.spring.shell;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import ru.otus.spring.service.StudentAccountService;
 import ru.otus.spring.service.StudentsTestService;
 
@@ -11,6 +13,9 @@ public class BiologyTestCommands {
     private final StudentsTestService studentsTestService;
     private final StudentAccountService studentAccountService;
 
+    private boolean available = false;
+    private boolean fioIsDefined = false;
+
     @Autowired
     public BiologyTestCommands(StudentsTestService studentsTestService, StudentAccountService studentAccountService){
         this.studentsTestService = studentsTestService;
@@ -18,48 +23,42 @@ public class BiologyTestCommands {
     }
 
 
-    @ShellMethod(value = "getStart",  key ={ "start" })
+    @ShellMethod(value = "getStart",  key ={ "start" , "START"})
     public String getStart(){
+        available = true;
         return  studentAccountService.getAgreement();
     }
 
+
     @ShellMethod(value = "fio",  key ={ "fio" })
+    @ShellMethodAvailability("fioAvailability")
     public String setFio( String fio){
+        fioIsDefined = true;
         studentsTestService.setFio(fio);
         return getNextQuestion();
     }
 
+    public Availability fioAvailability() {
+        return available ? Availability.available() : Availability.unavailable("You should put START command first");
+    }
 
-    @ShellMethod(value = "getNext",  key ={ "next" })
+    public Availability questionAvailability() {
+        return fioIsDefined ? Availability.available() : Availability.unavailable("You should put FIO command first");
+    }
+
     public String getNextQuestion(){
         String question = studentsTestService.getCurrentQuestion();
         return question;
 
     }
 
-    @ShellMethod(value = "getCurrentAnswer",  key ={ "info", "h" })
-    public String getCurrentAnswer(){
-        return studentsTestService.getCurrentAnswer();
 
-    }
-
-
-    @ShellMethod(value = "checkA",  key ={ "a", "A" })
-    public String checkA(){
-        studentsTestService.checkCurrentAnswer("a");
+    @ShellMethod(value = "checkAnswer",  key ={ "answer", "#" })
+    @ShellMethodAvailability("questionAvailability")
+    public String checkAnswer(String answer){
+        studentsTestService.checkCurrentAnswer(answer);
         return studentsTestService.getCurrentQuestion();
     }
 
-    @ShellMethod(value = "checkB",  key ={ "b", "B" })
-    public String checkB(){
-        studentsTestService.checkCurrentAnswer("b");
-        return studentsTestService.getCurrentQuestion();
-    }
-
-    @ShellMethod(value = "checkC",  key ={ "c", "C" })
-    public String checkC(){
-        studentsTestService.checkCurrentAnswer("c");
-        return studentsTestService.getCurrentQuestion();
-    }
 
 }
