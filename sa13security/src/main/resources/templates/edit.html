@@ -38,19 +38,6 @@
         <input id="name-input" name="name" type="text" th:value="${book.name}" value=""/>
     </div>
 
-    <!--div class="row">
-        <input id="authorId-input" name="authorId" type="hidden" readonly="readonly" th:value="${book.author.id}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <label for="author-input">Author Name:</label>
-        <input id="author-input" name="authorName" type="text" readonly="readonly" th:value="${book.author.name}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <input id="genreId-input" name="genreId" type="hidden" readonly="readonly" th:value="${book.genre.id}" value=""/>
-    </div-->
-
     <div class="row">
         <label for="author-input">Author Name:</label>
         <select id="author-input" name="authorId" type="text" >
@@ -64,7 +51,6 @@
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
             <option th:each="genre : ${genres}"
                     th:value="${genre.id}"
@@ -74,10 +60,6 @@
         </select>
     </div>
 
-
-    <!--div class="row">
-        <a th:href="@{/save(id=${book.id}, name=${book.name}, authorId=${book.author.id}, genreId=${book.genre.id})}" href="">Edit</a>
-    </div-->
 
     <div class="row">
         <button type="submit" onClick="" name="submit" value="value" class="link-button">Save</button>

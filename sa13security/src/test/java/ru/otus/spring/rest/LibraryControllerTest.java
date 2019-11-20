@@ -38,9 +38,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//https://spring.io/guides/gs/testing-web/
-//https://reflectoring.io/spring-boot-web-controller-test/
-
 @WebMvcTest(controllers = LibraryController.class)
 @ComponentScan({"ru.otus.spring", "ru.otus.spring.domain"})
 public class LibraryControllerTest {
@@ -68,7 +65,6 @@ public class LibraryControllerTest {
             username = "admin",
             authorities = {"ROLE_ADMIN"}
     )
-
     @Test
     public void check(){
         try {
@@ -115,6 +111,7 @@ public class LibraryControllerTest {
 
     @Test
     @DisplayName("Основная стартовая страница")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void testMainPage() throws Exception {
         //подготовка данных
         initTestData();
@@ -133,6 +130,7 @@ public class LibraryControllerTest {
 
     @Test
     @DisplayName("Страница редактирования книги")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void testEditPage() throws Exception {
         initTestData();
         given(bookService.getById(1L)).willReturn(otelloOptional);
@@ -146,6 +144,7 @@ public class LibraryControllerTest {
 
     @Test
     @DisplayName("Основная стартовая страница после удаления")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void testRemovePage() throws Exception {
         //подготовка данных
         initTestData();
@@ -153,13 +152,14 @@ public class LibraryControllerTest {
         mockMvc.perform(post("/remove").param("id", "1"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login")); //was redirectedUrl("/")
-//                .andExpect(redirectedUrl("/")); //was redirectedUrl("/")
+//                .andExpect(redirectedUrl("http://localhost/login")); //was redirectedUrl("/")
+                .andExpect(redirectedUrl("/")); //was redirectedUrl("/")
     }
 
 
     @Test
     @DisplayName("Страница добавления")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void testAddPage() throws Exception {
         initTestData();
         mockMvc.perform(post("/add")
@@ -169,6 +169,7 @@ public class LibraryControllerTest {
 
     @Test
     @DisplayName("Сохранение книги и переход на основную страницу")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void  testSaveBook() throws Exception{
         mockMvc.perform(
                 post("/save")

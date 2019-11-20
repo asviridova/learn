@@ -26,17 +26,6 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
-//https://html.com/tags/
-//https://www.thymeleaf.org/doc/articles/petclinic.html
-
-//http://localhost:8080/
-
-//https://habr.com/ru/post/435062/
-//https://o7planning.org/ru/11659/thymeleaf-form-select-option-example
-
-//https://stackoverflow.com/questions/17955777/redirect-to-an-external-url-from-controller-action-in-spring-mvc
-//https://www.baeldung.com/spring-redirect-and-forward
-
 @Controller
 public class LibraryController {
 
@@ -109,18 +98,6 @@ public class LibraryController {
         model.addAttribute("genres",  ((Collection<Genre>) genres));
     }
 
-    private void fillStartPageModel(ModelMap model){
-        Iterable<Book> books = bookService.getAll();
-        model.addAttribute("books",  ((Collection<Book>) books));
-        fillAuthorAndGenreModel(model);
-    }
-
-    private void fillAuthorAndGenreModel(ModelMap model){
-        Iterable<Author> authors = authorService.getAll();
-        model.addAttribute("authors",  ((Collection<Author>) authors));
-        Iterable<Genre> genres = genreService.getAll();
-        model.addAttribute("genres",  ((Collection<Genre>) genres));
-    }
 
 }
 

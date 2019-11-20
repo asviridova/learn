@@ -22,8 +22,6 @@ public class Author {
     @Column(name = "nationality", nullable = true, unique = false)
     private String nationality;
 
-    //@OneToMany(mappedBy = "author")
-    //private List<Book> books;
     public Author(String name, String nationality) {
         this.id = null;
         this.name = name;

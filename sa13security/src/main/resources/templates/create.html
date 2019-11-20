@@ -45,7 +45,6 @@
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
             <option th:each="genre : ${genres}"
                     th:value="${genre.id}"
