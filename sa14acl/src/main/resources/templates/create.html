@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Book edition -->
+<form id="insert-form" th:action="@{/insert}" th:method="post" action="list.html">
+    <h1>Book Info:</h1>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text" value=""/>
+    </div>
+
+    <div class="row">
+        <label for="author-input">Author Name:</label>
+        <select id="author-input" name="authorId" type="text" >
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:utext="${author.name}"
+            />
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre Name:</label>
+        <select id="genre-input" name="genreId" type="text" >
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:utext="${genre.name}"
+            />
+        </select>
+    </div>
+
+
+    <div class="row">
+        <button type="submit" onClick="" name="submit" value="value" class="link-button">Insert</button>
+    </div>
+
+
+</form>
+
+</body>
+</html>
