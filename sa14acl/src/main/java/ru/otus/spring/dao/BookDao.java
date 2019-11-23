@@ -24,7 +24,4 @@ public interface BookDao extends JpaRepository<Book, Long>  {
     @EntityGraph(value = "BookGraph")
     List<Book> findAll();
 
-    //@PreAuthorize("hasPermission(#book, 'WRITE')")
-    //Book save(@Param("book") Book book);
-
 }

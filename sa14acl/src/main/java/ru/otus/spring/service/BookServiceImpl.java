@@ -56,7 +56,6 @@ public class BookServiceImpl implements BookService {
         Optional<Genre> genre = genreService.getById(genreId);
         if(author!=null && genre.get() != null) {
             Book book = new Book(id, name, author.get(), genre.get());
-            //Book bookNew = bookDao.save(book );
             Book bookNew = updateBookInRepository(book);
             LOGGER.info("Book inserted with id = "+bookNew.getId()+", name = "+name+", authorname = "+author.get().getName()+" genrename="+genre.get().getName());
             return bookNew.getId();
@@ -64,7 +63,6 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
-    //@PreAuthorize("hasPermission(#book, 'WRITE')")
     private Book updateBookInRepository(Book book){
         Book bookNew = bookDaoCustom.save(book );
         return bookNew;

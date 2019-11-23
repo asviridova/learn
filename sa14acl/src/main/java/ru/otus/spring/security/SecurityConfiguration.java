@@ -24,16 +24,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-   /* @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/swagger-ui.html")
-                .antMatchers("/webjars/springfox-swagger-ui/**")
-                .antMatchers("/swagger-resources/**")
-                .antMatchers("/v2/api-docs")
-                .antMatchers("/h2-console/**");
-    }*/
-
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -53,15 +43,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    /*@Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("admin1").roles("ADMIN");
-        auth.inMemoryAuthentication()
-                .withUser("user").password("user1").roles("USER");
-
-    }
-*/
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
