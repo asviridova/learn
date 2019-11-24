@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-//https://www.concretepage.com/spring-5/spring-batch-h2-database
 
 @EnableBatchProcessing
 @Configuration
@@ -64,41 +63,6 @@ public class BatchConfigLibrary {
                 .build();
     }
 
-
-    /*@Bean
-    public ItemReader<Person> mongoReader(MongoTemplate mongoTemplate) {
-        return new MongoItemReaderBuilder<Person>()
-                .name("mongoReader")
-                .sorts(new HashMap<>())
-                .jsonQuery("{}")
-                .template(mongoTemplate)
-                .collection("person")
-                .targetType(Person.class)
-                .build();
-    }*/
-
-
-    /*@Bean
-    public ItemReader<Person> reader() {
-        return new FlatFileItemReaderBuilder<Person>()
-                .name("personItemReader")
-                .resource(new FileSystemResource("entries.csv"))
-                .delimited()
-                .names(new String[]{"name", "age"})
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
-                    setTargetType(Person.class);
-                }})
-                .build();
-    }*/
-
-    /*@Bean
-    public ItemProcessor processor() {
-        return (ItemProcessor<Person, Person>) person -> {
-            person.onBirthDay();
-            return person;
-        };
-    }*/
-
     @Bean
     public ItemProcessor<Author, AuthorJpa> processorAuthor() {
         return (ItemProcessor<Author, AuthorJpa>) author -> {
@@ -111,14 +75,6 @@ public class BatchConfigLibrary {
     }
 
 
-    /*@Bean
-    public FlatFileItemWriter writer() {
-        return new FlatFileItemWriterBuilder<>()
-                .name("personItemWriter")
-                .resource(new FileSystemResource("output.csv"))
-                .lineAggregator(new DelimitedLineAggregator<>())
-                .build();
-    }*/
 
     @Bean
     public JdbcBatchItemWriter<AuthorJpa> writer(DataSource dataSource) {
