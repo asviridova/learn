@@ -1,4 +1,4 @@
-package ru.otus.spring;
+package ru.otus.spring.batch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +26,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.jpa.domain.AuthorJpa;
+import ru.otus.spring.jpa.domain.BookJpa;
 import ru.otus.spring.jpa.domain.GenreJpa;
 import ru.otus.spring.repostory.AuthorRepository;
+import ru.otus.spring.repostory.GenreRepository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 //https://www.concretepage.com/spring-5/spring-batch-h2-database
 
@@ -256,6 +260,110 @@ public class BatchConfigLibrary {
                     public void beforeChunk(ChunkContext chunkContext) {logger.info("Начало пачки Genre");}
                     public void afterChunk(ChunkContext chunkContext) {logger.info("Конец пачки Genre");}
                     public void afterChunkError(ChunkContext chunkContext) {logger.info("Ошибка пачки Genre");}
+                })
+//                .taskExecutor(new SimpleAsyncTaskExecutor())
+                .build();
+    }
+
+    //-----------------------
+
+    @Bean
+    public Job importBookJob(Step stepBooks) {
+        return jobBuilderFactory.get("importBookJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(stepBooks)
+                .end()
+                .listener(new JobExecutionListener() {
+                    @Override
+                    public void beforeJob(JobExecution jobExecution) {
+                        logger.info("Начало job books");
+                    }
+
+                    @Override
+                    public void afterJob(JobExecution jobExecution) {
+                        logger.info("Конец job books");
+                    }
+                })
+                .build();
+    }
+
+    @Bean
+    public ItemReader<Book> mongoReaderBooks(MongoTemplate mongoTemplate) {
+        return new MongoItemReaderBuilder<Book>()
+                .name("mongoReaderBooks")
+                .sorts(new HashMap<>())
+                .jsonQuery("{}")
+                .template(mongoTemplate)
+                .collection("book")
+                .targetType(Book.class)
+                .build();
+    }
+
+    @Autowired
+    AuthorRepository authorRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
+
+    @Bean
+    public ItemProcessor<Book, BookJpa> processorBook() {
+        return (ItemProcessor<Book, BookJpa>) book -> {
+            Optional<Genre> genre = genreRepository.findById(book.getGenre().getId());
+            GenreJpa genreJpa = new GenreJpa();
+            genreJpa.setId(Long.parseLong(genre.get().getId()));
+            genreJpa.setName(genre.get().getName());
+
+            Optional<Author> author = authorRepository.findById(book.getAuthor().getId());
+            AuthorJpa authorJpa = new AuthorJpa();
+            authorJpa.setId(Long.parseLong(author.get().getId()));
+            authorJpa.setName(author.get().getName());
+            authorJpa.setNationality(author.get().getNationality());
+
+            BookJpa bookJpa = new BookJpa();
+            bookJpa.setId(Long.parseLong(book.getId()));
+            bookJpa.setName(book.getName());
+            bookJpa.setAuthor(authorJpa);
+            bookJpa.setGenre(genreJpa);
+            return bookJpa;
+        };
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<BookJpa> writerBook(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<BookJpa>()
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<BookJpa>())
+                .sql("INSERT INTO book (id, name, authorId, genreId) VALUES (:id, :name, :author.id, :genre.id)")
+                .dataSource(dataSource)
+                .build();
+    }
+
+
+    @Bean
+    public Step stepBooks(JdbcBatchItemWriter<BookJpa> writer, ItemReader<Book> reader, ItemProcessor processorBook) {
+        return stepBuilderFactory.get("stepBooks")
+                .chunk(5)
+                .reader(reader)
+                .processor(processorBook)
+                .writer(writer)
+                .listener(new ItemReadListener() {
+                    public void beforeRead() { logger.info("Начало чтения Book"); }
+                    public void afterRead(Object o) { logger.info("Конец чтения Book"); }
+                    public void onReadError(Exception e) { logger.info("Ошибка чтения Book"); }
+                })
+                .listener(new ItemWriteListener() {
+                    public void beforeWrite(List list) { logger.info("Начало записи Book"); }
+                    public void afterWrite(List list) { logger.info("Конец записи Book"); }
+                    public void onWriteError(Exception e, List list) { logger.info("Ошибка записи Book"); }
+                })
+                .listener(new ItemProcessListener() {
+                    public void beforeProcess(Object o) {logger.info("Начало обработки Book");}
+                    public void afterProcess(Object o, Object o2) {logger.info("Конец обработки Book");}
+                    public void onProcessError(Object o, Exception e) {logger.info("Ошбка обработки Book");}
+                })
+                .listener(new ChunkListener() {
+                    public void beforeChunk(ChunkContext chunkContext) {logger.info("Начало пачки Book");}
+                    public void afterChunk(ChunkContext chunkContext) {logger.info("Конец пачки Book");}
+                    public void afterChunkError(ChunkContext chunkContext) {logger.info("Ошибка пачки Book");}
                 })
 //                .taskExecutor(new SimpleAsyncTaskExecutor())
                 .build();
