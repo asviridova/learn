@@ -62,26 +62,26 @@ public class LibraryController {
     }
 
     @GetMapping("/api/remove")
-    public void removeBook(@RequestParam("id") String id, Model model) {
-        bookService.deleteById(id);
+    public Mono<Void> removeBook(@RequestParam("id") String id, Model model) {
+        return bookService.deleteById(id);
     }
 
     @PostMapping("/api/save")
-    public void saveBook(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("authorId") String authorId,
+    public Mono<Book> saveBook(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("authorId") String authorId,
                          @RequestParam("genreId") String genreId) {
         log.debug("FROM FORM: id="+id+", name="+name+", authorId="+authorId+", genreId="+genreId);
-        bookService.update(id, name, authorId, genreId);
+        return bookService.update(id, name, authorId, genreId);
     }
 
     @PostMapping("/api/insert")
-    public void insertBook(@RequestParam("name") String name, @RequestParam("authorId") String authorId,
+    public Mono<Book> insertBook(@RequestParam("name") String name, @RequestParam("authorId") String authorId,
                            @RequestParam("genreId") String genreId) {
         log.debug("FROM FORM: name="+name+", authorId="+authorId+", genreId="+genreId);
-        bookService.insert(name, authorId, genreId);
+        return bookService.insert(name, authorId, genreId);
     }
 
     @GetMapping("/api/edit")
-    public void editBook(@RequestParam("id") long id, Model model) {
+    public void editBook(@RequestParam("id") String id, Model model) {
     }
 
 
