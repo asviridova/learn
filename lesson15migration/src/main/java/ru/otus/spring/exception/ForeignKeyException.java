@@ -1,6 +1,5 @@
 package ru.otus.spring.exception;
 
-//@ResponseStatus(value= HttpStatus.CONFLICT, reason="ForeignKeyException")
 public class ForeignKeyException  extends RuntimeException{
 
     public ForeignKeyException(String message) {

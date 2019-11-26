@@ -18,10 +18,6 @@ public class BatchService {
     @Autowired
     JobOperator jobOperator;
 
-    //@Autowired
-    //@Qualifier("importBookJob")
-    //private JobLauncher importBookJob;
-
     @Autowired
     @Qualifier("importBookJob")
     Job importBookJob;
@@ -33,14 +29,6 @@ public class BatchService {
     @Autowired
     @Qualifier("importGenreJob")
     Job importGenreJob;
-
-    /*public void launchJob(Job job) {
-        try {
-            jobLauncher.run(job, new JobParameters());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void launchImportBookJob() {
         try {

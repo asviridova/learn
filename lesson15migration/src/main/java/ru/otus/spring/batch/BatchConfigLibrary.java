@@ -132,7 +132,6 @@ public class BatchConfigLibrary {
                     public void afterChunk(ChunkContext chunkContext) {logger.info("Конец пачки Author");}
                     public void afterChunkError(ChunkContext chunkContext) {logger.info("Ошибка пачки Author");}
                 })
-//                .taskExecutor(new SimpleAsyncTaskExecutor())
                 .build();
     }
 
@@ -217,7 +216,6 @@ public class BatchConfigLibrary {
                     public void afterChunk(ChunkContext chunkContext) {logger.info("Конец пачки Genre");}
                     public void afterChunkError(ChunkContext chunkContext) {logger.info("Ошибка пачки Genre");}
                 })
-//                .taskExecutor(new SimpleAsyncTaskExecutor())
                 .build();
     }
 
@@ -321,7 +319,6 @@ public class BatchConfigLibrary {
                     public void afterChunk(ChunkContext chunkContext) {logger.info("Конец пачки Book");}
                     public void afterChunkError(ChunkContext chunkContext) {logger.info("Ошибка пачки Book");}
                 })
-//                .taskExecutor(new SimpleAsyncTaskExecutor())
                 .build();
     }
 
