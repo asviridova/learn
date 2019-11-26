@@ -80,9 +80,6 @@ public class LibraryController {
         return bookService.insert(name, authorId, genreId);
     }
 
-    @GetMapping("/api/edit")
-    public void editBook(@RequestParam("id") String id, Model model) {
-    }
 
 
 }
