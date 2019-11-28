@@ -42,7 +42,7 @@
 </table>
 <script>
     $(function () {
-        $.get('/api/books').done(function (books) {
+        $.get('/books').done(function (books) {
             books.forEach(function (book) {
                 $('#table_books').append(`
                     <tr class="bookrow">
@@ -54,7 +54,8 @@
                             <a href="/edit?id=${book.id}" class="edit_href" >Edit</a>
                         </td>
                         <td>
-                            <a href=# class="remove_href" data-href="/api/remove">Remove</a>
+                            <!--a href=# class="remove_href" data-href="/api/remove/">Remove</a-->
+                            <a href=# class="remove_href" data-href="/books/">Remove</a>
                         </td>
                     </tr>
                 `)
@@ -80,10 +81,17 @@
         console.log("url:" + url);
 
         if (className == 'remove_href') {
-            var posting = $.get(url, {id: id});
-            posting.done(function (data) {
-                window.open("/", "_self");
-            });
+
+             $.ajax({
+                   type: "DELETE",
+                   url: url+id,
+                   data: { id: id }, // or the string: 'id=1'
+                   complete:
+                       function () {
+                           window.open("/", "_self");
+                       }
+
+             });
         }
 
     });
@@ -115,7 +123,7 @@
 <script>
     <!-- Authors -->
     $(function () {
-        $.get('/api/authors').done(function (authors) {
+        $.get('/authors').done(function (authors) {
             authors.forEach(function (author) {
                 $('#table_authors').append(`
                     <tr>
@@ -149,7 +157,7 @@
 
     <!-- Genres -->
     $(function () {
-        $.get('/api/genres').done(function (genres) {
+        $.get('/genres').done(function (genres) {
             genres.forEach(function (genre) {
                 $('#table_genres').append(`
                     <tr>

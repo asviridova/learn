@@ -30,5 +30,26 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         ApplicationContext context = SpringApplication.run(Main.class);
 
+        /*BookService bookService = context.getBean(BookService.class);
+
+        //Книги
+        bookService.getAll().subscribe(b -> System.out.println(b.toString()));
+        //--- Авторы
+        AuthorService authorService = context.getBean(AuthorService.class);
+
+        authorService.getAll().subscribe(a -> System.out.println(a.toString()));
+
+        //--- Жанры
+        GenreService genreService = context.getBean(GenreService.class);
+
+        genreService.getAll().subscribe(g -> System.out.println(g.toString()));
+
+        //---- сохранение
+        Mono<Book> bookNew =  bookService.insert("New book", "1", "1");
+        bookNew.subscribe(b -> System.out.println("Saved book:"+b.toString()));
+
+        Mono<Book> bookUpd =  bookService.update("1","Faust_2", "3", "1");
+        bookUpd.subscribe(b -> System.out.println("Updated book:"+b.toString()));
+        */
     }
 }

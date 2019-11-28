@@ -27,7 +27,7 @@
 <body>
 
 <!-- Book edition -->
-<form id="insert-form" th:method="post" action="/api/insert">
+<form id="insert-form" th:method="post" action="/books">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -58,7 +58,7 @@
 <script>
     <!-- Authors -->
     $(function () {
-        $.get('/api/authors').done(function (authors) {
+        $.get('/authors').done(function (authors) {
             authors.forEach(function (author) {
                 $('#author-input').append(`
                         <option value=${author.id}>${author.name}</option>
@@ -69,7 +69,7 @@
 
     <!-- Genres -->
     $(function () {
-        $.get('/api/genres').done(function (genres) {
+        $.get('/genres').done(function (genres) {
             genres.forEach(function (genre) {
                 $('#genre-input').append(`
                         <option value=${genre.id}>${genre.name}</option>
