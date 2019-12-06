@@ -17,36 +17,36 @@ public class ProviderController {
     private final ProviderService providerService;
 
     @Autowired
-    public ProviderController(ProviderService brandService) {
-        this.providerService = brandService;
+    public ProviderController(ProviderService providerService) {
+        this.providerService = providerService;
     }
 
-    @GetMapping("/brands")
+    @GetMapping("/providers")
     public List<Provider> getAllProviders() {
         return providerService.getAll();
     }
 
-    @GetMapping("/brands/{id}")
+    @GetMapping("/providers/{id}")
     public Optional<Provider> findProvider(@RequestParam("id") Long id) {
         return providerService.getById(id);
     }
 
-    @DeleteMapping("/brands/{id}")
+    @DeleteMapping("/providers/{id}")
     public void removeProvider(@RequestParam("id") Long id) {
         providerService.deleteById(id);
     }
 
-    @PutMapping("/brands/{id}")
+    @PutMapping("/providers/{id}")
     public ResponseEntity<?> saveProvider(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam(value = "inn", required = false) String inn, @RequestParam(value = "address", required = false) String address) {
         providerService.update(id, name, inn, address);
         return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/brands")
+    @PostMapping("/providers")
     public ResponseEntity<?> insertProvider(@RequestParam("name") String name, @RequestParam(value = "inn", required = false) String inn, @RequestParam(value = "address", required = false) String address) {
         Long id =  providerService.insert(name, inn, address);
         if(id!=null && id>0) {
-            return new ResponseEntity<>("OK, BrandId="+id, HttpStatus.CREATED);
+            return new ResponseEntity<>("OK, ProviderId="+id, HttpStatus.CREATED);
         }
         else{
             return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -50,7 +50,7 @@ public class ProviderServiceImpl implements ProviderService {
         Provider provider = new Provider(name, inn);
         Provider providerNew = providerRepository.save(provider);
         Long id = providerNew.getId();
-        log.info("brand inserted with id = " + id + ", name = " + name + ", inn = " + inn);
+        log.info("provider inserted with id = " + id + ", name = " + name + ", inn = " + inn);
         return id;
     }
 

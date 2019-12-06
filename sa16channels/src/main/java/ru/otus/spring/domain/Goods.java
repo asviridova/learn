@@ -71,7 +71,7 @@ public class Goods {
         this.price = price;
     }
 
-    public Goods(String code, String name, GoodsType goodsType, Double price, Brand brand, Provider provider) {
+    public Goods(String code, String name, Double price, GoodsType goodsType, Brand brand, Provider provider) {
         this.id = null;
         this.code = code;
         this.name = name;
@@ -81,7 +81,7 @@ public class Goods {
         this.price = price;
     }
 
-    public Goods(String code, String name, GoodsType goodsType, Double price, Brand brand, Provider provider, Store store) {
+    public Goods(String code, String name, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) {
         this.id = null;
         this.code = code;
         this.name = name;
@@ -92,5 +92,20 @@ public class Goods {
         this.price = price;
 
     }
+
+    public Goods(String code, String name, String colour, String size, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) {
+        this.id = null;
+        this.code = code;
+        this.name = name;
+        this.goodsType = goodsType;
+        this.brand = brand;
+        this.provider = provider;
+        this.store = store;
+        this.price = price;
+        this.colour = colour;
+        this.size = size;
+    }
+
+
 
 }
