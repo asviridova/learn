@@ -32,12 +32,12 @@ public class BrandController {
     }
 
     @DeleteMapping("/brands/{id}")
-    public void removeBook(@RequestParam("id") Long id) {
+    public void removeBrand(@RequestParam("id") Long id) {
         brandService.deleteById(id);
     }
 
     @PutMapping("/brands/{id}")
-    public ResponseEntity<?> saveBook(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam(value = "country", required = false) String country) {
+    public ResponseEntity<?> saveBrand(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam(value = "country", required = false) String country) {
         brandService.update(id, name, country);
         return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
     }

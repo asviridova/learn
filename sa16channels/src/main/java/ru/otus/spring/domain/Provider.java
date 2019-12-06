@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Table(name = "provider")
 public class Provider {
 
+    public static int FLAG_BLACK_LIST = 1;
+    public static int FLAG_NOT_BLACK_LIST = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
