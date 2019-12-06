@@ -11,7 +11,9 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "clothes")
+@NamedEntityGraph(name = "GoodsGraph", attributeNodes = {@NamedAttributeNode(value = "goodsType"),
+       @NamedAttributeNode(value = "brand"), @NamedAttributeNode(value = "provider"), @NamedAttributeNode(value = "store")})
+@Table(name = "goods")
 public class Goods {
 
     @Id

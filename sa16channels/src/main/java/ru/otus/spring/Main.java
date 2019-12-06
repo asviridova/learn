@@ -1,19 +1,11 @@
 package ru.otus.spring;
 
-import java.util.List;
-
-import org.h2.tools.Console;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import ru.otus.spring.dao.AuthorDao;
-import ru.otus.spring.dao.BookDao;
-import ru.otus.spring.dao.GenreDao;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
-import ru.otus.spring.service.AuthorServiceImpl;
+import ru.otus.spring.dao.*;
+import ru.otus.spring.service.BrandService;
 
 
 @SpringBootApplication
@@ -24,9 +16,28 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class);
 
 
+        CustomerRepository customerRepository = context.getBean(CustomerRepository.class);
+        System.out.println(customerRepository.findAll());
 
-        AuthorServiceImpl authorService = context.getBean(AuthorServiceImpl.class);
-        System.out.println(authorService.count());
+        GoodsRepository goodsRepository = context.getBean(GoodsRepository.class);
+        System.out.println(goodsRepository.findAll());
+
+        GoodsTypeRepository goodsTypeRepository = context.getBean(GoodsTypeRepository.class);
+        System.out.println(goodsTypeRepository.findAll());
+
+        BrandRepository brandRepository = context.getBean(BrandRepository.class);
+        System.out.println(brandRepository.findAll());
+
+        StoreRepository storeRepository = context.getBean(StoreRepository.class);
+        System.out.println(storeRepository.findAll());
+
+        ProviderRepository providerRepository = context.getBean(ProviderRepository.class);
+        System.out.println(providerRepository.findAll());
+
+        BrandService brandService = context.getBean(BrandService.class);
+        System.out.println(brandService.getAll());
+
+
         //Optional<AuthorModel> author = authorRepository.findById(1);
        // Console.main(args);
     }
