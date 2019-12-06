@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 public class StoreServiceImpl implements StoreService {
 
-    private StoreRepository storeRepository;
+    private final StoreRepository storeRepository;
 
     @Autowired
     public StoreServiceImpl(StoreRepository storeRepository){

@@ -5,7 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import ru.otus.spring.dao.*;
+import ru.otus.spring.domain.Brand;
+import ru.otus.spring.domain.GoodsType;
+import ru.otus.spring.domain.Provider;
+import ru.otus.spring.domain.Store;
 import ru.otus.spring.service.BrandService;
+import ru.otus.spring.service.GoodsService;
 
 
 @SpringBootApplication
@@ -38,6 +43,12 @@ public class Main {
         System.out.println(brandService.getAll());
 
 
+        //----
+        GoodsService goodsService = context.getBean(GoodsService.class);
+
+        Long id = goodsService.insert("RT4567", "Куртка синяя", "blue", "44", 1300.45, 1L, 1L, 1L, 1L);
+        System.out.println("id="+id);
+        System.out.println("goodsService.getById="+goodsService.getById(id));
         //Optional<AuthorModel> author = authorRepository.findById(1);
        // Console.main(args);
     }

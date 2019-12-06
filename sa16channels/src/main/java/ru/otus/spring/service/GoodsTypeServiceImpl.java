@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 public class GoodsTypeServiceImpl implements GoodsTypeService {
 
-    private GoodsTypeRepository goodsTypeRepository;
+    private final GoodsTypeRepository goodsTypeRepository;
 
     @Autowired
     public GoodsTypeServiceImpl(GoodsTypeRepository goodsTypeRepository){

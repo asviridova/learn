@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ProviderServiceImpl implements ProviderService {
-    private ProviderRepository providerRepository;
+    private final ProviderRepository providerRepository;
 
     @Autowired
     public ProviderServiceImpl(ProviderRepository providerRepository) {

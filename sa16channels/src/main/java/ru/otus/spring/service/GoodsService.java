@@ -13,6 +13,7 @@ public interface GoodsService {
     List<Goods> getAll();
     void deleteById(Long id);
     Long insert(String code, String name,  String colour, String size, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) ;
+    Long insert(String code, String name,  String colour, String size, Double price, Long goodsTypeId, Long brandId, Long providerId, Long storeId);
     Long update(Long id, String code, String name, String colour, String size, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) ;
 
 }

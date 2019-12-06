@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class BrandServiceImpl implements BrandService {
-    private BrandRepository brandRepository;
+    private final BrandRepository brandRepository;
 
     @Autowired
     public BrandServiceImpl(BrandRepository brandRepository){

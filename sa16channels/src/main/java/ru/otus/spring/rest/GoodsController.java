@@ -82,20 +82,7 @@ public class GoodsController {
                                          @RequestParam(value = "brandId", required = false) Long brandId,
                                          @RequestParam("providerId") Long providerId,
                                          @RequestParam(value = "storeId", required = false) Long storeId ) {
-        Optional<GoodsType> goodsType = goodsTypeService.getById(goodsTypeId);
-        Optional<Provider> provider = providerService.getById(providerId);
-        Brand brand = null;
-        if(brandId!=null){
-            Optional<Brand> brandOptional = brandService.getById(brandId);
-            brand = brandOptional.get();
-        }
-        Store store = null;
-        if(storeId !=null){
-            Optional<Store> storeOptional = storeService.getById(storeId);
-            store = storeOptional.get();
-        }
-
-        Long id =  goodsService.insert(code, name, colour, size, price, goodsType.get(), brand, provider.get(), store);
+        Long id =  goodsService.insert(code, name, colour, size, price, goodsTypeId, brandId, providerId, storeId);
         if(id!=null && id>0) {
             return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
         }
