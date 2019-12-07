@@ -20,4 +20,7 @@ public interface ProviderService {
 
     Long update(Long id, String name, String inn, String address) ;
 
+    Provider findProviderByName(String name);
+
+
 }

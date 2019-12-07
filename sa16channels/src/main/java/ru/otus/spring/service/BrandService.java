@@ -21,4 +21,6 @@ public interface BrandService {
 
     Long update(Long id, String name, String country) ;
 
+    Brand findBrandByName(String name);
+
 }

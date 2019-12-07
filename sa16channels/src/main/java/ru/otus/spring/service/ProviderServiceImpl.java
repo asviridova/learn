@@ -61,4 +61,17 @@ public class ProviderServiceImpl implements ProviderService {
         log.info("provider updated with id = " + id + ", name = " + name + ", inn = " + inn);
         return providerNew.getId();
     }
+
+    @Override
+    public Provider findProviderByName(String name){
+        List<Provider> providerList = providerRepository.findProviderByName(name);
+        if(providerList.size() > 0){
+            return providerList.get(0);
+        }
+        else{
+            return null;
+        }
+
+    }
+
 }

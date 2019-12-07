@@ -62,5 +62,16 @@ public class BrandServiceImpl implements BrandService {
         return brandNew.getId();
     }
 
+    @Override
+    public Brand findBrandByName(String name){
+        List<Brand> brandList = brandRepository.findBrandByName(name);
+        if(brandList.size() > 0){
+            return brandList.get(0);
+        }
+        else{
+            return null;
+        }
+
+    }
 
 }

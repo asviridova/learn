@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.GoodsRepository;
 import ru.otus.spring.domain.*;
+import ru.otus.spring.message.GoodsItem;
+import ru.otus.spring.message.ReplyItem;
 
 import java.util.List;
 import java.util.Optional;
@@ -103,4 +105,30 @@ public class GoodsServiceImpl implements GoodsService {
         log.info("goods updated with id = " + id + ", name = " + name + ", price = " + price);
         return goodsNew.getId();
     }
+
+    @Override
+    public ReplyItem save(GoodsItem goodsItem) {
+        ReplyItem replyItem = new ReplyItem(goodsItem);
+        if (!goodsItem.isFiltered()){
+            Goods goods = new Goods();
+            goods.setBrand(goodsItem.getBrand());
+            goods.setCode(goodsItem.getCode());
+            goods.setCode(goodsItem.getCode());
+            goods.setName(goodsItem.getName());
+            goods.setColour(goodsItem.getColour());
+            goods.setPrice(goodsItem.getPrice());
+            goods.setProvider(goodsItem.getProvider());
+            Goods goodsNew = goodsRepository.save(goods);
+
+            replyItem.setStatus("OK");
+            replyItem.setGoodsId(goodsNew.getId());
+        }
+        else{
+            replyItem.setStatus("ERROR");
+
+        }
+        return replyItem;
+    }
+
+
 }
