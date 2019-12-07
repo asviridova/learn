@@ -59,7 +59,7 @@ public class Main {
                 .handle( "defineService", "defineBrand" )
                 .handle( "defineService", "defineGoodsType" )
                 .handle( "filterService", "filter" )
-                .handle( "goodsService", "save" )
+                .handle( "goodsServiceImpl", "save" )
                 .aggregate()
                 .channel( "replyChannel" )
                 .get();

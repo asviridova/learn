@@ -45,15 +45,17 @@ public class DefineService {
         this.goodsTypeService = goodsTypeService;
     }
 
-    public void defineProvider(GoodsItem goodsItem){
+    public GoodsItem defineProvider(GoodsItem goodsItem){
         goodsItem.setProvider(providerService.findProviderByName(goodsItem.getProviderName()));
+        return goodsItem;
     }
 
-    public void defineBrand(GoodsItem goodsItem){
+    public GoodsItem defineBrand(GoodsItem goodsItem){
         goodsItem.setBrand(brandService.findBrandByName(goodsItem.getBrandName()));
+        return goodsItem;
     }
 
-    public void defineGoodsType(GoodsItem goodsItem) {
+    public GoodsItem defineGoodsType(GoodsItem goodsItem) {
         defineGoodsType(shoes, GOODS_TYPE_SHOES, goodsItem );
         if(goodsItem.getGoodsType() == null) {
             defineGoodsType(clothes, GOODS_TYPE_CLOTHES, goodsItem );
@@ -61,6 +63,7 @@ public class DefineService {
                 defineGoodsType(home, GOODS_TYPE_HOME, goodsItem );
             }
         }
+        return goodsItem;
     }
 
     private void defineGoodsType(Set<String> goods, Long goodType, GoodsItem goodsItem ){

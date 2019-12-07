@@ -110,14 +110,7 @@ public class GoodsServiceImpl implements GoodsService {
     public ReplyItem save(GoodsItem goodsItem) {
         ReplyItem replyItem = new ReplyItem(goodsItem);
         if (!goodsItem.isFiltered()){
-            Goods goods = new Goods();
-            goods.setBrand(goodsItem.getBrand());
-            goods.setCode(goodsItem.getCode());
-            goods.setCode(goodsItem.getCode());
-            goods.setName(goodsItem.getName());
-            goods.setColour(goodsItem.getColour());
-            goods.setPrice(goodsItem.getPrice());
-            goods.setProvider(goodsItem.getProvider());
+            Goods goods = new Goods(goodsItem.getCode(), goodsItem.getName(), goodsItem.getColour(), goodsItem.getSize(), goodsItem.getPrice(), goodsItem.getGoodsType(), goodsItem.getBrand(), goodsItem.getProvider(), null);
             Goods goodsNew = goodsRepository.save(goods);
 
             replyItem.setStatus("OK");
