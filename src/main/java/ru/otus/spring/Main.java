@@ -12,6 +12,11 @@ import ru.otus.spring.domain.Store;
 import ru.otus.spring.service.BrandService;
 import ru.otus.spring.service.GoodsService;
 
+/**
+ * http://localhost:8080/actuator
+ * http://asviridova:8080/actuator/metrics
+ * http://asviridova:8080/actuator/health
+ */
 
 @SpringBootApplication
 public class Main {

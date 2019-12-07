@@ -17,4 +17,24 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  jackson:
+    serialization:
+      indent_output: true
+  data:
+    rest:
+      base-path: /datarest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+
 
