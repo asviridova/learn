@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+	<changeSet author="asviridova" id="3.0.1">
+        <insert tableName="GOODS">
+            <column name="id" value="1"/>
+            <column name="code" value="R456"/>
+            <column name="name" value="Сапоги Kuoma"/>
+            <column name="colour" value="blue"/>
+            <column name="size" value="38"/>
+            <column name="price" value="1230.00"/>
+            <column name="goodstypeid" value="1"/>
+            <column name="brandid" value="1"/>
+            <column name="providerid" value="1"/>
+            <column name="storeid" value="1"/>
+        </insert>
+        <insert tableName="GOODS">
+            <column name="id" value="2"/>
+            <column name="code" value="R546"/>
+            <column name="name" value="Сапоги Kuoma"/>
+            <column name="colour" value="red"/>
+            <column name="size" value="36"/>
+            <column name="price" value="3500.00"/>
+            <column name="goodstypeid" value="1"/>
+            <column name="brandid" value="1"/>
+            <column name="providerid" value="1"/>
+            <column name="storeid" value="1"/>
+        </insert>
+    </changeSet>
+
+	<changeSet author="asviridova" id="3.0.2">
+        <insert tableName="GOODSTYPE">
+            <column name="id" value="1"/>
+            <column name="code" value="SH345"/>
+            <column name="name" value="Обувь"/>
+        </insert>
+        <insert tableName="GOODSTYPE">
+            <column name="id" value="2"/>
+            <column name="code" value="CL355"/>
+            <column name="name" value="Одежда"/>
+        </insert>
+    </changeSet>
+
+
+
+</databaseChangeLog>

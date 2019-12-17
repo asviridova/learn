@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+            xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+            xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet author="asviridova" id="2.0.1" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="GOODS_OBJECT_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="GOODS_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <comment>Creation of GOODS_OBJECT_ID_SEQ sequence </comment>
+    </changeSet>
+
+    <changeSet author="asviridova" id="2.0.2" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="GOODS"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable remarks="Таблица с товарами" tableName="GOODS">
+            <column name="ID" type="NUMBER(18,0)" autoIncrement="true" defaultValueSequenceNext="GOODS_OBJECT_ID_SEQ">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="GOODS_PK"/>
+            </column>
+            <column name="CODE" remarks="Код товара" type="VARCHAR(100 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" remarks="Название товара" type="VARCHAR(255 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COLOUR" remarks="Цвет товара" type="VARCHAR(100 BYTE)"/>
+            <column name="SIZE" remarks="Размер товара" type="VARCHAR(20 BYTE)"/>
+            <column name="PRICE" remarks="PRICE" type="NUMBER(18,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GOODSTYPEID" remarks="GOODSTYPEID" type="NUMERIC(18)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BRANDID" remarks="BRANDID" type="NUMERIC(18)"/>
+            <column name="PROVIDERID" remarks="PROVIDERID" type="NUMERIC(18)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STOREID" remarks="STOREID" type="NUMERIC(18)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="asviridova" id="2.0.3" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="GOODSTYPE_OBJECT_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="GOODSTYPE_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <comment>Creation of GOODSTYPE_OBJECT_ID_SEQ sequence </comment>
+    </changeSet>
+
+    <changeSet author="asviridova" id="2.0.4" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="GOODSTYPE"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable remarks="Таблица с типами" tableName="GOODSTYPE">
+            <column name="ID" type="NUMBER(18,0)" autoIncrement="true" defaultValueSequenceNext="GOODSTYPE_OBJECT_ID_SEQ">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="GOODS_TYPE_PK"/>
+            </column>
+            <column name="CODE" remarks="Код" type="VARCHAR(100 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" remarks="Название" type="VARCHAR(255 BYTE)"/>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>
