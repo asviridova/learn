@@ -15,7 +15,7 @@
                 <sequenceExists sequenceName="GOODS_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="GOODS_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="GOODS_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of GOODS_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -60,7 +60,7 @@
                 <sequenceExists sequenceName="GOODSTYPE_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="GOODSTYPE_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="GOODSTYPE_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of GOODSTYPE_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -90,7 +90,7 @@
                 <sequenceExists sequenceName="BRAND_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="BRAND_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="BRAND_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of BRAND_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -120,7 +120,7 @@
                 <sequenceExists sequenceName="STORE_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="STORE_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="STORE_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of STORE_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -150,7 +150,7 @@
                 <sequenceExists sequenceName="PROVIDER_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="PROVIDER_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="PROVIDER_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of PROVIDER_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -183,7 +183,7 @@
                 <sequenceExists sequenceName="CUSTOMER_OBJECT_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="CUSTOMER_OBJECT_ID_SEQ" incrementBy="1" startValue="1"/>
+        <createSequence sequenceName="CUSTOMER_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
         <comment>Creation of CUSTOMER_OBJECT_ID_SEQ sequence </comment>
     </changeSet>
 
@@ -252,23 +252,6 @@
                                  referencedColumnNames="ID" referencedTableName="STORE" referencesUniqueColumn="false" />
     </changeSet>
 
-    <!--changeSet author="asviridova" id="2.0.13" runInTransaction="false">
-        <addForeignKeyConstraint baseColumnNames="GOODSTYPEID" baseTableName="GOODS"
-                                 constraintName="GOODS_GOODSTYPEID_FK1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
-                                 referencedColumnNames="ID" referencedTableName="GOODSTYPE" referencesUniqueColumn="false" />
-    </changeSet>
-
-    <changeSet author="asviridova" id="2.0.14" runInTransaction="false">
-        <addForeignKeyConstraint baseColumnNames="PROVIDERID" baseTableName="GOODS"
-                                 constraintName="GOODS_PROVIDERID_FK1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
-                                 referencedColumnNames="ID" referencedTableName="PROVIDER" referencesUniqueColumn="false" />
-    </changeSet>
-
-    <changeSet author="asviridova" id="2.0.15" runInTransaction="false">
-        <addForeignKeyConstraint baseColumnNames="STOREID" baseTableName="GOODS"
-                                 constraintName="GOODS_STOREID_FK1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
-                                 referencedColumnNames="ID" referencedTableName="STORE" referencesUniqueColumn="false" />
-    </changeSet-->
 
 
 
