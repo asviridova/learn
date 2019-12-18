@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  web:
+#    build: .
+    image: adapter18:1.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+    - "8080:8080"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    ports:
+    - "5432:5432"
+    environment:
+    - DB_USER=postgres
+    - DB_PASS=123456
+    - DB_NAME=shopdb
+
