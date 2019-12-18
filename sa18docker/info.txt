@@ -7,3 +7,6 @@ docker image build -t adapter18:1.0 .
 docker container run --publish 8000:8080 --name adapter18 adapter18:1.0
 
 docker container rm --force adapter18
+
+
+docker-compose up 
