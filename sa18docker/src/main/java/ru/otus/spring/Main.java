@@ -12,17 +12,6 @@ import ru.otus.spring.domain.Store;
 import ru.otus.spring.service.BrandService;
 import ru.otus.spring.service.GoodsService;
 
-/**
- * http://localhost:8080/actuator
- * http://asviridova:8080/actuator/metrics
- * http://asviridova:8080/actuator/health
- *
- * https://docs.docker.com/docker-for-windows/
- *
- * https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/
- *
- * https://www.baeldung.com/liquibase-refactor-schema-of-java-app
- */
 
 @SpringBootApplication
 public class Main {
@@ -57,10 +46,5 @@ public class Main {
         //----
         GoodsService goodsService = context.getBean(GoodsService.class);
 
-        Long id = goodsService.insert("RT4567", "Куртка синяя", "blue", "44", 1300.45, 1L, 1L, 1L, 1L);
-        System.out.println("id="+id);
-        System.out.println("goodsService.getById="+goodsService.getById(id));
-        //Optional<AuthorModel> author = authorRepository.findById(1);
-       // Console.main(args);
     }
 }
