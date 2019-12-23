@@ -11,6 +11,8 @@ import ru.otus.spring.domain.Provider;
 import ru.otus.spring.domain.Store;
 import ru.otus.spring.service.BrandService;
 import ru.otus.spring.service.GoodsService;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.turbine.EnableTurbine;
 
 /**
  * http://localhost:8080/actuator
@@ -28,12 +30,14 @@ import ru.otus.spring.service.GoodsService;
  * http://localhost:8080/brands
  */
 
+@EnableHystrixDashboard
+@EnableTurbine
 @SpringBootApplication
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        ApplicationContext context = SpringApplication.run(Main.class);
+        ApplicationContext context = SpringApplication.run(Main.class, args);
 
 
         CustomerRepository customerRepository = context.getBean(CustomerRepository.class);

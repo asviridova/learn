@@ -10,6 +10,8 @@ import ru.otus.spring.service.*;
 import java.util.List;
 import java.util.Optional;
 
+//http://localhost:8080/goods/1?id=1
+
 @RestController
 public class GoodsController {
 
@@ -90,7 +92,6 @@ public class GoodsController {
             return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }
 

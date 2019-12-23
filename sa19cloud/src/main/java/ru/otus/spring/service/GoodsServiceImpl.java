@@ -1,13 +1,16 @@
 package ru.otus.spring.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.GoodsRepository;
 import ru.otus.spring.domain.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Service
@@ -40,13 +43,17 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsNew.getId();
     }
 
+    @HystrixCommand(commandKey="getGoodsById", fallbackMethod="buildFallbackGetGoodsById")
     @Override
     public Optional<Goods> getById(Long id) {
+        sleepRandomly();
         return goodsRepository.findById(id);
     }
 
+    @HystrixCommand(commandKey="getAllGoods", fallbackMethod="buildFallbackGetAllGoods")
     @Override
     public List<Goods> getAll() {
+        sleepRandomly();
         return goodsRepository.findAll();
     }
 
@@ -103,4 +110,33 @@ public class GoodsServiceImpl implements GoodsService {
         log.info("goods updated with id = " + id + ", name = " + name + ", price = " + price);
         return goodsNew.getId();
     }
+
+    //***** Hystrix ******
+    public List<Goods> buildFallbackGetAllGoods() {
+        Goods goods = new Goods("Too many requests", "Please, try to make request later", (double)0.0);
+        List<Goods> goodsList = new ArrayList<>();
+        goodsList.add(goods);
+        return goodsList;
+    }
+
+    public Optional<Goods> buildFallbackGetGoodsById(Long id) {
+        Goods goods = new Goods(id,"NO CODE with id="+id, "Please, try to make request later", (double)0.0);
+        return Optional.of(goods);
+    }
+
+    private void sleepRandomly() {
+        Random rand = new Random();
+        int randomNum = rand.nextInt(3) + 1;
+        if(randomNum == 3) {
+            System.out.println("It is a chance for demonstrating Hystrix action");
+            try {
+                System.out.println("Start sleeping...." + System.currentTimeMillis());
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                System.out.println("Hystrix thread interupted...." + System.currentTimeMillis());
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

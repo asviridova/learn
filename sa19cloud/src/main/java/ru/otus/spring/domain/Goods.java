@@ -54,6 +54,14 @@ public class Goods {
         this.price = price;
     }
 
+    public Goods(Long id, String code, String name, Double price) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.price = price;
+    }
+
+
     public Goods(String code, String name, Double price, GoodsType goodsType) {
         this.id = null;
         this.code = code;
