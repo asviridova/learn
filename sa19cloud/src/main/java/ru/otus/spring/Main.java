@@ -7,34 +7,18 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 
 import ru.otus.spring.dao.*;
-import ru.otus.spring.domain.Brand;
-import ru.otus.spring.domain.GoodsType;
-import ru.otus.spring.domain.Provider;
-import ru.otus.spring.domain.Store;
 import ru.otus.spring.service.BrandService;
-import ru.otus.spring.service.GoodsService;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.turbine.EnableTurbine;
 
-/**
- * http://localhost:8080/actuator
- * http://asviridova:8080/actuator/metrics
- * http://asviridova:8080/actuator/health
- *
- * https://docs.docker.com/docker-for-windows/
- *
- * https://auth0.com/blog/integrating-spring-data-jpa-postgresql-liquibase/
- *
- * https://www.baeldung.com/liquibase-refactor-schema-of-java-app
- *
- * https://hub.docker.com/_/postgres
- *
- * http://localhost:8080/brands
+/*
+Dashboard
+http://localhost:9001/hystrix/monitor?stream=http://localhost:9001/turbine.stream
  */
 
-//@EnableHystrixDashboard
-//@EnableTurbine
-//@EnableEurekaClient
+@EnableHystrixDashboard
+@EnableTurbine
+@EnableEurekaClient
 @EnableCircuitBreaker
 @SpringBootApplication
 public class Main {
@@ -66,13 +50,5 @@ public class Main {
         System.out.println(brandService.getAll());
 
 
-        //----
-        GoodsService goodsService = context.getBean(GoodsService.class);
-
-//        Long id = goodsService.insert("RT4567", "Куртка синяя", "blue", "44", 1300.45, 1L, 1L, 1L, 1L);
-//        System.out.println("id="+id);
-//        System.out.println("goodsService.getById="+goodsService.getById(id));
-        //Optional<AuthorModel> author = authorRepository.findById(1);
-       // Console.main(args);
     }
 }
