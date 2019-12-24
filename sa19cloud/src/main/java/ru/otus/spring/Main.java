@@ -2,6 +2,8 @@ package ru.otus.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 
 import ru.otus.spring.dao.*;
@@ -30,8 +32,10 @@ import org.springframework.cloud.netflix.turbine.EnableTurbine;
  * http://localhost:8080/brands
  */
 
-@EnableHystrixDashboard
-@EnableTurbine
+//@EnableHystrixDashboard
+//@EnableTurbine
+//@EnableEurekaClient
+@EnableCircuitBreaker
 @SpringBootApplication
 public class Main {
 
