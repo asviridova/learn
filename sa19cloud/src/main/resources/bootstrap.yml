@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: shop-service
-server:
-  port: 9001
-
-
