@@ -21,28 +21,28 @@ public class StoreController {
         this.storeService = storeService;
     }
 
-    @GetMapping("/providers")
+    @GetMapping("/stores")
     public List<Store> getAllStores() {
         return storeService.getAll();
     }
 
-    @GetMapping("/providers/{id}")
+    @GetMapping("/stores/{id}")
     public Optional<Store> findStore(@RequestParam("id") Long id) {
         return storeService.getById(id);
     }
 
-    @DeleteMapping("/providers/{id}")
+    @DeleteMapping("/stores/{id}")
     public void removeStore(@RequestParam("id") Long id) {
         storeService.deleteById(id);
     }
 
-    @PutMapping("/providers/{id}")
+    @PutMapping("/stores/{id}")
     public ResponseEntity<?> saveStore(@RequestParam("id") Long id, @RequestParam("code") String code, @RequestParam(value = "address", required = false) String address) {
         storeService.update(id, code, address);
         return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/providers")
+    @PostMapping("/stores")
     public ResponseEntity<?> insertStore(@RequestParam("code") String code, @RequestParam(value = "address", required = false) String address) {
         Long id =  storeService.insert(code, address);
         if(id!=null && id>0) {
