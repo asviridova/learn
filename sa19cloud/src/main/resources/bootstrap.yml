@@ -12,6 +12,9 @@ server:
 
 encrypt:
   key: shop-app-secret
+#health:
+#  config:
+#    enabled: false
 
 #eureka:
 #  client:

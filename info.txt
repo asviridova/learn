@@ -1,0 +1,12 @@
+http://localhost:9001/goods
+http://localhost:9001/providers
+http://localhost:9001/goodstypes
+http://localhost:9001/brands
+http://localhost:9001/stores
+
+
+http://localhost:9001/datarest/customer/search/names?name=Иванов И.И.
+http://localhost:9001/datarest/customer/
+
+Interface
+http://localhost:9001/

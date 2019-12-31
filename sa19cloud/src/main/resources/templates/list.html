@@ -38,17 +38,17 @@
     </thead>
     <tbody>
     <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.name}">My book</td>
-        <td th:text="${book.author.name}">Author</td>
-        <td th:text="${book.genre.name}">Genre</td>
+        <td th:text="[${book.id}]">1</td>
+        <td th:text="[[${book.name}]]">My book</td>
+        <td th:text="[[${book.author.name}]]">Author</td>
+        <td th:text="[[${book.genre.name}]]">Genre</td>
         <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+            <a th:href="@{/edit(id=[[${book.id}]])}" href="edit.html">Edit</a>
         </td>
         <td>
             <!--a th:href="@{/remove(id=${book.id})}" href="list.html">Remove</a-->
             <form id="remove-form" th:action="@{/remove}" th:method="post" action="list.html">
-                <input type="hidden" name="id" th:value="${book.id}" />
+                <input type="hidden" name="id" th:value="[[${book.id}]]" />
                 <a href="#" onclick="this.parentNode.submit()">Remove</a>
             </form>
 
@@ -81,8 +81,8 @@
     </thead>
     <tbody>
     <tr th:each="author : ${authors}">
-        <td th:text="${author.id}">1</td>
-        <td th:text="${author.name}">My book</td>
+        <td th:text="[[${author.id}]]">1</td>
+        <td th:text="[[${author.name}]]">My book</td>
     </tr>
     </tbody>
 </table>
@@ -99,8 +99,8 @@
     </thead>
     <tbody>
     <tr th:each="genre : ${genres}">
-        <td th:text="${genre.id}">1</td>
-        <td th:text="${genre.name}">My book</td>
+        <td th:text="[[${genre.id}]]">1</td>
+        <td th:text="[[${genre.name}]]">My book</td>
     </tr>
     </tbody>
 </table>

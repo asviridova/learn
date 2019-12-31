@@ -21,63 +21,37 @@
             margin-top: 10px;
         }
     </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" th:action="@{/save}" th:method="post" action="list.html">
+<form id="edit-form" th:method="post" action="/books/">
     <h1>Book Info:</h1>
 
     <div class="row">
         <label for="id-input">ID:</label>
-        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${book.id}" value="1"/>
+        <input id="id-input" name="id" type="text" readonly="readonly"/>
     </div>
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="${book.name}" value=""/>
+        <input id="name-input" name="name" type="text"/>
     </div>
-
-    <!--div class="row">
-        <input id="authorId-input" name="authorId" type="hidden" readonly="readonly" th:value="${book.author.id}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <label for="author-input">Author Name:</label>
-        <input id="author-input" name="authorName" type="text" readonly="readonly" th:value="${book.author.name}" value=""/>
-    </div-->
-
-    <!--div class="row">
-        <input id="genreId-input" name="genreId" type="hidden" readonly="readonly" th:value="${book.genre.id}" value=""/>
-    </div-->
 
     <div class="row">
         <label for="author-input">Author Name:</label>
         <select id="author-input" name="authorId" type="text" >
-            <option th:each="author : ${authors}"
-                    th:value="${author.id}"
-                    th:utext="${author.name}"
-                    th:selected="${book.author.id}==${author.id} ? true : false"
-            />
         </select>
     </div>
 
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
-            <option th:each="genre : ${genres}"
-                    th:value="${genre.id}"
-                    th:utext="${genre.name}"
-                    th:selected="${book.genre.id}==${genre.id} ? true : false"
-            />
         </select>
     </div>
 
-
-    <!--div class="row">
-        <a th:href="@{/save(id=${book.id}, name=${book.name}, authorId=${book.author.id}, genreId=${book.genre.id})}" href="">Edit</a>
-    </div-->
 
     <div class="row">
         <button type="submit" onClick="" name="submit" value="value" class="link-button">Save</button>
@@ -85,6 +59,88 @@
 
 
 </form>
+<script>
+
+    $(function () {
+        $.get('/authors').done(function (authors) {
+            authors.forEach(function (author) {
+                $('#author-input').append(`
+                          <option value=${author.id}>${author.name}</option>
+                 `)
+            });
+        })
+    });
+
+    $(function () {
+        $.get('/genres').done(function (genres) {
+            genres.forEach(function (genre) {
+                $('#genre-input').append(`
+                        <option value=${genre.id}>${genre.name}</option>
+                `)
+            });
+        })
+    });
+
+    $(function () {
+        setTimeout (function() {
+            var book_id = getUrlParameter('id');
+            $.get('/books/'+book_id, {id: book_id}).done(function (book) {
+                console.log(book.name);
+                console.log(book.author.id);
+                console.log(book.genre.id);
+                $('#id-input').val(book.id);
+                $('#name-input').val(book.name);
+                $('#author-input').val(book.author.id);
+                $('#genre-input').val(book.genre.id);
+            })
+        }, 300)
+    });
+
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+    console.log("getUrlParameter="+getUrlParameter('id'));
+
+
+    $( "#edit-form" ).submit(function( event ) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        // Get some values from elements on the page:
+        var $form = $( this ),
+            id = $form.find( "input[name='id']" ).val(),
+            name = $form.find( "input[name='name']" ).val(),
+            authorId = $form.find( "select[name='authorId']" ).val(),
+            genreId = $form.find( "select[name='genreId']" ).val(),
+            url = $form.attr( "action" );
+
+        $.ajax({
+            type: "PUT",
+            url: url+id,
+            data: { id: id, name:name, authorId:authorId, genreId:genreId }, 
+            complete:
+                function () {
+                    window.open("/", "_self");
+                }
+
+        });
+
+
+    });
+
+
+</script>
 
 </body>
 </html>

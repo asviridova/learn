@@ -21,11 +21,13 @@
             margin-top: 10px;
         }
     </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 
 <!-- Book edition -->
-<form id="insert-form" th:action="@{/insert}" th:method="post" action="list.html">
+<form id="insert-form" th:method="post" action="/books">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -36,21 +38,13 @@
     <div class="row">
         <label for="author-input">Author Name:</label>
         <select id="author-input" name="authorId" type="text" >
-            <option th:each="author : ${authors}"
-                    th:value="${author.id}"
-                    th:utext="${author.name}"
-            />
         </select>
     </div>
 
+
     <div class="row">
         <label for="genre-input">Genre Name:</label>
-        <!--input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}" value=""/-->
         <select id="genre-input" name="genreId" type="text" >
-            <option th:each="genre : ${genres}"
-                    th:value="${genre.id}"
-                    th:utext="${genre.name}"
-            />
         </select>
     </div>
 
@@ -59,8 +53,48 @@
         <button type="submit" onClick="" name="submit" value="value" class="link-button">Insert</button>
     </div>
 
-
 </form>
+
+<script>
+    <!-- Authors -->
+    $(function () {
+        $.get('/authors').done(function (authors) {
+            authors.forEach(function (author) {
+                $('#author-input').append(`
+                        <option value=${author.id}>${author.name}</option>
+                `)
+            });
+        })
+    });
+
+    <!-- Genres -->
+    $(function () {
+        $.get('/genres').done(function (genres) {
+            genres.forEach(function (genre) {
+                $('#genre-input').append(`
+                        <option value=${genre.id}>${genre.name}</option>
+                `)
+            });
+        })
+    });
+
+
+    $( "#insert-form" ).submit(function( event ) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        // Get some values from elements on the page:
+        var $form = $( this ),
+            name = $form.find( "input[name='name']" ).val(),
+            authorId = $form.find( "select[name='authorId']" ).val(),
+            genreId = $form.find( "select[name='genreId']" ).val(),
+            url = $form.attr( "action" );
+        // Send the data using post
+        var posting = $.post( url, { name: name, authorId: authorId, genreId: genreId } );
+        posting.done(function( data ) {
+            window.open("/", "_self");
+        });
+    });
+</script>
 
 </body>
 </html>
