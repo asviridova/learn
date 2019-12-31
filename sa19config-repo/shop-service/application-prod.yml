@@ -1,0 +1,71 @@
+spring:
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_LOGIN}
+    password: ${DB_PASSWORD}
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/rootChangeLog.xml
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  jackson:
+    serialization:
+      indent_output: true
+  data:
+    rest:
+      base-path: /datarest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  server:
+    eviction-interval-timer-in-ms: 15000
+  instance:
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+hystrix:
+  command:
+    getAllGoods:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+      #metrics:
+      #  rollingStats:
+      #    timeInMilliseconds: 15000
+      #circuitBreaker:
+      #  requestVolumeThreshold: 10
+      #  errorThresholdPercentage: 50
+      #  sleepWindowInMilliseconds: 6
+    getGoodsById:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+
