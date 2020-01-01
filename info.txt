@@ -3,6 +3,7 @@ http://localhost:9001/providers
 http://localhost:9001/goodstypes
 http://localhost:9001/brands
 http://localhost:9001/stores
+http://localhost:9001/partners
 
 
 http://localhost:9001/datarest/customer/search/names?name=Иванов И.И.

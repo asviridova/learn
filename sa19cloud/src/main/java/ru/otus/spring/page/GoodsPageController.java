@@ -36,16 +36,25 @@ public class GoodsPageController {
 
     @PostMapping("/add")
     public String addBookPage(Model model) {
-        return "create";
+        return "creategoods";
     }
 
 
     @GetMapping("/edit")
     public String editBookPage(@RequestParam("id") String id, Model model) {
         log.debug("selected goods id:"+id);
-        return "edit";
+        return "editgoods";
     }
 
+    @PostMapping("/viewpartners")
+    public String viewPartnersPage(Model model) {
+        return "listpartners";
+    }
+
+    @GetMapping("/viewpartners")
+    public String viewPartnersPageWithGet(Model model) {
+        return "listpartners";
+    }
 
 }
 

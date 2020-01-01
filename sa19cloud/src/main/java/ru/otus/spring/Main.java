@@ -10,6 +10,7 @@ import ru.otus.spring.dao.*;
 import ru.otus.spring.service.BrandService;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.turbine.EnableTurbine;
+import ru.otus.spring.service.PartnerService;
 
 /*
 Dashboard
@@ -49,6 +50,8 @@ public class Main {
         BrandService brandService = context.getBean(BrandService.class);
         System.out.println(brandService.getAll());
 
+        //PartnerService partnerService = context.getBean(PartnerService.class);
+        //System.out.println(partnerService.getAll());
 
     }
 }

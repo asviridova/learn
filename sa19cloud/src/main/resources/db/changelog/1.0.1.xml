@@ -253,6 +253,36 @@
     </changeSet>
 
 
+    <changeSet author="asviridova" id="2.0.16" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="PARTNER_OBJECT_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="PARTNER_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
+        <comment>Creation of PARTNER_OBJECT_ID_SEQ sequence </comment>
+    </changeSet>
+
+    <changeSet author="asviridova" id="2.0.17" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="PARTNER"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable remarks="Магазин-партнер" tableName="PARTNER">
+            <column name="ID" type="NUMBER(18,0)" autoIncrement="true" defaultValueSequenceNext="PARTNER_OBJECT_ID_SEQ">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PARTNER_TYPE_PK"/>
+            </column>
+            <column name="NAME" remarks="Название" type="VARCHAR(100 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INN" remarks="ИНН" type="VARCHAR(255 BYTE)"/>
+            <column name="ADDRESS" remarks="ИНН" type="VARCHAR(255 BYTE)"/>
+        </createTable>
+    </changeSet>
 
 
 </databaseChangeLog>

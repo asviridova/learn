@@ -1,5 +1,6 @@
 package ru.otus.spring.rest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.Optional;
 //http://localhost:8080/goods/1?id=1
 
 @RestController
+@Slf4j
 public class GoodsController {
 
 
@@ -57,6 +59,7 @@ public class GoodsController {
                                          @RequestParam(value = "brandId", required = false) Long brandId,
                                          @RequestParam("providerId") Long providerId,
                                          @RequestParam(value = "storeId", required = false) Long storeId ) {
+        log.debug("updateGoods called, id="+id+", size="+size);
         Optional<GoodsType> goodsType = goodsTypeService.getById(goodsTypeId);
         Optional<Provider> provider = providerService.getById(providerId);
         Brand brand = null;

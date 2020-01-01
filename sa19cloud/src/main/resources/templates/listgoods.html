@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Shop</title>
+    <title>Список товаров в магазине</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -12,29 +12,27 @@
             border: 1px solid lightgray;
             padding: 5px;
         }
-        .authors, .authors td {
-            border: 1px solid lightgray;
-            padding: 5px;
-        }
-        .genres, .genres td {
-            border: 1px solid lightgray;
-            padding: 5px;
-        }
     </style>
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<h1>Goods:</h1>
+<h1>Список товаров в магазине:</h1>
 
 <table class="goods" id="table_goods">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Provider</th>
-        <th>Action</th>
-        <th>Remove</th>
+        <th>Код</th>
+        <th>Название</th>
+        <th>Цвет</th>
+        <th>Размер</th>
+        <th>Цена</th>
+        <th>Вид товара</th>
+        <th>Бренд</th>
+        <th>Поставщик</th>
+        <th>Склад</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
     </tr>
     </thead>
     <tbody>
@@ -42,20 +40,26 @@
 </table>
 <script>
     $(function () {
-        $.get('/goods').done(function (goods) {
-            goods.forEach(function (good) {
+        $.get('/goods').done(function (goodslist) {
+            goodslist.forEach(function (goods) {
                 $('#table_goods').append(`
                     <tr class="goodsrow">
-                        <td name="goodsid">${good.id}</td>
-                        <td>${good.name}</td>
-                        <td>${good.brand.name}</td>
-                        <td>${good.provider.name}</td>
+                        <td name="goodsid">${goods.id}</td>
+                        <td>${goods.code}</td>
+                        <td>${goods.name}</td>
+                        <td>${goods.colour}</td>
+                        <td>${goods.size}</td>
+                        <td>${goods.price}</td>
+                        <td>${goods.goodsType.name}</td>
+                        <td>${goods.brand.name}</td>
+                        <td>${goods.provider.name}</td>
+                        <td>${goods.store.code}</td>
                         <td>
-                            <a href="/edit?id=${good.id}" class="edit_href" >Edit</a>
+                            <a href="/edit?id=${goods.id}" class="edit_href" >Изменить</a>
                         </td>
                         <td>
                             <!--a href=# class="remove_href" data-href="/api/remove/">Remove</a-->
-                            <a href=# class="remove_href" data-href="/goods/">Remove</a>
+                            <a href=# class="remove_href" data-href="/goods/">Удалить</a>
                         </td>
                     </tr>
                 `)
@@ -104,7 +108,11 @@
 <br/>
 
 <form id="add-form" th:action="@{/add}" th:method="post" action="create.html">
-    <a href="#" onclick="this.parentNode.submit()">Add a new book!</a>
+    <a href="#" onclick="this.parentNode.submit()">Добавить новый товар</a>
+</form>
+<br/>
+<form id="partner-form" th:action="@{/viewpartners}" th:method="post" action="listpartners.html">
+    <a href="#" onclick="this.parentNode.submit()">Перейти к списку магазинов-партнеров</a>
 </form>
 
 

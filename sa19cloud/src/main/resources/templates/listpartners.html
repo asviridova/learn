@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Магазины-партнеры</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .partners, .partners td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Магазины-партнеры:</h1>
+
+<table class="partners" id="table_partners">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>ИНН</th>
+        <th>Адрес</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.get('/partners').done(function (partners) {
+            partners.forEach(function (partner) {
+                $('#table_partners').append(`
+                    <tr class="partnerrow">
+                        <td name="partnerid">${partner.id}</td>
+                        <td>${partner.name}</td>
+                        <td>${partner.inn}</td>
+                        <td>${partner.address}</td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+
+</script>
+
+
+<br/>
+
+<form id="cancel-form" th:action="@{/}" th:method="get" action="listgoods.html">
+    <a href="#" onclick="this.parentNode.submit()">Назад к списку товаров</a>
+</form>
+
+
+</body>
+</html>
