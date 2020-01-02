@@ -24,7 +24,5 @@ COPY --from=0 $PROJECT_DIR/target/adapter19* $PROJECT_DIR/
 
 #------------
 EXPOSE 9001
-EXPOSE 5000
-EXPOSE 8001
 
 CMD ["java", "-jar", "/usr/src/app/adapter19-1.0.1.jar"]
