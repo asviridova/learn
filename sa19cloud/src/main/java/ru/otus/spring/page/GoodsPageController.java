@@ -35,13 +35,13 @@ public class GoodsPageController {
 
 
     @PostMapping("/add")
-    public String addBookPage(Model model) {
+    public String addGoodsPage(Model model) {
         return "creategoods";
     }
 
 
     @GetMapping("/edit")
-    public String editBookPage(@RequestParam("id") String id, Model model) {
+    public String editGoodsPage(@RequestParam("id") String id, Model model) {
         log.debug("selected goods id:"+id);
         return "editgoods";
     }
@@ -54,6 +54,27 @@ public class GoodsPageController {
     @GetMapping("/viewpartners")
     public String viewPartnersPageWithGet(Model model) {
         return "listpartners";
+    }
+
+    @PostMapping("/viewproviders")
+    public String viewProvidersPage(Model model) {
+        return "listproviders";
+    }
+
+    @GetMapping("/viewproviders")
+    public String viewProvidersPageWithGet(Model model) {
+        return "listproviders";
+    }
+
+    @GetMapping("/editprovider")
+    public String editProviderPage(@RequestParam("id") String id, Model model) {
+        log.debug("selected provider id:"+id);
+        return "editprovider";
+    }
+
+    @PostMapping("/addprovider")
+    public String addProviderPage(Model model) {
+        return "createprovider";
     }
 
 }

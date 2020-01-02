@@ -47,10 +47,10 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public Long insert(String name, String inn, String address) {
-        Provider provider = new Provider(name, inn);
+        Provider provider = new Provider(name, inn, address);
         Provider providerNew = providerRepository.save(provider);
         Long id = providerNew.getId();
-        log.info("provider inserted with id = " + id + ", name = " + name + ", inn = " + inn);
+        log.info("provider inserted with id = " + id + ", name = " + name + ", inn = " + inn+ ", address = " + address);
         return id;
     }
 
@@ -58,7 +58,7 @@ public class ProviderServiceImpl implements ProviderService {
     public Long update(Long id, String name, String inn, String address) {
         Provider provider = new Provider(id, name, inn, address, Provider.FLAG_NOT_BLACK_LIST);
         Provider providerNew = providerRepository.save(provider);
-        log.info("provider updated with id = " + id + ", name = " + name + ", inn = " + inn);
+        log.info("provider updated with id = " + id + ", name = " + name + ", inn = " + inn+", address = " + address);
         return providerNew.getId();
     }
 }

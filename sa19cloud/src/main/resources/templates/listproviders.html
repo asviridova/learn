@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Поставщики товаров</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .proveders, .providers td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Поставщики товаров:</h1>
+
+<table class="providers" id="table_providers">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>ИНН</th>
+        <th>Адрес</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.get('/providers').done(function (providers) {
+            providers.forEach(function (provider) {
+                $('#table_providers').append(`
+                    <tr class="providerrow">
+                        <td name="providerid">${provider.id}</td>
+                        <td>${provider.name}</td>
+                        <td>${provider.inn}</td>
+                        <td>${provider.address}</td>
+                        <td>
+                            <a href="/editprovider?id=${provider.id}" class="edit_href" >Изменить</a>
+                        </td>
+                        <td>
+                            <a href=# class="remove_href" data-href="/providers/">Удалить</a>
+                        </td>
+
+                    </tr>
+                `)
+            });
+        })
+    });
+
+    $("#table_providers").on("click", "tr a", function (e) {
+        e.stopPropagation();
+
+        var id;
+        $('td', $(this).closest('tr')).each(function () {
+            var name = $(this).attr("name");
+            if (name == 'providerid') {
+                id = $(this).text();
+            }
+        });
+        console.log("selected id:" + id);
+        var url = $(this).attr("data-href");
+        var urlPage = $(this).attr("href");
+        var className = $(this).attr("class");
+        console.log("url:" + url);
+
+        if (className == 'remove_href') {
+
+            $.ajax({
+                type: "DELETE",
+                url: url+id,
+                data: { id: id }, // or the string: 'id=1'
+                complete:
+                    function () {
+                        window.open("/viewproviders", "_self");
+                    }
+
+            });
+        }
+
+    });
+
+</script>
+
+<br/>
+<form id="add-form" th:action="@{/addprovider}" th:method="post" action="createprovider.html">
+    <a href="#" onclick="this.parentNode.submit()">Добавить нового поставщика</a>
+</form>
+
+<br/>
+<form id="cancel-form" th:action="@{/}" th:method="get" action="listgoods.html">
+    <a href="#" onclick="this.parentNode.submit()">Назад к списку товаров</a>
+</form>
+
+
+</body>
+</html>

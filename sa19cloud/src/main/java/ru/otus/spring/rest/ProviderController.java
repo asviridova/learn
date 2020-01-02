@@ -1,5 +1,6 @@
 package ru.otus.spring.rest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Slf4j
 public class ProviderController {
 
 
@@ -38,12 +40,14 @@ public class ProviderController {
 
     @PutMapping("/providers/{id}")
     public ResponseEntity<?> saveProvider(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam(value = "inn", required = false) String inn, @RequestParam(value = "address", required = false) String address) {
+        log.debug("saveProvider called, id="+id+", name="+name+", inn="+inn+", address="+address);
         providerService.update(id, name, inn, address);
         return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/providers")
     public ResponseEntity<?> insertProvider(@RequestParam("name") String name, @RequestParam(value = "inn", required = false) String inn, @RequestParam(value = "address", required = false) String address) {
+        log.debug("insertProvider called, name="+name+", inn="+inn+", address="+address);
         Long id =  providerService.insert(name, inn, address);
         if(id!=null && id>0) {
             return new ResponseEntity<>("OK, ProviderId="+id, HttpStatus.CREATED);
