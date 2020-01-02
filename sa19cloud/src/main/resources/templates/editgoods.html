@@ -85,16 +85,21 @@
     </div>
 
     <div class="row">
-        <button type="submit" onClick="" name="submit" value="value" class="link-button">Сохранить изменения</button>
-    </div>
-
-    <div class="row">
-        <button onClick="" name="cancel" value="value" class="link-button" href="/">Отмена</button>
+        <td>
+            <button type="submit" onClick="" name="submit" value="value" class="link-button">Сохранить изменения</button>
+        </td>
+        <td>
+            <input class="button" type="button" onclick="window.location.replace('/')" value="Отмена" />
+        </td>
     </div>
 
 
 </form>
 <script>
+   // $(".cancel-button").click(function (e) {
+   //     e.preventDefault();
+   // });
+
 
     $(function () {
         $.get('/goodstypes').done(function (goodsTypes) {

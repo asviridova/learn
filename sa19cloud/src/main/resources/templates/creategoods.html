@@ -85,17 +85,18 @@
     </div>
 
     <div class="row">
-        <button type="submit" onClick="" name="submit" value="value" class="link-button">Добавить товар</button>
+        <td>
+            <button type="submit" onClick="" name="submit" value="value" class="link-button">Добавить товар</button>
+        </td>
+        <td>
+            <input class="button" type="button" onclick="window.location.replace('/')" value="Отмена" />
+        </td>
     </div>
-
-    <div class="row">
-        <button onClick="" name="cancel" value="value" class="link-button" href="/">Отмена</button>
-    </div>
-
 
 </form>
 
 <script>
+
     $(function () {
         $.get('/goodstypes').done(function (goodsTypes) {
             goodsTypes.forEach(function (goodsType) {
