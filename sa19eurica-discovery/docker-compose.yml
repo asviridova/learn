@@ -1,0 +1,7 @@
+version: "3"
+services:
+  web:
+    build: .
+    #image: eureka-discovery-server:1.0
+    ports:
+      - "8001:8001"

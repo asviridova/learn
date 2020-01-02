@@ -1,0 +1,7 @@
+version: "3"
+services:
+  web:
+    build: .
+    #image: configuration-server:1.0
+    ports:
+      - "5000:5000"

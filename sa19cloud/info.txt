@@ -24,3 +24,72 @@ docker stack deploy --orchestrator swarm --compose-file docker-compose.yml shops
 docker stack services shopstack
 docker container ls --all
 docker stack rm shopstack
+
+-------------CONFIG-------
+cd C:\project_spring\learn\Alina\saproject\sa19configuration-server
+docker-compose up 
+docker-compose build --no-cache
+--------------------------------
+docker image build -t shop-configuration-server:1.0.1 .
+docker container run --publish 5000:5000 --name shop-configuration-server shop-configuration-server:1.0.1
+
+docker stop shop-configuration-server
+docker start shop-configuration-server
+
+docker container rm --force sa19configuration-server_web_1
+
+----EUREKA
+cd C:\project_spring\learn\Alina\saproject\sa19eurica-discovery
+docker-compose up 
+
+-----SHOP----
+cd C:\project_spring\learn\Alina\saproject\sa19cloud
+docker-compose up 
+
+docker image build -t adapter19:1.0 .
+docker container run --publish 9001:9001 --name adapter19 adapter19:1.0
+
+docker container run --publish 9001:9001 --name sa19cloud_web_1
+$ docker stop my_container
+docker start sa19cloud_web_1
+
+---------------------SHOP2
+cd C:\project_spring\learn\Alina\saproject\sa19cloud
+
+docker image build -t sa-shop:1.0.1 .
+docker container run --publish 9001:9001 --name sa-shop sa-shop:1.0.1
+
+docker stop sa-shop
+docker start sa-shop
+
+docker container rm --force sa-shop
+
+
+
+
+docker container rm --force sa-shop
+docker container rm --force sa19cloud_web_1
+docker container rm --force sa19configuration-server_web_1
+docker container rm --force sa-shop
+
+
+---------------
+Successfully tagged shop-configuration-server:1.0.1
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host.
+ All files and directories added to build context will have '-rwxr-xr-x' permissions.
+ It is recommended to double check and reset permissions for sensitive files and directories.
+
+-------------
+WARNING: Image for service web was built because it did not already exist. To rebuild this image you must use
+ `docker-compose build` or `docker-compose up --build`.
+web_1  | Error: Unable to access jarfile /usr/src/cofigserver/configuration-server-1.0.1.jar
+sa19configuration-server_web_1 exited with code 1
+
+WARNING: The Docker Engine you're using is running in swarm mode.
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+To deploy your application across the swarm, use `docker stack deploy`.
+--------------------------
+docker-compose rm --all &&
+ docker-compose pull &&
+ docker-compose build --no-cache &&
+ docker-compose up -d --force-recreate &&

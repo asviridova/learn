@@ -1,10 +1,10 @@
 version: "3"
 services:
   web:
-    #build: .
-    image: adapter18:1.0	
+    build: .
+    #image: adapter19:1.0	
     ports:
-      - "8080:8080"
+      - "9001:9001"
     links:
       - postgres
     depends_on:
