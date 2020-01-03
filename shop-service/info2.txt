@@ -1,0 +1,35 @@
+docker container ls --all
+
+docker pull postgres
+docker run --name sa-postgres -p 5432:5432 -e POSTGRES_DB=shopdb -e POSTGRES_PASSWORD=123456 -d postgres
+docker container rm --force sa-postgres
+
+-----------------SHOP-----------
+cd C:/project_spring/learn/Alina/shop-project/shop-service
+docker image build -t shop-service:1.0.1 .
+docker container run --publish 9001:9001 --name shop-service_web_1 shop-service:1.0.1
+docker container rm --force shop-service
+
+docker container rm --force shop-service_web_1
+
+docker-compose up 
+-------------------------------------
+----EUREKA
+cd C:\project_spring\learn\Alina\shop-project\eureka-discovery
+docker-compose up 
+
+docker container rm --force shop-service
+
+-----CONFIG------------
+--------------------------------
+cd C:\project_spring\learn\Alina\shop-project\configuration-server
+
+docker image build -t shop-configuration-server:1.0.1 .
+docker container run --publish 5000:5000 --name shop-configuration-server shop-configuration-server:1.0.1
+
+docker stop shop-configuration-server
+docker start shop-configuration-server
+
+----------------
+docker container rm --force sa19eurica-discovery_web_1
+

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список товаров в магазине</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .goods, .goods td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+        .navigation, .navigation td{
+            padding: 15px;
+        }
+    </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Список товаров в магазине:</h1>
+
+<table class="goods" id="table_goods">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Код</th>
+        <th>Название</th>
+        <th>Цвет</th>
+        <th>Размер</th>
+        <th>Количество</th>
+        <th>Цена</th>
+        <th>Вид товара</th>
+        <th>Бренд</th>
+        <th>Поставщик</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.get('/goods').done(function (goodslist) {
+            goodslist.forEach(function (goods) {
+                $('#table_goods').append(`
+                    <tr class="goodsrow">
+                        <td name="goodsid">${goods.id}</td>
+                        <td>${goods.code}</td>
+                        <td>${goods.name}</td>
+                        <td>${goods.colour}</td>
+                        <td>${goods.size}</td>
+                        <td>${goods.quantity}</td>
+                        <td>${goods.price}</td>
+                        <td>${goods.goodsType.name}</td>
+                        <td>${goods.brand.name}</td>
+                        <td>${goods.provider.name}</td>
+                        <!--td>${goods.store.code}</td-->
+                        <td>
+                            <a href="/edit?id=${goods.id}" class="edit_href" >Изменить</a>
+                        </td>
+                        <td>
+                            <!--a href=# class="remove_href" data-href="/api/remove/">Remove</a-->
+                            <a href=# class="remove_href" data-href="/goods/">Удалить</a>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+
+    $("#table_goods").on("click", "tr a", function (e) {
+        e.stopPropagation();
+
+        var id;
+        $('td', $(this).closest('tr')).each(function () {
+            var name = $(this).attr("name");
+            if (name == 'goodsid') {
+                id = $(this).text();
+            }
+        });
+        console.log("selected id:" + id);
+        var url = $(this).attr("data-href");
+        var urlPage = $(this).attr("href");
+        var className = $(this).attr("class");
+        console.log("url:" + url);
+
+        if (className == 'remove_href') {
+
+             $.ajax({
+                   type: "DELETE",
+                   url: url+id,
+                   data: { id: id }, // or the string: 'id=1'
+                   complete:
+                       function () {
+                           window.open("/", "_self");
+                       }
+
+             });
+        }
+
+    });
+
+
+
+</script>
+
+
+<br/>
+
+<form id="add-form" th:action="@{/add}" th:method="post" action="create.html">
+    <a href="#" onclick="this.parentNode.submit()">Добавить новый товар</a>
+</form>
+<br/>
+    <table class="navigation">
+        <tr>
+            <td>
+                <form id="partner-form" th:action="@{/viewpartners}" th:method="post" action="listpartners.html">
+                    <a href="#" onclick="this.parentNode.submit()">Перейти к списку магазинов-партнеров</a>
+                </form>
+            </td>
+            <td>
+                <form id="provider-form" th:action="@{/viewproviders}" th:method="post" action="listproviders.html">
+                    <a href="#" onclick="this.parentNode.submit()">Перейти к списку поставщиков</a>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Редактировать товар</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<!-- Book edition -->
+<form id="edit-form" th:method="post" action="/goods/">
+    <h1>Информация о товаре:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly"/>
+    </div>
+
+    <div class="row">
+        <label for="code-input">Код:</label>
+        <input id="code-input" name="code" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Название:</label>
+        <input id="name-input" name="name" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="colour-input">Цвет:</label>
+        <input id="colour-input" name="colour" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="size-input">Размер:</label>
+        <input id="size-input" name="size" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="quantity-input">Количество:</label>
+        <input id="quantity-input" name="quantity" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="price-input">Цена:</label>
+        <input id="price-input" name="price" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="goodsType-input">Вид товара:</label>
+        <select id="goodsType-input" name="goodsTypeId" type="text" >
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="brand-input">Бренд:</label>
+        <select id="brand-input" name="brandId" type="text" >
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="provider-input">Поставщик:</label>
+        <select id="provider-input" name="providerId" type="text" >
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="store-input">Склад:</label>
+        <select id="store-input" name="storeId" type="text" >
+        </select>
+    </div>
+
+    <div class="row">
+        <td>
+            <button type="submit" onClick="" name="submit" value="value" class="link-button">Сохранить изменения</button>
+        </td>
+        <td>
+            <input class="button" type="button" onclick="window.location.replace('/')" value="Отмена" />
+        </td>
+    </div>
+
+
+</form>
+<script>
+   // $(".cancel-button").click(function (e) {
+   //     e.preventDefault();
+   // });
+
+
+    $(function () {
+        $.get('/goodstypes').done(function (goodsTypes) {
+            goodsTypes.forEach(function (goodsType) {
+                $('#goodsType-input').append(`
+                          <option value=${goodsType.id}>${goodsType.name}</option>
+                 `)
+            });
+        })
+    });
+
+    $(function () {
+        $.get('/brands').done(function (brands) {
+            brands.forEach(function (brand) {
+                $('#brand-input').append(`
+                        <option value=${brand.id}>${brand.name}</option>
+                `)
+            });
+        })
+    });
+
+    $(function () {
+        $.get('/providers').done(function (providers) {
+            providers.forEach(function (provider) {
+                $('#provider-input').append(`
+                        <option value=${provider.id}>${provider.name}</option>
+                `)
+            });
+        })
+    });
+
+    $(function () {
+        $.get('/stores').done(function (stores) {
+            stores.forEach(function (store) {
+                $('#store-input').append(`
+                        <option value=${store.id}>${store.code}</option>
+                `)
+            });
+        })
+    });
+
+    $(function () {
+        setTimeout (function() {
+            var goods_id = getUrlParameter('id');
+            $.get('/goods/'+goods_id, {id: goods_id}).done(function (goods) {
+                console.log(goods.name);
+                $('#id-input').val(goods.id);
+                $('#code-input').val(goods.code);
+                $('#name-input').val(goods.name);
+                $('#colour-input').val(goods.colour);
+                $('#size-input').val(goods.size);
+                $('#quantity-input').val(goods.quantity);
+                $('#price-input').val(goods.price);
+                $('#goodsType-input').val(goods.goodsType.id);
+                $('#brand-input').val(goods.brand.id);
+                $('#provider-input').val(goods.provider.id);
+                $('#store-input').val(goods.store.id);
+            })
+        }, 100)
+    });
+
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+    console.log("getUrlParameter="+getUrlParameter('id'));
+
+
+    $( "#edit-form" ).submit(function( event ) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        // Get some values from elements on the page:
+        var $form = $( this ),
+            id = $form.find( "input[name='id']" ).val(),
+            code = $form.find( "input[name='code']" ).val(),
+            name = $form.find( "input[name='name']" ).val(),
+            colour = $form.find( "input[name='colour']" ).val(),
+            size = $form.find( "input[name='size']" ).val(),
+            quantity = $form.find( "input[name='quantity']" ).val(),
+            price = $form.find( "input[name='price']" ).val(),
+            goodsTypeId = $form.find( "select[name='goodsTypeId']" ).val(),
+            brandId = $form.find( "select[name='brandId']" ).val(),
+            providerId = $form.find( "select[name='providerId']" ).val(),
+            storeId = $form.find( "select[name='storeId']" ).val(),
+            url = $form.attr( "action" );
+
+        $.ajax({
+            type: "PUT",
+            url: url+id,
+            data: { id: id, code:code, name:name, colour:colour, size:size, quantity:quantity, price:price, goodsTypeId:goodsTypeId, brandId:brandId, providerId:providerId, storeId:storeId },
+            complete:
+                function () {
+                    window.open("/", "_self");
+                }
+
+        });
+
+
+    });
+
+
+</script>
+
+</body>
+</html>
