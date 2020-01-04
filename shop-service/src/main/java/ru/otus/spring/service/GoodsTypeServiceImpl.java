@@ -36,6 +36,10 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
         return goodsTypeRepository.findAll();
     }
 
+    @Override
+    public GoodsType getByCode(String code){
+        return  goodsTypeRepository.getByCode(code);
+    }
 
     @Override
     @RolesAllowed("ROLE_ADMIN")

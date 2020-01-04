@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.otus.spring.domain.*;
 import ru.otus.spring.service.*;
 
@@ -89,6 +90,7 @@ public class GoodsController {
                                          @RequestParam(value = "brandId", required = false) Long brandId,
                                          @RequestParam("providerId") Long providerId,
                                          @RequestParam(value = "storeId", required = false) Long storeId ) {
+        log.info("insertGoods() called");
         Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
         if(id!=null && id>0) {
             return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
@@ -97,6 +99,58 @@ public class GoodsController {
             return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/loadfile")
+    public ResponseEntity<?> loadGoods(@RequestParam("filename") String filename,
+                                         @RequestParam("filedata") String filedata ) {
+
+        log.info("loadGoods, filename="+filename+", filedata="+filedata);
+        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
+        Long id = 1L;
+        if(id!=null && id>0) {
+            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/loadatt")
+    public ResponseEntity<?> loadGoods1(/*
+                                       @RequestParam("filedata") String filedata*/ ) {
+
+        log.info("loadGoods,...  ");
+        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
+        Long id = 1L;
+        if(id!=null && id>0) {
+            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    @PostMapping("/loadattribute")
+//    public ResponseEntity<?> loadGoods2(@RequestParam("file") MultipartFile file /*
+//                                       @RequestParam("filedata") String filedata*/ ) {
+//
+//        log.info("loadGoods,...  file="+file.getOriginalFilename());
+//        try {
+//            log.info("loadGoods,...  content=" + new String(file.getBytes(), "UTF-8"));
+//        }
+//        catch(Exception ex){
+//            log.error(ex.getMessage(), ex);
+//        }
+//
+//        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
+//        Long id = 1L;
+//        if(id!=null && id>0) {
+//            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
+//        }
+//        else{
+//            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 }
 

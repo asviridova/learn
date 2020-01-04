@@ -15,5 +15,5 @@ public interface GoodsService {
     Long insert(String code, String name,  String colour, String size, Integer quantity, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) ;
     Long insert(String code, String name,  String colour, String size, Integer quantity, Double price, Long goodsTypeId, Long brandId, Long providerId, Long storeId);
     Long update(Long id, String code, String name, String colour, String size, Integer quantity, Double price, GoodsType goodsType, Brand brand, Provider provider, Store store) ;
-
+    void parseCsvFile(String fileContent);
 }

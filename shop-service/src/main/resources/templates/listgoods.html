@@ -111,10 +111,24 @@
 
 <br/>
 
-<form id="add-form" th:action="@{/add}" th:method="post" action="create.html">
-    <a href="#" onclick="this.parentNode.submit()">Добавить новый товар</a>
-</form>
+<table class="navigation">
+    <tr>
+        <td>
+            <form id="add-form" th:action="@{/add}" th:method="post" action="create.html">
+                <a href="#" onclick="this.parentNode.submit()">Добавить новый товар</a>
+            </form>
+        </td>
+        <td>
+            <form id="loadgoods-form" th:action="@{/loadgoods}" th:method="post" action="loadgoods.html">
+                <a href="#" onclick="this.parentNode.submit()">Загрузка данных по товарам</a>
+            </form>
+        </td>
+    </tr>
+</table>
+
 <br/>
+<br/>
+
     <table class="navigation">
         <tr>
             <td>
@@ -129,5 +143,6 @@
             </td>
         </tr>
     </table>
+
 </body>
 </html>

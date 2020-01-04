@@ -32,6 +32,11 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public Store getByCode(String code){
+        return  storeRepository.getByCode(code);
+    }
+
+    @Override
     @RolesAllowed({ "ROLE_ADMIN", "ROLE_PROVIDER" })
     public List<Store> getAll() {
         return storeRepository.findAll();

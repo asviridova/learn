@@ -18,4 +18,6 @@ public interface StoreService {
     Long insert(String code, String address);
 
     Long update(Long id, String code, String address);
+
+    Store getByCode(String code);
 }

@@ -38,6 +38,10 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
+    public Provider getByName(String name){
+        return  providerRepository.getByName(name);
+    }
+    @Override
     public List<Provider> getAll() {
         return providerRepository.findAll();
     }

@@ -185,9 +185,7 @@
 
 
     $( "#edit-form" ).submit(function( event ) {
-        // Stop form from submitting normally
         event.preventDefault();
-        // Get some values from elements on the page:
         var $form = $( this ),
             id = $form.find( "input[name='id']" ).val(),
             code = $form.find( "input[name='code']" ).val(),

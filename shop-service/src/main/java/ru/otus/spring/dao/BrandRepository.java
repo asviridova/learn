@@ -5,5 +5,5 @@ import ru.otus.spring.domain.Brand;
 
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-
+    public Brand getByName(String name);
 }

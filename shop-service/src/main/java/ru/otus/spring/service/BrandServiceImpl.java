@@ -38,6 +38,10 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public Brand getByName(String name){
+        return  brandRepository.getByName(name);
+    }
+    @Override
     public List<Brand> getAll() {
         return brandRepository.findAll();
     }

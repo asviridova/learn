@@ -17,4 +17,6 @@ public interface GoodsTypeService {
     Long insert(String code, String name);
 
     Long update(Long id, String code, String name);
+
+    GoodsType getByCode(String code);
 }
