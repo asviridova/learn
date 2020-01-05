@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Протокол загрузки данных</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .protocols, .protocols td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Протокол загрузки данных:</h1>
+
+<table class="protocols" id="table_protocol">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название файла</th>
+        <th>Дата</th>
+        <th>Код загрузки</th>
+        <th>Текст сообщения</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.get('/protocols').done(function (protocols) {
+            protocols.forEach(function (protocol) {
+                $('#table_protocol').append(`
+                    <tr class="protocolrow">
+                        <td name="protocolid">${protocol.id}</td>
+                        <td>${protocol.filename}</td>
+                        <td>${protocol.uploaddate}</td>
+                        <td>${protocol.resultcode}</td>
+                        <td>${protocol.resulttext}</td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+
+</script>
+
+
+<br/>
+
+<form id="cancel-form" th:action="@{/loadgoods}" th:method="get" action="loadgoods.html">
+    <a href="#" onclick="this.parentNode.submit()">Назад к форме загрузки</a>
+</form>
+
+
+</body>
+</html>

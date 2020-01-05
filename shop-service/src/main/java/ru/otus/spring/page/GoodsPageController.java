@@ -93,29 +93,21 @@ public class GoodsPageController {
 
 
     @PostMapping("/loadattribute")
-    public String loadGoods2(@RequestParam("file") MultipartFile file ,
-                             RedirectAttributes redirectAttributes ) {
-
-        log.info("loadGoods,...  file="+file.getOriginalFilename());
-        boolean flagSuccess = true;
-        try {
-            String content = new String(file.getBytes(), "UTF-8");
-            log.info("loadGoods,...  content=" + content);
-            goodsService.parseCsvFile(content);
-        }
-        catch(Exception ex){
-            flagSuccess = false;
-
-            log.error(ex.getMessage(), ex);
-        }
-        if(flagSuccess) {
-            redirectAttributes.addFlashAttribute("message","You successfully uploaded " + file.getOriginalFilename() + "!");
-        }
-        else{
-            redirectAttributes.addFlashAttribute("message","You failed uploaded " + file.getOriginalFilename() + "!");
-        }
-
+    public String loadGoods(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes ) {
+        log.info("loadGoods() called, file="+file.getOriginalFilename());
+        String message = goodsService.parseCsvFile(file);
+        redirectAttributes.addFlashAttribute("message",message);
         return "redirect:/loadgoods";
+    }
+
+    @PostMapping("/listprotocol")
+    public String listProtocolPage(Model model) {
+        return "listprotocol";
+    }
+
+    @GetMapping("/listprotocol")
+    public String listProtocolPageWithGet(Model model) {
+        return "listprotocol";
     }
 
 

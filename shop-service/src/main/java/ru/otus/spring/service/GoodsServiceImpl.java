@@ -5,15 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import ru.otus.spring.dao.GoodsRepository;
+import ru.otus.spring.dao.ProtocolRepository;
 import ru.otus.spring.data.GoodsStruct;
 import ru.otus.spring.domain.*;
+import ru.otus.spring.exception.DataNotFoundException;
+import ru.otus.spring.exception.IncorrectFormatException;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -24,15 +25,18 @@ public class GoodsServiceImpl implements GoodsService {
     private final ProviderService providerService;
     private final BrandService brandService;
     private final StoreService storeService;
-
+    private final ProtocolService protocolService;
 
     @Autowired
-    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsTypeService goodsTypeService, ProviderService providerService, BrandService brandService, StoreService storeService) {
+    public GoodsServiceImpl(GoodsRepository goodsRepository, GoodsTypeService goodsTypeService,
+                            ProviderService providerService, BrandService brandService, StoreService storeService,
+                            ProtocolService protocolService) {
         this.goodsRepository = goodsRepository;
         this.goodsTypeService = goodsTypeService;
         this.providerService = providerService;
         this.brandService = brandService;
         this.storeService = storeService;
+        this.protocolService = protocolService;
     }
 
     @Override
@@ -115,50 +119,103 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsNew.getId();
     }
 
-    public void parseCsvFile(String fileContent){
-        List<GoodsStruct> list = new ArrayList<>();
-        innerParseCsvFile(fileContent, list);
-        for (GoodsStruct goodsStruct: list){
-            Goods goods = new Goods();
-            goods.setCode(goodsStruct.getCode());
-            goods.setName(goodsStruct.getName());
-            goods.setColour(goodsStruct.getColour());
-            goods.setSize(goodsStruct.getSize());
-            goods.setQuantity(goodsStruct.getQuantity());
-            goods.setPrice(goodsStruct.getPrice());
+    @Override
+    public String parseCsvFile(MultipartFile file){
+        String resultText = "Успешно завершен процесс разбора файла: "+file.getOriginalFilename();
+        String errorText = "";
+        boolean flagSuccess = true;
+        try {
+            if(!file.getOriginalFilename().endsWith(".csv")){
+                throw new IncorrectFormatException("Incorrect file extension, required .csv");
+            }
+            String fileContent = new String(file.getBytes(), "UTF-8");
+            List<GoodsStruct> list = new ArrayList<>();
+            innerParseCsvFile(fileContent, list);
 
-            if(!StringUtils.isEmpty(goodsStruct.getGoodsTypeCode())) {
-                GoodsType goodsType = goodsTypeService.getByCode(goodsStruct.getGoodsTypeCode());
-                goods.setGoodsType(goodsType);
+
+            for (GoodsStruct goodsStruct: list){
+                Goods goods = new Goods();
+                goods.setCode(goodsStruct.getCode());
+                goods.setName(goodsStruct.getName());
+                goods.setColour(goodsStruct.getColour());
+                goods.setSize(goodsStruct.getSize());
+                goods.setQuantity(goodsStruct.getQuantity());
+                goods.setPrice(goodsStruct.getPrice());
+                //GoodsType
+                if(!StringUtils.isEmpty(goodsStruct.getGoodsTypeCode())) {
+                    GoodsType goodsType = goodsTypeService.getByCode(goodsStruct.getGoodsTypeCode());
+                    if(goodsType==null){
+                        throw new DataNotFoundException("Not found GoodsType for code="+goodsStruct.getGoodsTypeCode());
+                    }
+                    goods.setGoodsType(goodsType);
+                }
+                else{
+                    throw new DataNotFoundException("Required field GoodsType is empty in source file");
+                }
+                //Brand
+                if(!StringUtils.isEmpty(goodsStruct.getBrandName())) {
+                    Brand brand = brandService.getByName(goodsStruct.getBrandName());
+                    if(brand==null){
+                        throw new DataNotFoundException("Not found Brand for name="+goodsStruct.getBrandName());
+                    }
+                    goods.setBrand(brand);
+                }
+                else{
+                    throw new DataNotFoundException("Required field Brand is empty in source file");
+                }
+                //Provider
+                if(!StringUtils.isEmpty(goodsStruct.getProviderName())) {
+                    Provider provider = providerService.getByName(goodsStruct.getProviderName());
+                    if(provider==null){
+                        throw new DataNotFoundException("Not found Provider for name="+goodsStruct.getProviderName());
+                    }
+                    goods.setProvider(provider);
+                }
+                else{
+                    throw new DataNotFoundException("Required field Provider is empty in source file");
+                }
+                //Store
+                if(!StringUtils.isEmpty(goodsStruct.getStoreCode())) {
+                    Store store = storeService.getByCode(goodsStruct.getStoreCode());
+                    if(store==null){
+                        throw new DataNotFoundException("Not found Store for code="+goodsStruct.getStoreCode());
+                    }
+                    goods.setStore(store);
+                }
+
+                Goods providerNew = goodsRepository.save(goods);
+                Long id = providerNew.getId();
+                log.info("goods inserted with id = " + id + ", name = " + goodsStruct.getName() + ", price = " + goodsStruct.getPrice());
             }
-            if(!StringUtils.isEmpty(goodsStruct.getBrandName())) {
-                Brand brand = brandService.getByName(goodsStruct.getBrandName());
-                goods.setBrand(brand);
-            }
-            if(!StringUtils.isEmpty(goodsStruct.getProviderName())) {
-                Provider provider = providerService.getByName(goodsStruct.getProviderName());
-                goods.setProvider(provider);
-            }
-            if(!StringUtils.isEmpty(goodsStruct.getStoreCode())) {
-                Store store = storeService.getByCode(goodsStruct.getStoreCode());
-                goods.setStore(store);
-            }
-            
-            Goods providerNew = goodsRepository.save(goods);
-            Long id = providerNew.getId();
-            log.info("goods inserted with id = " + id + ", name = " + goodsStruct.getName() + ", price = " + goodsStruct.getPrice());
+
+        }
+        catch (Exception ex){
+            flagSuccess = false;
+            resultText = "Процесс разбора файла "+file.getOriginalFilename()+" завершен с ошибкой";
+            errorText = (ex.getMessage()!=null && ex.getMessage().length()>255)?ex.getMessage().substring(0, 255):ex.getMessage();
         }
 
+        //Наполнение протокола
+        Protocol protocol = null;
+        if(flagSuccess){
+            protocol = new Protocol(file.getOriginalFilename(), new Date(), "OK", Protocol.RESULT_CODE_OK);
+        }
+        else{
+            protocol = new Protocol(file.getOriginalFilename(), new Date(), errorText, Protocol.RESULT_CODE_ERROR);
+        }
+        //Сохранение протокола
+        protocolService.insert(protocol);
 
+        return resultText;
     }
 
-    private void innerParseCsvFile(String fileContent, List<GoodsStruct> list){
+    private void innerParseCsvFile(String fileContent, List<GoodsStruct> list) throws IncorrectFormatException{
         if(fileContent!=null){
             String[] lines = fileContent.split(System.lineSeparator());
             int i = 0;
             for (String line: lines){
                 String[] elements = line.split(";");
-                if(elements.length>9){ //TODO if less
+                if(elements.length>9){
 
                     String code = elements[0];
                     String name = StringUtils.trimWhitespace(elements[1]);
@@ -176,6 +233,9 @@ public class GoodsServiceImpl implements GoodsService {
                     GoodsStruct goodsStruct = new GoodsStruct(code, name, colour, size, quantity, price, goodsTypeCode,
                             brandName, providerName, storeCode);
                     list.add(goodsStruct);
+                }
+                else{
+                    throw new IncorrectFormatException("Некорректный формат данных в строке: количество элементов менее 10");
                 }
             }
         }

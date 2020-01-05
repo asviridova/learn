@@ -285,5 +285,42 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="asviridova" id="2.0.18" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="PROTOCOL_OBJECT_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="PROTOCOL_OBJECT_ID_SEQ" incrementBy="1" startValue="10"/>
+        <comment>Creation of PROTOCOL_OBJECT_ID_SEQ sequence </comment>
+    </changeSet>
+
+    <changeSet author="asviridova" id="2.0.19" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="PROTOCOL"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable remarks="Протокол загрузки данных" tableName="PROTOCOL">
+            <column name="ID" type="NUMBER(18,0)" autoIncrement="true" defaultValueSequenceNext="PROTOCOL_OBJECT_ID_SEQ">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROTOCOL_PK"/>
+            </column>
+            <column name="FILENAME" remarks="Название файла" type="VARCHAR(255 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPLOADDATE" remarks="Дата загрузки" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RESULTTEXT" remarks="Результат загрузки" type="VARCHAR(255 BYTE)"/>
+            <column name="RESULTCODE" remarks="Код результата загрузки" type="NUMBER(2)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
 
 </databaseChangeLog>

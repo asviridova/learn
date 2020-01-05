@@ -100,57 +100,6 @@ public class GoodsController {
         }
     }
 
-    @PostMapping("/loadfile")
-    public ResponseEntity<?> loadGoods(@RequestParam("filename") String filename,
-                                         @RequestParam("filedata") String filedata ) {
-
-        log.info("loadGoods, filename="+filename+", filedata="+filedata);
-        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
-        Long id = 1L;
-        if(id!=null && id>0) {
-            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
-        }
-        else{
-            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/loadatt")
-    public ResponseEntity<?> loadGoods1(/*
-                                       @RequestParam("filedata") String filedata*/ ) {
-
-        log.info("loadGoods,...  ");
-        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
-        Long id = 1L;
-        if(id!=null && id>0) {
-            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
-        }
-        else{
-            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-//    @PostMapping("/loadattribute")
-//    public ResponseEntity<?> loadGoods2(@RequestParam("file") MultipartFile file /*
-//                                       @RequestParam("filedata") String filedata*/ ) {
-//
-//        log.info("loadGoods,...  file="+file.getOriginalFilename());
-//        try {
-//            log.info("loadGoods,...  content=" + new String(file.getBytes(), "UTF-8"));
-//        }
-//        catch(Exception ex){
-//            log.error(ex.getMessage(), ex);
-//        }
-//
-//        //Long id =  goodsService.insert(code, name, colour, size, quantity, price, goodsTypeId, brandId, providerId, storeId);
-//        Long id = 1L;
-//        if(id!=null && id>0) {
-//            return new ResponseEntity<>("OK, GoodsId="+id, HttpStatus.CREATED);
-//        }
-//        else{
-//            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
 }
 

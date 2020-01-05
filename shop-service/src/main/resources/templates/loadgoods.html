@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Магазины-партнеры</title>
+    <title>Загрузка товаров</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -18,223 +18,6 @@
 <body>
 <h1>Загрузка товаров:</h1>
 
-<!--table class="partners" id="table_partners">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Название</th>
-        <th>ИНН</th>
-        <th>Адрес</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table-->
-<script>
-
-
-</script>
-
-
-<br/>
-<br/>
-
-<form id="edit-form" th:method="post" action="/loadfile/">
-    <input type="file" width="600" class="file" name="attachement" />
-    <br/>
-    <input id="fileInput" type="file" style="display:none;" />
-    <input type="button" value="Choose Files!" onclick="document.getElementById('fileInput').click();" />
-    <br/>
-    <button type="submit" onClick="" name="submit" value="value" class="link-button">Загрузить данные</button>
-</form>
-
-<br/>
-<br/>
-
-<form id="cancel-form" th:action="@{/}" th:method="get" action="listgoods.html">
-    <a href="#" onclick="this.parentNode.submit()">Назад к списку товаров</a>
-</form>
-
-<script>
-
-    $( "#edit-form" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = $( this ),
-            filedata = $form.find( "input[name='attachement']" ).val(),
-            filename = $form.find( "input[name='attachement']" ).val(),
-            url = $form.attr( "action" );
-    console.log("filedata="+filedata);
-        console.log("filename="+filename);
-        console.log("url="+url);
-
-        var docName = document.getElementById("fileInput").files[0].fileName;
-        console.log("docName="+docName);
-
-        /*$.ajax({
-            type: "POST",
-            url: url,
-            data: { filename: filename, filedata:filedata },
-            complete:
-                function () {
-                    window.open("/loadgoods", "_self");
-                }
-
-        });*/
-        var posting = $.post( url, {filename: filename, filedata:docName} );
-        posting.done(function( data ) {
-            window.open("/loadgoods", "_self");
-        });
-
-
-    });
-
-//-----
- /*   (function($){
-        // document onReady wrapper
-        $().ready(function(){
-            // check for the nefarious IE
-            if($.browser.msie) {
-                // capture the file input fields
-                var fileInput = $('input[type="file"]');
-                // add presentational <span> tags "underneath" all file input fields for styling
-                fileInput.after(
-                    $(document.createElement('span')).addClass('file-underlay')
-                );
-                // bind onClick to get the file-path and update the style <div>
-                fileInput.click(function(){
-                    // need to capture $(this) because setTimeout() is on the
-                    // Window keyword 'this' changes context in it
-                    var fileContext = $(this);
-                    // capture the timer as well as set setTimeout()
-                    // we use setTimeout() because IE pauses timers when a file dialog opens
-                    // in this manner we give ourselves a "pseudo-onChange" handler
-                    var ieBugTimeout = setTimeout(function(){
-                        // set vars
-                        var filePath     = fileContext.val(),
-                            fileUnderlay = fileContext.siblings('.file-underlay');
-                        // check for IE's lovely security speil
-                        if(filePath.match(/fakepath/)) {
-                            // update the file-path text using case-insensitive regex
-                            filePath = filePath.replace(/C:\\fakepath\\/i, '');
-                        }
-                        // update the text in the file-underlay <span>
-                        fileUnderlay.text(filePath);
-                        // clear the timer var
-                        clearTimeout(ieBugTimeout);
-                    }, 10);
-                });
-            }
-        });
-    })(jQuery); */
-//-------
-    //form Submit
-    $("#edit1-form").submit(function(evt){
-        evt.preventDefault();
-        var formData = new FormData($(this)[0]);
-        var url = "/loadfile/";
-        console.log("formData="+formData);
-
-        $.ajax({
-            //url: 'fileUpload',
-            //type: 'POST',
-            //data: formData,
-
-            type: "POST",
-            url: url,
-            data: { filename: filename, filedata:formData },
-
-            async: false,
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (response) {
-                alert(response);
-            }
-        });
-        return false;
-    });
-</script>
-
-<form id="edit1-form">
-    <table>
-        <tr>
-            <td colspan="2">File Upload</td>
-        </tr>
-        <tr>
-            <th>Select File </th>
-            <td><input id="csv" name="csv" type="file" /></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="submit"/>
-            </td>
-        </tr>
-    </table>
-</form>
-<br/>
-<script type="text/javascript">
-    function submitForm() {
-        console.log("submit event");
-        var fd = new FormData(document.getElementById("fileinfo"));
-        fd.append("label", "WEBUPLOAD");
-        console.log("fd ="+fd);
-        $.ajax({
-
-            //url: "upload.php",
-            //type: "POST",
-            //data: fd,
-
-            type: "POST",
-            url: "/loadatt/",
-            //data: { filename: "1111.txt", filedata:fd },
-            data: {  filedata:fd },
-
-            processData: false,  // tell jQuery not to process the data
-            contentType: false   // tell jQuery not to set contentType
-        }).done(function( data ) {
-            console.log("PHP Output:");
-            console.log( data );
-        });
-        return false;
-    }
-</script>
-
-<form method="post" id="fileinfo" name="fileinfo" onsubmit="return submitForm();">
-    <label>Select a file:</label><br>
-    <input type="file" name="file" required />
-    <input type="submit" value="Upload" />
-</form>
-<div id="output"></div>
-
-
-<br/>
-<input type="file" id="file">
-<button id='process-file-button'>Process</button>
-
-<script>
-    $('#process-file-button').on('click', function (e) {
-        var files = new FormData(), // you can consider this as 'data bag'
-            url = '/loadatt/';
-
-        files.append('fileName', $('#file')[0].files[0]); // append selected file to the bag named 'file'
-
-        $.ajax({
-            type: 'post',
-            url: url,
-            processData: false,
-            contentType: false,
-            data: files,
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    });
-</script>
-//--------------
 <div th:if="${message}">
     <h2 th:text="${message}"/>
 </div>
@@ -242,8 +25,8 @@
 <div>
     <form method="POST" enctype="multipart/form-data" action="/loadattribute">
         <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            <tr><td>Выберите файл для загрузки:</td><td><input type="file" name="file" /></td></tr>
+            <tr><td></td><td><input type="submit" value="Загрузить данные в систему" /></td></tr>
         </table>
     </form>
 </div>
@@ -255,6 +38,17 @@
         </li>
     </ul>
 </div>
+
+
+<br/>
+<form id="add-form" th:action="@{/listprotocol}" th:method="post" action="listprotocol.html">
+    <a href="#" onclick="this.parentNode.submit()">Посмотреть протоколы загрузок</a>
+</form>
+
+<br/>
+<form id="cancel-form" th:action="@{/}" th:method="get" action="listgoods.html">
+    <a href="#" onclick="this.parentNode.submit()">Назад к списку товаров</a>
+</form>
 
 
 </body>
