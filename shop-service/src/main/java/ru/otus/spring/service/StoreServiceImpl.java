@@ -37,7 +37,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    @RolesAllowed({ "ROLE_ADMIN", "ROLE_PROVIDER" })
+    @RolesAllowed({ "ROLE_ADMIN", "ROLE_PROVIDER", "ROLE_OPERATOR" })
     public List<Store> getAll() {
         return storeRepository.findAll();
     }

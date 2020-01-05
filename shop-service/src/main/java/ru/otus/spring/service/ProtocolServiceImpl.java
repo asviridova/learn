@@ -21,11 +21,13 @@ public class ProtocolServiceImpl implements ProtocolService {
     }
 
     @Override
+    @RolesAllowed({ "ROLE_ADMIN", "ROLE_OPERATOR" })
     public List<Protocol> getAll() {
         return protocolRepository.findAll();
     }
 
     @Override
+    @RolesAllowed({ "ROLE_ADMIN", "ROLE_OPERATOR" })
     public Long insert(Protocol protocol) {
         Protocol protocolNew = protocolRepository.save(protocol);
         return protocolNew.getId();

@@ -26,7 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/viewproviders").hasRole("ADMIN")
                 .and()
-                .authorizeRequests().antMatchers("/edit", "/remove", "/add").hasAnyRole("PROVIDER", "ADMIN")
+                .authorizeRequests().antMatchers("/edit", "/add").hasAnyRole("PROVIDER", "ADMIN")
+                .and()
+                .authorizeRequests().antMatchers("/loadgoods", "/listprotocol").hasAnyRole("OPERATOR", "ADMIN")
                 .and()
                 .formLogin()
         ;
@@ -44,6 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("admin1").roles("ADMIN");
         auth.inMemoryAuthentication()
                 .withUser("provider").password("provider1").roles("PROVIDER");
+        auth.inMemoryAuthentication()
+                .withUser("operator").password("operator1").roles("OPERATOR");
 
     }
 }
