@@ -120,7 +120,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    @RolesAllowed({ "ROLE_ADMIN", "ROLE_OPERATOR" })
+    @RolesAllowed({ "ROLE_OPERATOR" })
     public String parseCsvFile(MultipartFile file){
         String resultText = "Успешно завершен процесс разбора файла: "+file.getOriginalFilename();
         String errorText = "";
