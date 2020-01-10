@@ -2,13 +2,16 @@ version: "3"
 services:
   web:
     build: .
-    #image: shop-service:1.0	
+    image: shop-service:1.0.2
     ports:
       - "9001:9001"
     links:
       - postgres
     depends_on:
       - postgres
+      - shop-config-server
+      - shop-eureka-discovery
+
     environment:
       - DB_URL=jdbc:postgresql://postgres:5432/shopdb
       - DB_LOGIN=postgres
@@ -22,3 +25,12 @@ services:
       - POSTGRES_DB=shopdb
     ports:
       - "5432:5432"
+  shop-config-server:
+    image: configuration-server:1.0.2
+    ports:
+      - "5000:5000"
+  shop-eureka-discovery:
+    image: eureka-discovery-server:1.0.2
+    ports:
+      - "8001:8001"
+

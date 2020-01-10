@@ -33,3 +33,6 @@ docker start shop-configuration-server
 ----------------
 docker container rm --force sa19eurica-discovery_web_1
 
+docker start configuration-server_web_1
+docker start eureka-discovery_web_1
+docker start sa-postgres
