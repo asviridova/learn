@@ -7,7 +7,16 @@ docker container rm --force sa-postgres
 -----------------SHOP-----------
 cd C:/project_spring/learn/Alina/shop-project/shop-service
 docker image build -t shop-service:1.0.1 .
-docker container run --publish 9001:9001 --name shop-service_web_1 shop-service:1.0.1
+docker container run --publish 9001:9001 --net=host --name shop-service_web_1 shop-service:1.0.1
+docker container run --publish 9001:9001 --name shop-service shop-service:1.0.2
+
+docker container run --net=host --name shop-service shop-service:1.0.2
+
+//docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+
+http://10.0.75.2:9001/
+http://localhost:8001/
+
 docker container rm --force shop-service
 
 docker container rm --force shop-service_web_1
@@ -33,6 +42,7 @@ docker start shop-configuration-server
 ----------------
 docker container rm --force sa19eurica-discovery_web_1
 
-docker start configuration-server_web_1
 docker start eureka-discovery_web_1
-docker start sa-postgres
+
+docker images
+
